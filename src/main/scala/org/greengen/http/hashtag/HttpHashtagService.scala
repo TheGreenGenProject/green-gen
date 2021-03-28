@@ -17,8 +17,8 @@ object HttpHashtagService {
     // GET
     case GET -> Root / "hashtag" / "followers" / "count" / ht as _ =>
       service.countFollowers(Hashtag(ht)).flatMap(r => Ok(r.asJson))
-    case GET -> Root / "hashtag" / "followed-by" / UUIDVar(id) as _ =>
-      service.hashtagsfollowedBy(UserId(UUID.from(id))).flatMap(r => Ok(r.asJson))
+    case GET -> Root / "hashtag" / "followed" as userId =>
+      service.hashtagsfollowedBy(userId).flatMap(r => Ok(r.asJson))
     case GET -> Root / "hashtag" / "trend" / "by-followers" / IntVar(n) as _ =>
       service.trendByFollowers(n).flatMap(r => Ok(r.asJson))
     // POST
