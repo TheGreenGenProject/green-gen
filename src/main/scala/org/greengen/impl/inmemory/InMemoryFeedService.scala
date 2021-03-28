@@ -4,14 +4,16 @@ import cats.effect.IO
 import cats.implicits._
 import org.greengen.core.feed.{Feed, FeedService}
 import org.greengen.core.follower.FollowerService
+import org.greengen.core.hashtag.HashtagService
 import org.greengen.core.post.PostId
 import org.greengen.core.user.{UserId, UserService}
-import org.greengen.core.{IOUtils, Page, PagedResult}
+import org.greengen.core.{Hashtag, IOUtils, Page, PagedResult}
 
 import scala.collection.concurrent.TrieMap
 
 class InMemoryFeedService(userService: UserService[IO],
-                          followerService: FollowerService[IO])
+                          followerService: FollowerService[IO],
+                          hashtagService: HashtagService[IO])
   extends FeedService[IO]{
 
   private[this] val feeds = new TrieMap[UserId, IndexedSeq[PostId]]()
@@ -31,6 +33,11 @@ class InMemoryFeedService(userService: UserService[IO],
     _         <- checkUser(userId)
     followers <- followerService.followers(userId)
     _         <- followers.toList.map(addToFeed(_, postId)).sequence
+  } yield ()
+
+  override def addToHashtagFollowersFeed(hashtags: Set[Hashtag], postId: PostId): IO[Unit] = for {
+    followers <- hashtags.toList.map(hashtagService.followers(_).map(_.toList)).sequence
+    _         <- followers.flatten.map(addToFeed(_, postId)).sequence
   } yield ()
 
   override def hasPostsAfter(userId: UserId, lastPostId: PostId): IO[Boolean] = for {

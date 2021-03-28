@@ -1,19 +1,18 @@
 package org.greengen.impl.inmemory
 
 import cats.effect.IO
+import org.greengen.core._
 import org.greengen.core.feed.FeedService
-import org.greengen.core.follower.FollowerService
-import org.greengen.core.notification.NotificationService
 import org.greengen.core.post.{Post, PostId, PostService, RePost}
 import org.greengen.core.user.{UserId, UserService}
 import org.greengen.core.wall.WallService
-import org.greengen.core._
 
 import scala.collection.concurrent.TrieMap
 
 class InMemoryPostService(clock: Clock,
                           userService: UserService[IO],
-                          wallService: WallService[IO])
+                          wallService: WallService[IO],
+                          feedService: FeedService[IO])
   extends PostService[IO] {
 
   private[this] val posts = new TrieMap[PostId, Post]()
@@ -27,6 +26,8 @@ class InMemoryPostService(clock: Clock,
     _ <- IO(indexByHashtags(post))
     _ <- IO(indexByAuthor(post))
     _ <- wallService.addToWall(post.author, post.id)
+    _ <- feedService.addToFollowersFeed(post.author, post.id)
+    _ <- feedService.addToHashtagFollowersFeed(post.hashtags, post.id)
   } yield post.id
 
   override def repost(user: UserId, postId: PostId): IO[PostId] = for {

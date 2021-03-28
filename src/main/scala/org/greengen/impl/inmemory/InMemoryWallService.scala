@@ -10,8 +10,7 @@ import org.greengen.core.{IOUtils, Page, PagedResult}
 import scala.collection.concurrent.TrieMap
 
 
-class InMemoryWallService(userService: UserService[IO],
-                          feedService: FeedService[IO])
+class InMemoryWallService(userService: UserService[IO])
   extends WallService[IO] {
 
   private[this] val walls = new TrieMap[UserId, IndexedSeq[PostId]]
@@ -24,7 +23,6 @@ class InMemoryWallService(userService: UserService[IO],
   override def addToWall(userId: UserId, postId: PostId): IO[Unit] = for {
     _ <- checkUser(userId)
     _ <- IO(addPostToWall(userId, postId))
-    _ <- feedService.addToFollowersFeed(userId, postId)
   } yield ()
 
 
