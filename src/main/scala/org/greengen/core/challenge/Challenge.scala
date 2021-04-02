@@ -113,8 +113,8 @@ object ChallengeStatistics {
     val aggregated = ChallengeReportSummary.aggregate(summaries)
     ChallengeStatistics(
       acceptedCount = summaries.size,
-      elapsedPeriodCount = 0,
-      totalPeriodCount = 0,
+      elapsedPeriodCount = elapsedPeriodCount,
+      totalPeriodCount = totalPeriodCount,
       successCount = aggregated.success,
       failureCount = aggregated.failure,
       partialSuccessCount = aggregated.partial,
