@@ -163,8 +163,8 @@ object TestData {
   private[this] def postChallengesFromAuthor(postService: PostService[IO],
                                              challengeService: ChallengeService[IO],
                                              author: UserId): IO[Unit] = for {
-    challengeIds <- challengeService.byAuthor(author)
-    _            <- challengeIds.toList.map(makeChallengePost(postService, challengeService, author, _)).sequence
+    challengeIds <- challengeService.byAuthor(author, Page.All)
+    _            <- challengeIds.map(makeChallengePost(postService, challengeService, author, _)).sequence
   } yield ()
 
   // User helpers
@@ -252,7 +252,7 @@ object TestData {
 
   private[this] def createChallenges(userService: UserService[IO],
                                      challengeService: ChallengeService[IO]): IO[Unit] = for {
-    success  <- IO(SuccessMeasure(maxFailure = 1, maxPartial = 0, maxSkip = 0))
+    success  <- IO(SuccessMeasure(maxFailure = 1, maxPartial = 1, maxSkip = 1))
     elisaId  <- userIdByPseudo(userService, "Elisa")
     _        <- makeChallenge(challengeService, elisaId,
       title ="One challenge a day, the global warming away !",
@@ -280,7 +280,7 @@ object TestData {
       author,
       title,
       content,
-      schedule = Schedule.daily(UTCTimestamp.plusDays(UTCTimestamp.now(), -2), UTCTimestamp.plusDays(UTCTimestamp.now(), 14)).get,
+      schedule = Schedule.daily(UTCTimestamp.plusDays(UTCTimestamp.now(), -7), UTCTimestamp.plusDays(UTCTimestamp.now(), 7)).get,
       successMeasure)
   } yield challengeId
 

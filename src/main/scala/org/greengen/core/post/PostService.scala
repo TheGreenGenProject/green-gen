@@ -1,5 +1,6 @@
 package org.greengen.core.post
 
+import org.greengen.core.challenge.ChallengeId
 import org.greengen.core.{Hashtag, Reason}
 import org.greengen.core.user.UserId
 
@@ -16,6 +17,8 @@ trait PostService[F[_]] {
   // Search capabilities
 
   def byId(post: PostId): F[Option[Post]]
+
+  def byContent(challenge: ChallengeId): F[Option[PostId]]
 
   def byAuthor(userId: UserId): F[Set[PostId]]
 

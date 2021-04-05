@@ -41,14 +41,21 @@ class InMemoryChallengeService(clock: Clock,
     challenges.get(challengeId)
   }
 
-  override def byAuthor(author: UserId): IO[Set[ChallengeId]] = IO {
-    authors.getOrElse(author, Set())
-  }
+  override def byAuthor(author: UserId, page: Page, predicate: Challenge => Boolean): IO[List[ChallengeId]] = for {
+    asAuthor <- IO(authors.get(author).map(_.toList).getOrElse(List()))
+    filtered     <- filterChallengeIds(asAuthor, predicate)
+    sorted   <- sortChallengeIds(filtered)
+    res      <- IO(PagedResult.page(sorted, page))
+  } yield res
 
-  override def byUser(userId: UserId): IO[Set[ChallengeId]] = for {
-    asAuthor     <- byAuthor(userId)
-    asChallengee <- IO(challenged.collect { case (challengeId, challengees) if challengees.contains(userId) => challengeId }.toSet)
-  } yield asAuthor ++ asChallengee
+  override def byUser(userId: UserId, page: Page, predicate: Challenge => Boolean): IO[List[ChallengeId]] = for {
+    asAuthor     <- IO(authors.get(userId).map(_.toList).getOrElse(List()))
+    asChallengee <- IO(challenged.collect { case (challengeId, challengees) if challengees.contains(userId) => challengeId }.toList)
+    indep        <- IO(results.keys.collect { case (contestant, challengeId) if contestant==userId => challengeId }.toList)
+    filtered     <- filterChallengeIds((asChallengee ++ indep ++ asAuthor).distinct, predicate)
+    sorted       <- sortChallengeIds(filtered)
+    res          <- IO(PagedResult.page(sorted, page))
+  } yield res
 
   override def contestants(challengeId: ChallengeId, page: Page): IO[List[UserId]] = for {
     _           <- checkChallenge(challengeId)
@@ -122,6 +129,12 @@ class InMemoryChallengeService(clock: Clock,
     results.get((userId, challengeId)).map(_.toOption).flatten.getOrElse(List())
   }
 
+  override def hasReportDue(userId: UserId, challengeId: ChallengeId): IO[Boolean] = for {
+    accepted <- hasAccepted(userId, challengeId)
+    onTracks <- status(userId, challengeId).map(_==OnTracks)
+    missing <- IO(hasMissingReports(clock, userId, challengeId))
+  } yield accepted && onTracks && missing
+
   override def hasAccepted(userId: UserId, challengeId: ChallengeId): IO[Boolean] = for {
     _        <- checkUser(userId)
     key = (userId, challengeId)
@@ -192,7 +205,6 @@ class InMemoryChallengeService(clock: Clock,
       case None              => Some(Set(challengeeId))
     }
 
-
   // Checkers
 
   private[this] def checkUser(user: UserId) = for {
@@ -212,5 +224,36 @@ class InMemoryChallengeService(clock: Clock,
     maybeChallenge <- byId(challengeId)
     res            <- IOUtils.from(maybeChallenge, s"Challenge $challengeId doesn't exist")
   } yield res
+
+
+  // Sorting
+
+  private[this] def sortChallengeIds(challengeIds: List[ChallengeId]): IO[List[ChallengeId]] = for {
+    challenges <- challengeIds.map(byId).sequence
+    flattened  <- IO(challenges.flatten)
+    sorted     <- sortChallenges(flattened)
+  } yield sorted.map(_.id)
+
+  private[this] def sortChallenges(challenges: List[Challenge]): IO[List[Challenge]] = IO {
+    challenges.sortBy(-1L * _.created.value)
+  }
+
+  // Filtering
+
+  private[this] def filterChallengeIds(challengeIds: List[ChallengeId],
+                                       p: Challenge => Boolean): IO[List[ChallengeId]] = for {
+    challenges <- challengeIds.map(byId).sequence
+    flattened  <- IO(challenges.flatten)
+    filtered   <- IO(flattened.filter(p))
+  } yield filtered.map(_.id)
+
+  private[this] def hasMissingReports(clock: Clock,
+                                      userId: UserId,
+                                      challengeId: ChallengeId): Boolean = (for {
+    reportDates <- reportDates(challengeId)
+    now = clock.now().value
+    due         <- IO(reportDates.filter(_.value <= now))
+    reported    <- reportedSteps(userId, challengeId)
+  } yield (due.size - reported.size) > 0).unsafeRunSync()
 
 }

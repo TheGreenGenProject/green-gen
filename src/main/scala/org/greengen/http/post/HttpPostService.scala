@@ -3,6 +3,7 @@ package org.greengen.http.post
 import cats.effect._
 import io.circe.generic.auto._
 import io.circe.syntax._
+import org.greengen.core.challenge.ChallengeId
 import org.greengen.core.post._
 import org.greengen.core.user.UserId
 import org.greengen.core.{Clock, _}
@@ -21,6 +22,8 @@ object HttpPostService {
     // GET
     case GET -> Root / "post" / "by-id" / UUIDVar(id) as _ =>
       service.byId(PostId(UUID.from(id))).flatMap(r => Ok(r.asJson))
+    case GET -> Root / "post" / "by-content" / "challenge" / UUIDVar(id) as _ =>
+      service.byContent(ChallengeId(UUID.from(id))).flatMap(r => Ok(r.asJson))
     case GET -> Root / "post" / "by-author" / UUIDVar(id) / IntVar(page) as _ =>
       service.byAuthor(UserId(UUID.from(id)))
         .map(r => r.toList.sortBy(_.value.uuid))

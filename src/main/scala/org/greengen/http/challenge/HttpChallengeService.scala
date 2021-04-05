@@ -3,14 +3,15 @@ package org.greengen.http.challenge
 import cats.effect._
 import io.circe.generic.auto._
 import io.circe.syntax._
-import org.greengen.core.{Page, UUID}
-import org.greengen.core.challenge.{ChallengeId, ChallengeService, Failure, Partial, Skipped, Success}
-import org.greengen.core.{Clock, _}
+import org.greengen.core.challenge.{Challenge, ChallengeId, ChallengeService, Failure, OnTracks, Partial, Skipped, Success}
+import org.greengen.core.challenge.ChallengeService._
 import org.greengen.core.user.UserId
+import org.greengen.core.{Clock, Page, UUID}
 import org.greengen.http.HttpQueryParameters._
 import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl.io._
+
 
 object HttpChallengeService {
 
@@ -20,10 +21,38 @@ object HttpChallengeService {
     // GET
     case GET -> Root / "challenge" / "by-id" / UUIDVar(id) as _ =>
       service.byId(ChallengeId(UUID.from(id))).flatMap(r => Ok(r.asJson))
-    case GET -> Root / "challenge" / "by-author" / UUIDVar(id) as _ =>
-      service.byAuthor(UserId(UUID.from(id))).flatMap(r => Ok(r.asJson))
-    case GET -> Root / "challenge" / "by-user" / UUIDVar(id) as _ =>
-      service.byUser(UserId(UUID.from(id))).flatMap(r => Ok(r.asJson))
+    case GET -> Root / "challenge" / "by-author" / UUIDVar(id) / IntVar(page) as _ =>
+      service.byAuthor(UserId(UUID.from(id)), Page(page, PageSize)).flatMap(r => Ok(r.asJson))
+    case GET -> Root / "challenge" / "by-user" / UUIDVar(id) / IntVar(page) as _ =>
+      service.byUser(UserId(UUID.from(id)), Page(page, PageSize)).flatMap(r => Ok(r.asJson))
+    case GET -> Root / "challenge" / "by-user" / "on-going" / UUIDVar(id) / IntVar(page) as _ =>
+      service.byUser(UserId(UUID.from(id)), Page(page, PageSize), OnGoingFilter(clock,_))
+        .flatMap(r => Ok(r.asJson))
+    case GET -> Root / "challenge" / "by-user" / "upcoming" / UUIDVar(id) / IntVar(page) as _ =>
+      service.byUser(UserId(UUID.from(id)), Page(page, PageSize), NotStartedYetFilter(clock,_))
+        .flatMap(r => Ok(r.asJson))
+    case GET -> Root / "challenge" / "by-user" / "failed" / UUIDVar(id) / IntVar(page) as _ =>
+      val challengeOutcomeFilter = (c: Challenge) =>
+        service.status(UserId(UUID.from(id)), c.id).unsafeRunSync()
+      service.byUser(UserId(UUID.from(id)),
+                     Page(page, PageSize),
+                     FailedFilter(clock,_, challengeOutcomeFilter))
+        .flatMap(r => Ok(r.asJson))
+    case GET -> Root / "challenge" / "by-user" / "on-tracks" / UUIDVar(id) / IntVar(page) as _ =>
+      val onTracksFilter = (c: Challenge) =>
+        service.status(UserId(UUID.from(id)), c.id).map(_==OnTracks).unsafeRunSync()
+      service.byUser(UserId(UUID.from(id)), Page(page, PageSize), OnTracksFilter(clock,_, onTracksFilter))
+        .flatMap(r => Ok(r.asJson))
+    case GET -> Root / "challenge" / "by-user" / "report-due" / UUIDVar(id) / IntVar(page) as _ =>
+      val hasReportDueFilter = (c: Challenge) =>
+        service.hasReportDue(UserId(UUID.from(id)), c.id).unsafeRunSync()
+      service.byUser(UserId(UUID.from(id)),
+        Page(page, PageSize),
+        ReportDueFilter(clock,_, hasReportDueFilter))
+        .flatMap(r => Ok(r.asJson))
+    case GET -> Root / "challenge" / "by-user" / "finished" / UUIDVar(id) / IntVar(page) as _ =>
+      service.byUser(UserId(UUID.from(id)), Page(page, PageSize), FinishedFilter(clock,_))
+        .flatMap(r => Ok(r.asJson))
     case GET -> Root / "challenge" / "contestants" / UUIDVar(id) / IntVar(page) as _ =>
       service.contestants(ChallengeId(UUID.from(id)), Page(page, PageSize)).flatMap(r => Ok(r.asJson))
     case GET -> Root / "challenge" / "contestant-count" / UUIDVar(id) as _ =>

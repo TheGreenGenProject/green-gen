@@ -2,8 +2,9 @@ package org.greengen.impl.inmemory
 
 import cats.effect.IO
 import org.greengen.core._
+import org.greengen.core.challenge.ChallengeId
 import org.greengen.core.feed.FeedService
-import org.greengen.core.post.{Post, PostId, PostService, RePost}
+import org.greengen.core.post.{ChallengePost, Post, PostId, PostService, RePost}
 import org.greengen.core.user.{UserId, UserService}
 import org.greengen.core.wall.WallService
 
@@ -19,12 +20,14 @@ class InMemoryPostService(clock: Clock,
   private[this] val flagged = new TrieMap[PostId, List[(UserId, Reason, UTCTimestamp)]]
   private[this] val hashtags = new TrieMap[Hashtag, Set[PostId]]()
   private[this] val authors = new TrieMap[UserId, Set[PostId]]()
+  private[this] val challenges = new TrieMap[ChallengeId, PostId]()
 
   override def post(post: Post): IO[PostId] = for {
     _ <- checkUser(post.author)
     _ <- IO(indexById(post))
     _ <- IO(indexByHashtags(post))
     _ <- IO(indexByAuthor(post))
+    _ <- IO(indexByContent(post))
     _ <- wallService.addToWall(post.author, post.id)
     _ <- feedService.addToFollowersFeed(post.author, post.id)
     _ <- feedService.addToHashtagFollowersFeed(post.hashtags, post.id)
@@ -49,6 +52,9 @@ class InMemoryPostService(clock: Clock,
 
   override def byId(post: PostId): IO[Option[Post]] =
     IO(posts.get(post))
+
+  override def byContent(challenge: ChallengeId): IO[Option[PostId]] =
+    IO(challenges.get(challenge))
 
   override def byAuthor(userId: UserId): IO[Set[PostId]] =
     IO(authors.getOrElse(userId, Set()))
@@ -92,6 +98,16 @@ class InMemoryPostService(clock: Clock,
       case None => Some(Set(post.id))
     }
 
+  private[this] def indexByContent(post: Post): Unit = {
+    post match {
+      case cp: ChallengePost => indexByChallengeId(cp.challenge, cp)
+      case _ =>
+    }
+  }
+
+  private[this] def indexByChallengeId(challengeId: ChallengeId, post: Post): Unit = {
+    challenges.put(challengeId, post.id)
+  }
 
   // Checkers
 

@@ -4,6 +4,11 @@ case class Page(n: Int, by: Int) {
   def next = Page(n+1, by)
 }
 
+object Page {
+  // Hack to be able to retrieve all data in one go from paged queries
+  val All = Page(1, Int.MaxValue)
+}
+
 case class PagedResult[T](result: T, page: Page, last: Boolean) {
   def next = page.next
 }
