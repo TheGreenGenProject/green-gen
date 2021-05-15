@@ -75,8 +75,9 @@ object HttpChallengeService {
     case POST -> Root / "challenge" / "new" :?
         TitleQueryParamMatcher(title) +&
         ContentQueryParamMatcher(content) +&
-        ScheduleQueryParamMatcher(schedule) as userId =>
-      service.create(userId, title, content, schedule, ???).flatMap(r => Ok(r.asJson))
+        ScheduleQueryParamMatcher(schedule) +&
+        SuccessMeasureQueryParamMatcher(success) as userId =>
+      service.create(userId, title, content, schedule, success).flatMap(r => Ok(r.asJson))
     case POST -> Root / "challenge" / "user" / UUIDVar(userId) / "to" / UUIDVar(challengeId) as _ =>
       service.challenge(UserId(UUID.from(userId)), ChallengeId(UUID.from(challengeId))).flatMap(r => Ok(r.asJson))
     case POST -> Root / "challenge" / "followers" / "to" / UUIDVar(challengeId) as userId =>

@@ -1,7 +1,7 @@
 package org.greengen.http
 
 import org.greengen.core.Coordinate.{LatLong, Latitude, Longitude}
-import org.greengen.core.challenge.ChallengeId
+import org.greengen.core.challenge.{ChallengeId, SuccessMeasure}
 import org.greengen.core.event.EventId
 import org.greengen.core.poll.PollId
 import org.greengen.core.post.PostId
@@ -38,7 +38,7 @@ object HttpQueryParameters {
     .map(UUID.unsafeFrom)
     .map(PollId(_))
 
-  private[http] object ChallengeIdQueryParamMatcher extends QueryParamDecoderMatcher[ChallengeId]("poll-id")
+  private[http] object ChallengeIdQueryParamMatcher extends QueryParamDecoderMatcher[ChallengeId]("challenge-id")
   private[http] implicit lazy val challengeIdQueryParamDecoder: QueryParamDecoder[ChallengeId] = QueryParamDecoder[String]
     .map(UUID.unsafeFrom)
     .map(ChallengeId(_))
@@ -113,6 +113,15 @@ object HttpQueryParameters {
         OneOff(UTCTimestamp(start.toLong), UTCTimestamp(end.toLong))
       case RecurringRE(start, duration, every, until) =>
         Recurring(UTCTimestamp(start.toLong), Duration(duration.toLong), Duration(every.toLong), UTCTimestamp(until.toLong))
+    }
+
+  // SuccessMeasureQueryParamMatcher
+  private[http] val SuccessMeasureRE = "success\\((\\d+),(\\d+),(\\d+)\\)".r
+  private[http] object SuccessMeasureQueryParamMatcher extends QueryParamDecoderMatcher[SuccessMeasure]("success")
+  private[http] implicit lazy val successMeasureQueryParamDecoder: QueryParamDecoder[SuccessMeasure] = QueryParamDecoder[String]
+    .map {
+      case SuccessMeasureRE(maxFailure, maxSkip, maxPartial) =>
+        SuccessMeasure(maxFailure.toInt, maxSkip.toInt, maxPartial.toInt)
     }
 
   private[http] object NotificationIdQueryParamMatcher extends QueryParamDecoderMatcher[NotificationId]("notif-id")
