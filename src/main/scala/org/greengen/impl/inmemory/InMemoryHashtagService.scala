@@ -8,6 +8,7 @@ import org.greengen.core.{Hashtag, IOUtils}
 import scala.collection.concurrent.TrieMap
 
 
+@deprecated
 class InMemoryHashtagService(userService: UserService[IO]) extends HashtagService[IO] {
 
   private[this] val byHashtags = new TrieMap[Hashtag, Set[UserId]]()

@@ -8,6 +8,8 @@ import org.greengen.core.user.{UserId, UserService}
 
 import scala.collection.concurrent.TrieMap
 
+
+@deprecated
 class InMemoryPinService(clock: Clock,
                          userService: UserService[IO],
                          postService: PostService[IO]) extends PinService[IO] {

@@ -10,6 +10,7 @@ import org.greengen.core.user.{UserId, UserService}
 import scala.collection.concurrent.TrieMap
 
 
+@deprecated
 class InMemoryLikeService(clock: Clock,
                           userService: UserService[IO],
                           notificationService: NotificationService[IO],

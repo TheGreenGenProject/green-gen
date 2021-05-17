@@ -1,0 +1,33 @@
+package org.greengen.store.user
+
+import cats.effect.IO
+import org.greengen.core.Hash
+import org.greengen.core.user.{Profile, Pseudo, User, UserId}
+import org.greengen.store.Store
+
+
+trait UserStore[F[_]] extends Store[F] {
+
+  def register(userId: UserId,
+               userHash: Hash,
+               pwHash: Hash,
+               user: User,
+               profile: Profile): F[()]
+
+  def updateWith(userId: UserId)(f: Option[(User, Profile)] => Option[(User, Profile)]): F[()]
+  def updateProfile(userId: UserId, profile: Profile): F[()]
+  def getByUserId(userId: UserId): F[Option[(User, Profile)]]
+
+  def getByHashes(hashes: (Hash, Hash)): F[Option[UserId]]
+
+  def getByPseudo(pseudo: Pseudo): F[Option[UserId]]
+  def getByPseudoPrefix(prefix: String): F[List[UserId]]
+  def pseudoExists(pseudo: Pseudo): F[Boolean]
+
+  def checkUser(id: UserId): IO[Unit]
+  def deleteUser(userId: UserId): F[Option[(User, Profile)]]
+  def allUserIds(): F[List[UserId]]
+  def activeUsers(): F[List[UserId]]
+
+}
+

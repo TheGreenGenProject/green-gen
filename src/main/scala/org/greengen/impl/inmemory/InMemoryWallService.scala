@@ -10,6 +10,7 @@ import org.greengen.core.{IOUtils, Page, PagedResult}
 import scala.collection.concurrent.TrieMap
 
 
+@deprecated
 class InMemoryWallService(userService: UserService[IO])
   extends WallService[IO] {
 

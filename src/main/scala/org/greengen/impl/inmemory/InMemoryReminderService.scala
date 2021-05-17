@@ -10,6 +10,7 @@ import org.greengen.core.reminder.ReminderService
 import org.greengen.core._
 
 
+@deprecated
 class InMemoryReminderService(clock: Clock,
                               eventService: EventService[IO],
                               notificationService: NotificationService[IO])

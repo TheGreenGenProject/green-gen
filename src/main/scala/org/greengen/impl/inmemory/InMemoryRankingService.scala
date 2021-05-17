@@ -11,6 +11,7 @@ import org.greengen.core.ranking.{Rank, RankingService, ScoreBreakdown}
 import org.greengen.core.user.{UserId, UserService}
 
 
+@deprecated
 class InMemoryRankingService(userService: UserService[IO],
                              likeService: LikeService[IO],
                              followerService: FollowerService[IO],

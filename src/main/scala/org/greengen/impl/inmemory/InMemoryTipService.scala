@@ -8,7 +8,7 @@ import org.greengen.core.{Clock, IOUtils, Source}
 import scala.collection.concurrent.TrieMap
 
 
-
+@deprecated
 class InMemoryTipService(clock: Clock, userService: UserService[IO]) extends TipService[IO] {
 
   private[this] val tips = new TrieMap[TipId, Tip]

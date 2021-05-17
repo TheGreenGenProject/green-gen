@@ -10,6 +10,8 @@ import org.greengen.core.wall.WallService
 
 import scala.collection.concurrent.TrieMap
 
+
+@deprecated
 class InMemoryPostService(clock: Clock,
                           userService: UserService[IO],
                           wallService: WallService[IO],

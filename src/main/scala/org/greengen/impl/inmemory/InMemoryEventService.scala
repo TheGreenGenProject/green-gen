@@ -10,6 +10,7 @@ import org.greengen.core.{Clock, IOUtils, Location, Schedule}
 import scala.collection.concurrent.TrieMap
 
 
+@deprecated
 class InMemoryEventService(clock: Clock,
                            userService: UserService[IO],
                            notificationService: NotificationService[IO])

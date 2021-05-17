@@ -11,10 +11,12 @@ import org.greengen.core.{Hashtag, IOUtils, Page, PagedResult}
 
 import scala.collection.concurrent.TrieMap
 
+
+@deprecated
 class InMemoryFeedService(userService: UserService[IO],
                           followerService: FollowerService[IO],
                           hashtagService: HashtagService[IO])
-  extends FeedService[IO]{
+  extends FeedService[IO] {
 
   private[this] val feeds = new TrieMap[UserId, IndexedSeq[PostId]]()
 

@@ -8,6 +8,7 @@ import org.greengen.core.user.{UserId, UserService}
 import scala.collection.concurrent.TrieMap
 
 
+@deprecated
 class InMemoryNotificationService(clock: Clock, userService: UserService[IO])
   extends NotificationService[IO] {
 

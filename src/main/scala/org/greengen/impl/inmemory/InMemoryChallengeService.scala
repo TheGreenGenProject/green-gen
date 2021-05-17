@@ -11,6 +11,7 @@ import org.greengen.core._
 import scala.collection.concurrent.TrieMap
 
 
+@deprecated
 class InMemoryChallengeService(clock: Clock,
                                userService: UserService[IO],
                                followerService: FollowerService[IO],

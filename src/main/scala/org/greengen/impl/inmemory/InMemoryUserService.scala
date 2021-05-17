@@ -6,6 +6,8 @@ import org.greengen.core.{Clock, Hash, UTCTimestamp}
 
 import scala.collection.concurrent.TrieMap
 
+
+@deprecated
 class InMemoryUserService(clock: Clock) extends UserService[IO] {
 
   private[this] val allUsers = new TrieMap[UserId,(User, Profile)]

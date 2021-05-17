@@ -7,7 +7,7 @@ import org.greengen.core.{Clock, Hash, Token}
 
 import scala.collection.concurrent.TrieMap
 
-
+@deprecated
 class InMemoryAuthService(clock: Clock,
                           userService: UserService[IO])
   extends AuthService[IO] {
@@ -34,7 +34,7 @@ class InMemoryAuthService(clock: Clock,
   override def isAuthenticated(token: Token): IO[Boolean] = for {
     auth <- authFor(token)
     // taking the chance to do some clean-up if in case auth is not valid anymore
-    _ <- IO(if(auth.isAuthenticated) byToken.remove(token))
+    _ <- IO(if(!auth.isAuthenticated) byToken.remove(token))
   } yield auth.isAuthenticated
 
   override def authFor(token: Token): IO[Auth] =
