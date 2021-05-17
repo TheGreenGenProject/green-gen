@@ -1,17 +1,11 @@
 package org.greengen.main
 
 import cats.effect.{ContextShift, IO, Timer}
+import cats.implicits._
 import org.greengen.core.Clock
 import org.greengen.http.auth.{HttpAuthService, TokenAuthMiddleware}
-import org.greengen.http.user.HttpUserService
-import org.greengen.impl.inmemory._
-import org.http4s.implicits._
-import org.http4s.server.Router
-import org.http4s.server.blaze._
-import cats.implicits._
 import org.greengen.http.challenge.HttpChallengeService
 import org.greengen.http.feed.HttpFeedService
-import org.greengen.http.wall.HttpWallService
 import org.greengen.http.follower.HttpFollowerService
 import org.greengen.http.hashtag.HttpHashtagService
 import org.greengen.http.like.HttpLikeService
@@ -20,6 +14,8 @@ import org.greengen.http.pin.HttpPinService
 import org.greengen.http.post.HttpPostService
 import org.greengen.http.ranking.HttpRankingService
 import org.greengen.http.tip.HttpTipService
+import org.greengen.http.user.HttpUserService
+import org.greengen.http.wall.HttpWallService
 import org.greengen.impl.auth.AuthServiceImpl
 import org.greengen.impl.challenge.ChallengeServiceImpl
 import org.greengen.impl.event.EventServiceImpl
@@ -48,6 +44,9 @@ import org.greengen.store.post.InMemoryPostStore
 import org.greengen.store.tip.InMemoryTipStore
 import org.greengen.store.user.InMemoryUserStore
 import org.greengen.store.wall.InMemoryWallStore
+import org.http4s.implicits._
+import org.http4s.server.Router
+import org.http4s.server.blaze._
 import org.http4s.server.middleware.CORS
 
 import scala.concurrent.ExecutionContext.Implicits.global
