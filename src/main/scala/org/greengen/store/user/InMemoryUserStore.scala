@@ -21,14 +21,20 @@ class InMemoryUserStore extends UserStore[IO] {
     _ <- IO(byPseudos.put(profile.pseudo, userId))
   } yield ()
 
-  override def updateWith(userId: UserId)(f: Option[(User, Profile)] => Option[(User, Profile)]): IO[Unit] =
-    IO(allUsers.updateWith(userId)(f))
-
   override def updateProfile(userId: UserId, profile: Profile): IO[Unit] =
     for {
       _ <- checkUser(userId)
       _ <- updateWith(userId) {
         case Some((user, _)) => Some((user, profile))
+        case _ => None
+      }
+    } yield ()
+
+  override def setUserEnabled(userId: UserId, enabled: Boolean): IO[Unit] =
+    for {
+      _ <- checkUser(userId)
+      _ <- updateWith(userId) {
+        case Some((user, profile)) => Some((user.copy(enabled = enabled), profile))
         case _ => None
       }
     } yield ()
@@ -70,5 +76,9 @@ class InMemoryUserStore extends UserStore[IO] {
       .toList
   }
 
+  // Helpers
+
+  private[this] def updateWith(userId: UserId)(f: Option[(User, Profile)] => Option[(User, Profile)]): IO[Unit] =
+    IO(allUsers.updateWith(userId)(f))
 
 }

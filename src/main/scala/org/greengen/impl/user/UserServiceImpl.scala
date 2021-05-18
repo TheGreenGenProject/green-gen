@@ -28,30 +28,17 @@ class UserServiceImpl(userStore: UserStore[IO])(clock: Clock) extends UserServic
 
   override def updateProfile(id: UserId, profile: Profile): IO[Unit] = for {
     _ <- userStore.checkUser(id)
-    _ <- userStore.updateWith(id){
-      case Some((user,_)) => Some((user,profile))
-      case _ => None
-    }
+    _ <- userStore.updateProfile(id, profile)
   } yield ()
 
   override def enable(id: UserId, reason: String): IO[Unit] = for {
     _ <- userStore.checkUser(id)
-    _ <- userStore.updateWith(id) {
-      case Some((user,profile)) =>
-        println(s"Enabling user $id. reason: $reason")
-        Some((user.copy(enabled = true), profile))
-      case _ => None
-    }
+    _ <- userStore.setUserEnabled(id, true)
   } yield ()
 
   override def disable(id: UserId, reason: String): IO[Unit] = for {
     _ <- userStore.checkUser(id)
-    _ <- userStore.updateWith(id) {
-      case Some((user,profile)) =>
-        println(s"Enabling user $id. reason: $reason")
-        Some((user.copy(enabled = false), profile))
-      case _ => None
-    }
+    _ <- userStore.setUserEnabled(id, false)
   } yield ()
 
   override def isEnabled(id: UserId): IO[Boolean] = for {

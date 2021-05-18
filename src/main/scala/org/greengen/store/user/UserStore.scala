@@ -14,8 +14,9 @@ trait UserStore[F[_]] extends Store[F] {
                user: User,
                profile: Profile): F[()]
 
-  def updateWith(userId: UserId)(f: Option[(User, Profile)] => Option[(User, Profile)]): F[()]
-  def updateProfile(userId: UserId, profile: Profile): F[()]
+  //def updateWith(userId: UserId)(f: Option[(User, Profile)] => Option[(User, Profile)]): F[()]
+  def updateProfile(userId: UserId, profile: Profile): F[Unit]
+  def setUserEnabled(userId: UserId, enabled: Boolean): F[Unit]
   def getByUserId(userId: UserId): F[Option[(User, Profile)]]
 
   def getByHashes(hashes: (Hash, Hash)): F[Option[UserId]]

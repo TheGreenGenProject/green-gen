@@ -36,6 +36,6 @@ libraryDependencies ++= Seq(
 )
 
 
-libraryDependencies += "org.mongodb.scala" %% "mongo-scala-driver" % "2.9.0"
+libraryDependencies += "org.mongodb.scala" %% "mongo-scala-driver" % "4.2.0"
 
 libraryDependencies += "org.apache.kafka" % "kafka-clients" % "1.1.0"
