@@ -2,6 +2,7 @@ package org.greengen.db.mongo
 
 import org.greengen.core.challenge.{Challenge, ChallengeContent, ChallengeId, ChallengeStepReportEntry, ChallengeStepReportStatus, Failure, Partial, Skipped, Success, SuccessMeasure}
 import org.greengen.core.event.EventId
+import org.greengen.core.pin.PinnedPost
 import org.greengen.core.poll.PollId
 import org.greengen.core.post._
 import org.greengen.core.tip.{Tip, TipId}
@@ -299,7 +300,6 @@ object Schema {
       "status"        -> AcceptanceStatus.format(challengee.status)
     )
 
-
   def docToTip(doc: Document): Either[String, Tip] = for {
     uuid <- Option(doc.getString("tip_id"))
       .flatMap(UUID.from)
@@ -323,6 +323,23 @@ object Schema {
       "content" -> tip.content,
       "created" -> tip.created.value
     )
+
+  def pinnedPostToDoc(pp: PinnedPost): Document =
+    Document(
+      "post_id"   -> pp.postId.value.uuid,
+      "timestamp" -> pp.timestamp.value
+    )
+
+  def docToPinnedPost(doc: Document): Either[String, PinnedPost] = for {
+    post_id <- Option(doc.getString("post_id"))
+      .flatMap(UUID.from)
+      .map(PostId(_))
+      .toRight(s"No field 'post_id' or invalid UUID found in $doc")
+    timestamp <- Option(doc.getLong("timestamp"))
+      .map(UTCTimestamp(_))
+      .toRight(s"No field 'timestamp' found in $doc")
+  } yield PinnedPost(post_id, timestamp)
+
 
 
   // Helpers

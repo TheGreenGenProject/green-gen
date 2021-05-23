@@ -2,14 +2,13 @@ package org.greengen.store.like
 
 import cats.effect.{ContextShift, IO}
 import com.mongodb.client.model.Filters.{and, eq => eql}
-import com.mongodb.client.model.Updates.{combine, set, setOnInsert}
 import com.mongodb.client.model.UpdateOptions
+import com.mongodb.client.model.Updates.{combine, set, setOnInsert}
 import org.greengen.core.Clock
 import org.greengen.core.post.PostId
 import org.greengen.core.user.UserId
 import org.greengen.db.mongo.Conversions
 import org.mongodb.scala.MongoDatabase
-import org.mongodb.scala.bson.collection.immutable.Document
 
 
 class MongoLikeStore(db: MongoDatabase, clock: Clock)(implicit cs: ContextShift[IO]) extends LikeStore[IO] {
