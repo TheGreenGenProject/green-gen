@@ -33,7 +33,7 @@ import org.greengen.impl.tip.TipServiceImpl
 import org.greengen.impl.user.UserServiceImpl
 import org.greengen.impl.wall.WallServiceImpl
 import org.greengen.store.auth.InMemoryAuthStore
-import org.greengen.store.challenge.InMemoryChallengeStore
+import org.greengen.store.challenge.{InMemoryChallengeStore, MongoChallengeStore}
 import org.greengen.store.event.InMemoryEventStore
 import org.greengen.store.feed.InMemoryFeedStore
 import org.greengen.store.follower.InMemoryFollowerStore
@@ -41,7 +41,7 @@ import org.greengen.store.hashtag.InMemoryHashtagStore
 import org.greengen.store.like.InMemoryLikeStore
 import org.greengen.store.notification.InMemoryNotificationStore
 import org.greengen.store.pin.InMemoryPinStore
-import org.greengen.store.post.InMemoryPostStore
+import org.greengen.store.post.{InMemoryPostStore, MongoPostStore}
 import org.greengen.store.tip.InMemoryTipStore
 import org.greengen.store.user.{InMemoryUserStore, MongoUserStore}
 import org.greengen.store.wall.InMemoryWallStore
@@ -70,11 +70,11 @@ object GreenGenServer extends App {
   val notificationService = new NotificationServiceImpl(new InMemoryNotificationStore)(clock, userService)
   val followerService = new FollowerServiceImpl(new InMemoryFollowerStore)(clock, userService, notificationService)
   val tipService = new TipServiceImpl(new InMemoryTipStore)(clock, userService)
-  val challengeService = new ChallengeServiceImpl(new InMemoryChallengeStore)(clock, userService, followerService, notificationService)
+  val challengeService = new ChallengeServiceImpl(new MongoChallengeStore(db, clock))(clock, userService, followerService, notificationService)
   val hashtagService = new HashtagServiceImpl(new InMemoryHashtagStore)(userService)
   val feedService = new FeedServiceImpl(new InMemoryFeedStore)(userService, followerService, hashtagService)
   val wallService = new WallServiceImpl(new InMemoryWallStore)(userService)
-  val postService = new PostServiceImpl(new InMemoryPostStore)(clock, userService, wallService, feedService)
+  val postService = new PostServiceImpl(new MongoPostStore(db))(clock, userService, wallService, feedService)
   val likeService = new LikeServiceImpl(new InMemoryLikeStore)(clock, userService, notificationService, postService)
   val pinService = new PinServiceImpl(new InMemoryPinStore)(clock, userService, postService)
   val eventService = new EventServiceImpl(new InMemoryEventStore)(clock, userService, notificationService)

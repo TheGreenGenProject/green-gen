@@ -40,12 +40,11 @@ class MongoUserStore(db: MongoDatabase)
   }
 
   override def getByUserId(userId: UserId): IO[Option[(User, Profile)]] = firstIO {
-    for {
-      res <- usersCollection
+    usersCollection
         .find(eql("user_id", userId.value.uuid))
         .first()
         .map(docToUserProfile)
-    } yield { println(res); res.toOption }
+        .map(_.toOption)
   }
 
   override def getByHashes(hashes: (Hash, Hash)): IO[Option[UserId]] = firstOptionIO {

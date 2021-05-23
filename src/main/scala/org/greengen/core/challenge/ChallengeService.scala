@@ -25,7 +25,7 @@ trait ChallengeService[F[_]] {
 
   def contestants(challengeId: ChallengeId, page: Page): F[List[UserId]]
 
-  def contestantCount(challengeId: ChallengeId): F[Int]
+  def contestantCount(challengeId: ChallengeId): F[Long]
 
 
   // Challenge command

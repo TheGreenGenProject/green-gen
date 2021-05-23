@@ -37,7 +37,7 @@ case object Closed        extends ChallengeStatus
 // Status relative to a candidate
 sealed trait ChallengeOutcomeStatus
 case object NotYetTaken extends ChallengeOutcomeStatus
-case object NotTaken extends ChallengeOutcomeStatus
+case object NotTaken    extends ChallengeOutcomeStatus
 case object Accepted    extends ChallengeOutcomeStatus
 case object Rejected    extends ChallengeOutcomeStatus
 case object Completed   extends ChallengeOutcomeStatus
@@ -50,6 +50,21 @@ case object Success extends ChallengeStepReportStatus
 case object Partial extends ChallengeStepReportStatus
 case object Skipped extends ChallengeStepReportStatus
 case object Failure extends ChallengeStepReportStatus
+
+object ChallengeStepReportStatus {
+  def format(stepStatus: ChallengeStepReportStatus): String = stepStatus match {
+    case Success => "Success"
+    case Failure => "Failure"
+    case Partial => "Partial"
+    case Skipped => "Skipped"
+  }
+  def from(maybeStatus: String): Option[ChallengeStepReportStatus] = Option(maybeStatus).collect {
+    case "Success" => Success
+    case "Failure" => Failure
+    case "Partial" => Partial
+    case "Skipped" => Skipped
+  }
+}
 
 case class ChallengeStepReportEntry(step: Int, status: ChallengeStepReportStatus)
 

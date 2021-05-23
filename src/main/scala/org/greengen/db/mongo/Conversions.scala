@@ -3,8 +3,13 @@ package org.greengen.db.mongo
 import java.math.BigInteger
 
 import cats.effect.{ContextShift, IO}
-import org.greengen.core.UUID
-import org.mongodb.scala.{Document, Observable}
+import org.greengen.core.challenge.ChallengeId
+import org.greengen.core.user.UserId
+import org.greengen.core.{Page, UUID}
+import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.{Document, FindObservable, Observable}
+
+import scala.jdk.CollectionConverters._
 
 
 object Conversions {
@@ -26,6 +31,19 @@ object Conversions {
   def toListIO[T](obs: => Observable[T])(implicit cs: ContextShift[IO]): IO[List[T]] =
     IO.fromFuture(IO(obs.toFuture())).map(_.toList)
 
+  def toPagedListIO[T](page: Page)(obs: => Observable[T])(implicit cs: ContextShift[IO]): IO[List[T]] =
+    toListIO(obs).map(_.drop(math.min(0, page.n-1) * page.by).take(page.by))
+
+  def toSetIO[T](obs: => Observable[T])(implicit cs: ContextShift[IO]): IO[Set[T]] =
+    IO.fromFuture(IO(obs.toFuture())).map(_.toSet)
+
+
+  // FIXME Unefficient pagination using skip
+  implicit class paged[T](obs: FindObservable[T]) {
+    def paged(page: Page): FindObservable[T] =
+      obs.skip(math.min(0, page.n-1) * page.by).limit(page.by)
+  }
+
   // Helpers
 
   def bytes2Hex(bytes: List[Byte]): String =
@@ -40,6 +58,17 @@ object Conversions {
   } yield (aR,bR)
 
   def asUserId(doc: Document) =
-    UUID.unsafeFrom(doc.getString("user_id"))
+    UserId(UUID.unsafeFrom(doc.getString("user_id")))
+
+  def asChallengeId(doc: Document) =
+    ChallengeId(UUID.unsafeFrom(doc.getString("challenge_id")))
+
+  def safeList[T](xs: List[T]) =
+    Option(xs).getOrElse(List())
+
+  def getList(doc: Document, field: String): List[BsonDocument] =
+    doc.getList("reports", classOf[org.bson.Document]).asScala
+      .map(_.toBsonDocument())
+      .toList
 
 }

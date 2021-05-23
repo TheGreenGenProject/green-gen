@@ -42,7 +42,7 @@ class ChallengeServiceImpl(challengeStore: ChallengeStore[IO])
     res <- challengeStore.getChallengees(challengeId, page)
   } yield res
 
-  override def contestantCount(challengeId: ChallengeId): IO[Int] = for {
+  override def contestantCount(challengeId: ChallengeId): IO[Long] = for {
     _     <- checkChallenge(challengeId)
     count <- challengeStore.getChallengeeCount(challengeId)
   } yield count
@@ -136,8 +136,7 @@ class ChallengeServiceImpl(challengeStore: ChallengeStore[IO])
     challengeStatus <- status(challengeId)
     accepted        <- hasAccepted(userId, challengeId)
     rejected        <- hasRejected(userId, challengeId)
-    results         <- challengeStore.getResultByUserOrElse(userId, challengeId, Right(List()))
-                        .map(_.getOrElse(List()))
+    results         <- challengeStore.getStepReports(userId, challengeId)
     summary         <- IO(ChallengeReportSummary.summary(results))
     onTracks        <- IO(ChallengeReportSummary.isOnTracks(challenge, summary))
   } yield (accepted, rejected, challengeStatus, onTracks) match {

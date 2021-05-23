@@ -2,11 +2,12 @@ package org.greengen.store.challenge
 
 import cats.effect.IO
 import cats.implicits._
-import org.greengen.core.{Page, PagedResult}
-import org.greengen.core.challenge.{Challenge, ChallengeId, ChallengeReportSummary, ChallengeStepReportEntry, ChallengeStepReportStatus}
+import org.greengen.core.challenge.{Challenge, ChallengeId, ChallengeStepReportEntry, ChallengeStepReportStatus}
 import org.greengen.core.user.UserId
+import org.greengen.core.{Page, PagedResult}
 
 import scala.collection.concurrent.TrieMap
+
 
 class InMemoryChallengeStore extends ChallengeStore[IO] {
 
@@ -48,9 +49,6 @@ class InMemoryChallengeStore extends ChallengeStore[IO] {
     res          <- IO(PagedResult.page(sorted, page))
   } yield res
 
-  override def getResultByUserOrElse(userId: UserId, challengeId: ChallengeId, orElse: => Either[Unit, List[ChallengeStepReportEntry]]): IO[Either[Unit, List[ChallengeStepReportEntry]]] =
-    IO(results.getOrElse((userId, challengeId), orElse))
-
   override def getResultsByChallenge(challengeId: ChallengeId): IO[List[Either[Unit, List[ChallengeStepReportEntry]]]] =
     IO(results.collect { case ((_, id), value) if id == challengeId => value}.toList)
 
@@ -83,9 +81,9 @@ class InMemoryChallengeStore extends ChallengeStore[IO] {
   override def getChallengees(challengeId: ChallengeId, page: Page): IO[List[UserId]] =
     IO(challenged.get(challengeId).map(_.toList).getOrElse(List()))
 
-  override def getChallengeeCount(challengeId: ChallengeId): IO[Int] = for {
+  override def getChallengeeCount(challengeId: ChallengeId): IO[Long] = for {
     allChallengees <- getChallengees(challengeId, Page.All)
-  } yield allChallengees.size
+  } yield allChallengees.size.toLong
 
   override def markUserAsChallenged(userId: UserId, challengeId: ChallengeId): IO[Unit] =
     indexChallengeeByChallenge(userId, challengeId)

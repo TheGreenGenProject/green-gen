@@ -25,15 +25,11 @@ trait ChallengeStore[F[_]] extends Store[F] {
                 page: Page,
                 predicate: Challenge => Boolean): F[List[ChallengeId]]
 
-  def getResultByUserOrElse(userId:UserId,
-                            challengeId: ChallengeId,
-                            orElse: => Either[Unit, List[ChallengeStepReportEntry]]): F[Either[Unit, List[ChallengeStepReportEntry]]]
-
   def getResultsByChallenge(challengeId: ChallengeId): IO[List[Either[Unit, List[ChallengeStepReportEntry]]]]
 
   def getChallengees(challengeId: ChallengeId, page: Page): F[List[UserId]]
 
-  def getChallengeeCount(challengeId: ChallengeId): F[Int]
+  def getChallengeeCount(challengeId: ChallengeId): F[Long]
 
   def acceptChallenge(userId: UserId, challengeId: ChallengeId): F[Unit]
 
