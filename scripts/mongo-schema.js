@@ -9,9 +9,10 @@ db.createUser({
 
 // Dropping everything
 db.users.drop()
-db.likes.drop()
 db.posts.drop()
 db.posts.flagged.drop()
+db.posts.likes.drop()
+db.posts.tips.drop()
 db.posts.challenges.drop()
 db.posts.challenges.challenged.drop()
 db.posts.challenges.reports.drop()
@@ -90,9 +91,9 @@ db.posts.flagged.insert({
     "reason": "for no reason !"});
 
 // Likes
-db.likes.createIndex({"post_id": 1})
-db.likes.createIndex({"user_id": 1})
+db.likes.createIndex({"post_id": 1, "user_id": 1}, {unique: true})
 db.likes.insert({
     "post_id": "2afbe95a-754f-4a47-8888-87cb691141bd",
-    "user_id": "1bfbe95a-754f-4a47-2222-87cb691141bd"
+    "user_id": "1bfbe95a-754f-4a47-2222-87cb691141bd",
+    "timestamp": 1621364120238
 })

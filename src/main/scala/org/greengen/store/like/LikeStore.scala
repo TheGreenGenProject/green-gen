@@ -7,10 +7,12 @@ import org.greengen.store.Store
 
 trait LikeStore[F[_]] extends Store[F] {
 
-  def getByPostId(id: PostId): F[Option[Set[UserId]]]
+  def getByPostId(id: PostId): F[Set[UserId]]
 
-  def getByPostIdOrElse(id: PostId, orElse: => Set[UserId]): F[Set[UserId]]
+  def countLikes(id: PostId): F[Long]
 
-  def updateWith(id: PostId)(f: Option[Set[UserId]] => Option[Set[UserId]]): F[Unit]
+  def addLike(userId: UserId, postId: PostId): F[Unit]
+
+  def removeLike(userId: UserId, postId: PostId): F[Unit]
 
 }

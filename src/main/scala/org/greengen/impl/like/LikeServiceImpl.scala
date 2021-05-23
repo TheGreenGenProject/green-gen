@@ -19,7 +19,7 @@ class LikeServiceImpl(likeStore: LikeStore[IO])
     _         <- checkUser(userId)
     maybePost <- postService.byId(postId)
     post      <- IOUtils.from(maybePost, s"Post $postId doesn't exist")
-    _         <- addLike(userId, postId)
+    _         <- likeStore.addLike(userId, postId)
     author    <- IO(post.author)
     notif     <- IO(Notification.from(clock, PostLikedNotification(postId, userId)))
     _         <- notificationService.dispatch(notif, List(author))
@@ -27,33 +27,19 @@ class LikeServiceImpl(likeStore: LikeStore[IO])
 
   override def unlike(userId: UserId, postId: PostId): IO[Unit] = for {
     _ <- checkUser(userId)
-    _ <- removeLike(userId, postId)
+    _ <- likeStore.removeLike(userId, postId)
   } yield ()
 
   override def isLiked(userId: UserId, postId: PostId): IO[Boolean] = for {
     _      <- checkUser(userId)
-    likers <- likeStore.getByPostIdOrElse(postId, Set())
+    likers <- likeStore.getByPostId(postId)
     liked  <- IO(likers.contains(userId))
   } yield liked
 
-  override def countLikes(postId: PostId): IO[Like] = for {
-   users <- likeStore.getByPostIdOrElse(postId, Set())
-  } yield Like(users.size)
-
-
-  // Helpers
-
-  private[this] def addLike(userId: UserId, postId: PostId): IO[Unit] =
-    likeStore.updateWith(postId) {
-      case Some(users) => Some(users + userId)
-      case None => Some(Set(userId))
-    }
-
-  private[this] def removeLike(userId: UserId, postId: PostId): IO[Unit] =
-    likeStore.updateWith(postId) {
-      case Some(users) => Some(users - userId)
-      case None => Some(Set(userId))
-    }
+  override def countLikes(postId: PostId): IO[Like] =
+    likeStore
+      .countLikes(postId)
+      .map(n => Like(n.toInt))
 
   // Checkers
 

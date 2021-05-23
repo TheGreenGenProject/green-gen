@@ -4,7 +4,7 @@ import org.greengen.core.challenge.{Challenge, ChallengeContent, ChallengeId, Ch
 import org.greengen.core.event.EventId
 import org.greengen.core.poll.PollId
 import org.greengen.core.post._
-import org.greengen.core.tip.TipId
+import org.greengen.core.tip.{Tip, TipId}
 import org.greengen.core.user.{Profile, Pseudo, User, UserId}
 import org.greengen.core.{Duration, Hash, Hashtag, OneOff, Recurring, Schedule, UTCTimestamp, UUID}
 import org.greengen.db.mongo.Conversions.hexToBytes
@@ -299,6 +299,30 @@ object Schema {
       "status"        -> AcceptanceStatus.format(challengee.status)
     )
 
+
+  def docToTip(doc: Document): Either[String, Tip] = for {
+    uuid <- Option(doc.getString("tip_id"))
+      .flatMap(UUID.from)
+      .map(TipId(_))
+      .toRight(s"No field 'tip_id' or invalid UUID found in $doc")
+    author <- Option(doc.getString("author"))
+      .flatMap(UUID.from)
+      .map(UserId(_))
+      .toRight(s"No field 'author' or invalid UUID found in $doc")
+    created <- Option(doc.getLong("created"))
+      .map(UTCTimestamp(_))
+      .toRight(s"No field 'created' found in $doc")
+    content <- Option(doc.getString("content"))
+      .toRight(s"No field 'content' found in $doc")
+  } yield Tip(uuid, author, content, created, List())
+
+  def tipToDoc(tip: Tip): Document =
+    Document(
+      "tip_id"  -> tip.id.value.uuid,
+      "author"  -> tip.author.value.uuid,
+      "content" -> tip.content,
+      "created" -> tip.created.value
+    )
 
 
   // Helpers

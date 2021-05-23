@@ -3,17 +3,14 @@ package org.greengen.store.challenge
 import cats.effect.{ContextShift, IO}
 import com.mongodb.client.model.Filters.{and, in, eq => eql}
 import com.mongodb.client.model.Sorts.descending
-import com.mongodb.client.model.Updates.{combine, set, setOnInsert, unset}
+import com.mongodb.client.model.Updates.{combine, set, setOnInsert}
 import org.greengen.core.challenge.{Challenge, ChallengeId, ChallengeStepReportEntry, ChallengeStepReportStatus}
 import org.greengen.core.user.UserId
 import org.greengen.core.{Clock, Page, UUID}
 import org.greengen.db.mongo.{Conversions, Schema}
 import org.mongodb.scala.MongoDatabase
 import org.mongodb.scala.bson.collection.immutable.Document
-import org.mongodb.scala.bson.{BsonArray, BsonDocument}
 import org.mongodb.scala.model.UpdateOptions
-
-import scala.jdk.CollectionConverters._
 
 
 

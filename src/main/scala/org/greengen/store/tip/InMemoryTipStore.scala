@@ -6,6 +6,7 @@ import org.greengen.core.user.UserId
 
 import scala.collection.concurrent.TrieMap
 
+
 class InMemoryTipStore extends TipStore[IO] {
 
   private[this] val tips = new TrieMap[TipId, Tip]
@@ -28,7 +29,6 @@ class InMemoryTipStore extends TipStore[IO] {
 
   private[this] def indexById(tip: Tip): IO[Unit] =
     IO(tips.put(tip.id, tip))
-
 
   private[this] def indexByAuthor(tip: Tip): IO[Unit] = IO {
     authors.updateWith(tip.author) {

@@ -4,6 +4,7 @@ import java.math.BigInteger
 
 import cats.effect.{ContextShift, IO}
 import org.greengen.core.challenge.ChallengeId
+import org.greengen.core.tip.TipId
 import org.greengen.core.user.UserId
 import org.greengen.core.{Page, UUID}
 import org.mongodb.scala.bson.BsonDocument
@@ -62,6 +63,9 @@ object Conversions {
 
   def asChallengeId(doc: Document) =
     ChallengeId(UUID.unsafeFrom(doc.getString("challenge_id")))
+
+  def asTipId(doc: Document) =
+    TipId(UUID.unsafeFrom(doc.getString("tip_id")))
 
   def safeList[T](xs: List[T]) =
     Option(xs).getOrElse(List())
