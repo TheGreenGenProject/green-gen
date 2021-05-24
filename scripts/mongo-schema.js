@@ -10,6 +10,7 @@ db.createUser({
 // Dropping everything
 db.users.drop()
 db.followers.drop()
+db.hashtags.drop()
 db.posts.drop()
 db.posts.pinned.drop()
 db.posts.flagged.drop()
@@ -40,3 +41,5 @@ db.posts.challenges.reports.createIndex({"challenge_id": 1, "challengee_id": 1},
 db.posts.likes.createIndex({"post_id": 1, "user_id": 1}, {unique: true})
 // Followers
 db.followers.createIndex({"user_id": 1, "follower_id": 1}, {unique: true})
+// Hashtags
+db.hashtags.createIndex({"hashtag": 1, "user_id": 1}, {unique: true})

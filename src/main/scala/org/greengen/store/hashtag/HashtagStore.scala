@@ -8,7 +8,7 @@ trait HashtagStore[F[_]] extends Store[F] {
 
   def getFollowers(ht: Hashtag): F[Set[UserId]]
 
-  def countFollowers(ht: Hashtag): F[Int]
+  def countFollowers(ht: Hashtag): F[Long]
 
   def addHashtagFollower(userId: UserId, ht: Hashtag): F[Unit]
 

@@ -14,7 +14,7 @@ class InMemoryHashtagStore extends HashtagStore[IO] {
   override def getFollowers(ht: Hashtag): IO[Set[UserId]] =
     IO(byHashtags.getOrElse(ht, Set()))
 
-  override def countFollowers(ht: Hashtag): IO[Int] =
+  override def countFollowers(ht: Hashtag): IO[Long] =
     IO(byHashtags.getOrElse(ht, Set()).size)
 
   override def addHashtagFollower(userId: UserId, ht: Hashtag): IO[Unit] =
