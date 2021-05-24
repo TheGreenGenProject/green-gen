@@ -44,7 +44,7 @@ import org.greengen.store.pin.{InMemoryPinStore, MongoPinStore}
 import org.greengen.store.post.MongoPostStore
 import org.greengen.store.tip.MongoTipStore
 import org.greengen.store.user.MongoUserStore
-import org.greengen.store.wall.InMemoryWallStore
+import org.greengen.store.wall.{InMemoryWallStore, MongoWallStore}
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze._
@@ -73,7 +73,7 @@ object GreenGenServer extends App {
   val challengeService = new ChallengeServiceImpl(new MongoChallengeStore(db, clock))(clock, userService, followerService, notificationService)
   val hashtagService = new HashtagServiceImpl(new MongoHashtagStore(db, clock))(userService)
   val feedService = new FeedServiceImpl(new InMemoryFeedStore)(userService, followerService, hashtagService)
-  val wallService = new WallServiceImpl(new InMemoryWallStore)(userService)
+  val wallService = new WallServiceImpl(new MongoWallStore(db, clock))(userService)
   val postService = new PostServiceImpl(new MongoPostStore(db))(clock, userService, wallService, feedService)
   val likeService = new LikeServiceImpl(new MongoLikeStore(db, clock))(clock, userService, notificationService, postService)
   val pinService = new PinServiceImpl(new MongoPinStore(db))(clock, userService, postService)

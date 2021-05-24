@@ -1,12 +1,13 @@
 package org.greengen.store.wall
 
+import org.greengen.core.Page
 import org.greengen.core.post.PostId
 import org.greengen.core.user.UserId
 
 trait WallStore[F[_]] {
 
-  def getByUserId(id: UserId): F[Option[IndexedSeq[PostId]]]
+  def getByUserId(userId: UserId, page: Page): F[List[PostId]]
 
-  def updateWith(id: UserId)(f: Option[IndexedSeq[PostId]] => Option[IndexedSeq[PostId]]): F[Unit]
+  def addPost(id: UserId, postId: PostId): F[Unit]
 
 }

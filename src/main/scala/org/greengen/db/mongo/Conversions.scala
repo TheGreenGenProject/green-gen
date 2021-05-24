@@ -4,6 +4,7 @@ import java.math.BigInteger
 
 import cats.effect.{ContextShift, IO}
 import org.greengen.core.challenge.ChallengeId
+import org.greengen.core.post.PostId
 import org.greengen.core.tip.TipId
 import org.greengen.core.user.UserId
 import org.greengen.core.{Page, UUID}
@@ -60,6 +61,9 @@ object Conversions {
 
   def asUserId(doc: Document) =
     UserId(UUID.unsafeFrom(doc.getString("user_id")))
+
+  def asPostId(doc: Document) =
+    PostId(UUID.unsafeFrom(doc.getString("post_id")))
 
   def asChallengeId(doc: Document) =
     ChallengeId(UUID.unsafeFrom(doc.getString("challenge_id")))
