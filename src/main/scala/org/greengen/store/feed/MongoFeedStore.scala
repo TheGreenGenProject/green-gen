@@ -1,4 +1,4 @@
-package org.greengen.store.wall
+package org.greengen.store.feed
 
 import cats.effect.{ContextShift, IO}
 import com.mongodb.client.model.Filters.{and, eq => eql}
@@ -12,30 +12,43 @@ import org.mongodb.scala.MongoDatabase
 import org.mongodb.scala.model.UpdateOptions
 
 
-class MongoWallStore(db: MongoDatabase, clock: Clock)(implicit cs: ContextShift[IO]) extends WallStore[IO] {
+class MongoFeedStore(db: MongoDatabase, clock: Clock)(implicit cs: ContextShift[IO]) extends FeedStore[IO] {
 
   import Conversions._
 
-  val WallCollection = "wall"
-  val wallCollection = db.getCollection(WallCollection)
+  val FeedCollection = "feed"
+  val feedCollection = db.getCollection(FeedCollection)
 
+  override def mostRecentPost(userId: UserId): IO[Option[PostId]] = firstOptionIO {
+    feedCollection
+      .find(eql("user_id", userId.value.uuid))
+      .sort(descending("timestamp"))
+      .limit(1)
+      .map(asPostId)
+  }
+
+  override def hasPosts(userId: UserId): IO[Boolean] = firstOptionIO {
+    feedCollection
+      .find(eql("user_id", userId.value.uuid))
+      .limit(1)
+  }.map(_.isDefined)
 
   override def getByUserId(userId: UserId, page: Page): IO[List[PostId]] = toListIO {
-    wallCollection
+    feedCollection
       .find(eql("user_id", userId.value.uuid))
       .sort(descending("timestamp"))
       .paged(page)
-      .map(asPostId(_))
+      .map(asPostId)
   }
 
   override def addPost(userId: UserId, postId: PostId): IO[Unit] = unitIO {
-    wallCollection
+    feedCollection
       .updateOne(and(
-          eql("user_id", userId.value.uuid),
-          eql("post_id", postId.value.uuid)),
+        eql("user_id", userId.value.uuid),
+        eql("post_id", postId.value.uuid)),
         combine(
-          setOnInsert("post_id", postId.value.uuid),
           setOnInsert("user_id", userId.value.uuid),
+          setOnInsert("post_id", postId.value.uuid),
           setOnInsert("timestamp", clock.now().value),
         ),
         (new UpdateOptions).upsert(true)

@@ -1,15 +1,18 @@
 package org.greengen.store.feed
 
+import org.greengen.core.Page
 import org.greengen.core.post.PostId
 import org.greengen.core.user.UserId
 
 
 trait FeedStore[F[_]] {
 
-  def getByUserId(id: UserId): F[Option[IndexedSeq[PostId]]]
+  def hasPosts(userId: UserId): F[Boolean]
 
-  def getByUserIdOrElse(id: UserId, orElse: => IndexedSeq[PostId]): F[IndexedSeq[PostId]]
+  def mostRecentPost(userId: UserId): F[Option[PostId]]
 
-  def updateWith(id: UserId)(f: Option[IndexedSeq[PostId]] => Option[IndexedSeq[PostId]]): F[Unit]
+  def getByUserId(id: UserId, page: Page): F[List[PostId]]
+
+  def addPost(userId: UserId, postId: PostId): F[Unit]
 
 }

@@ -11,6 +11,7 @@ db.createUser({
 db.users.drop()
 db.followers.drop()
 db.wall.drop()
+db.feed.drop()
 db.hashtags.drop()
 db.posts.drop()
 db.posts.pinned.drop()
@@ -27,6 +28,8 @@ db.users.createIndex({"credentials.email_hash": 1}, { unique: true })
 db.users.createIndex({"profile.pseudo": 1}, { unique: true })
 // Wall
 db.wall.createIndex({"user_id": 1,"post_id": 1}, {unique: true})
+// Feed
+db.feed.createIndex({"user_id": 1,"post_id": 1}, {unique: true})
 // Posts
 db.posts.createIndex({"post_id": 1}, { unique: true })
 db.posts.createIndex({"author": 1})

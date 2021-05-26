@@ -21,11 +21,11 @@ class FeedServiceImpl(feedStore: FeedStore[IO])
   override def feed(userId: UserId, page: Page): IO[Feed] = for {
     _       <- checkUser(userId)
     content <- getFeedPage(userId, page)
-  } yield Feed(userId, content.toList)
+  } yield Feed(userId, content)
 
   override def addToFeed(userId: UserId, postId: PostId): IO[Unit] = for {
     _ <- checkUser(userId)
-    _ <- addPostToFeed(userId, postId)
+    _ <- feedStore.addPost(userId, postId)
   } yield ()
 
   override def addToFollowersFeed(userId: UserId, postId: PostId): IO[Unit] = for {
@@ -41,28 +41,19 @@ class FeedServiceImpl(feedStore: FeedStore[IO])
 
   override def hasPostsAfter(userId: UserId, lastPostId: PostId): IO[Boolean] = for {
     _     <- checkUser(userId)
-    posts <- feedStore.getByUserIdOrElse(userId, IndexedSeq())
-    res   <- IO(posts.headOption.exists( _ != lastPostId))
-  } yield res
+    last <- feedStore.mostRecentPost(userId)
+  } yield last.exists(_!=lastPostId)
 
   override def hasPosts(userId: UserId): IO[Boolean] = for {
     _   <- checkUser(userId)
-    posts <- feedStore.getByUserIdOrElse(userId, IndexedSeq())
-  } yield posts.nonEmpty
+    res <- feedStore.hasPosts(userId)
+  } yield res
 
 
   // Helpers
 
-  private[this] def getFeedPage(userId: UserId, page: Page): IO[IndexedSeq[PostId]] = for {
-    posts <- feedStore.getByUserIdOrElse(userId, IndexedSeq())
-    res   <- IO(PagedResult.page(posts, page))
-  } yield res
-
-  private[this] def addPostToFeed(userId: UserId, postId: PostId): IO[Unit] =
-    feedStore.updateWith(userId) {
-      case Some(posts) => Some(postId +: posts)
-      case None => Some(IndexedSeq(postId))
-    }
+  private[this] def getFeedPage(userId: UserId, page: Page): IO[List[PostId]] =
+    feedStore.getByUserId(userId, page)
 
   // Checkers
 
