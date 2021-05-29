@@ -1,16 +1,17 @@
 package org.greengen.db.mongo
 
-import org.greengen.core.challenge.{Challenge, ChallengeContent, ChallengeId, ChallengeStepReportEntry, ChallengeStepReportStatus, Failure, Partial, Skipped, Success, SuccessMeasure}
+import org.greengen.core.challenge._
 import org.greengen.core.event.EventId
+import org.greengen.core.notification._
 import org.greengen.core.pin.PinnedPost
 import org.greengen.core.poll.PollId
 import org.greengen.core.post._
 import org.greengen.core.tip.{Tip, TipId}
 import org.greengen.core.user.{Profile, Pseudo, User, UserId}
-import org.greengen.core.{Duration, Hash, Hashtag, OneOff, Recurring, Schedule, UTCTimestamp, UUID}
+import org.greengen.core._
 import org.greengen.db.mongo.Conversions.hexToBytes
-import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonInt64, BsonString}
 import org.mongodb.scala.bson.collection.Document
+import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonInt64, BsonString}
 
 import scala.jdk.CollectionConverters._
 
@@ -331,15 +332,52 @@ object Schema {
     )
 
   def docToPinnedPost(doc: Document): Either[String, PinnedPost] = for {
-    post_id <- Option(doc.getString("post_id"))
+    postId <- Option(doc.getString("post_id"))
       .flatMap(UUID.from)
       .map(PostId(_))
       .toRight(s"No field 'post_id' or invalid UUID found in $doc")
     timestamp <- Option(doc.getLong("timestamp"))
       .map(UTCTimestamp(_))
       .toRight(s"No field 'timestamp' found in $doc")
-  } yield PinnedPost(post_id, timestamp)
+  } yield PinnedPost(postId, timestamp)
 
+  def notifToDoc(notif: Notification): Document = {
+    val contentFields: Document = notif.content match {
+      case PlatformMessageNotification(message) =>
+        Document("type" -> "PlatformMessageNotification", "message" -> message)
+      case EventModifiedNotification(eventId) =>
+        Document("type" -> "EventModifiedNotification", "event_id" -> eventId.value.uuid)
+      case EventCancelledNotification(eventId: EventId) =>
+        Document("type" -> "EventCancelledNotification", "event_id" -> eventId.value.uuid)
+      case NewFollowerNotification(follower: UserId) =>
+        Document("type" -> "NewFollowerNotification", "follower_id" -> follower.value.uuid)
+      case PostLikedNotification(postId: PostId, likedBy: UserId) =>
+        Document("type" -> "PostLikedNotification", "post_id" -> postId.value.uuid, "liked_by" -> likedBy.value.uuid)
+      case YouHaveBeenChallengedNotification(challengeId: ChallengeId) =>
+        Document("type" -> "YouHaveBeenChallengedNotification", "challenge_id" -> challengeId.value.uuid)
+      case ChallengeAcceptedNotification(challengeId: ChallengeId, userId: UserId) =>
+        Document("type" -> "ChallengeAcceptedNotification", "challenge_id" -> challengeId.value.uuid, "user_id" -> userId.value.uuid)
+      case ChallengeRejectedNotification(challengeId: ChallengeId, userId: UserId) =>
+        Document("type" -> "ChallengeRejectedNotification", "challenge_id" -> challengeId.value.uuid, "user_id" -> userId.value.uuid)
+      case PollAnsweredNotification(pollId: PollId, userId: UserId) =>
+        Document("type" -> "PollAnsweredNotification", "poll_id" -> pollId.id.uuid, "user_id" -> userId.value.uuid)
+    }
+    val fields = Document(
+      "notification_id" -> notif.id.id.uuid,
+      "timestamp" -> notif.timestamp.value)
+    Document((contentFields.toList ++ fields.toList):_* )
+  }
+
+  def docToNotif(doc: Document): Either[String, Notification] = for {
+    notifId <- Option(doc.getString("notification_id"))
+      .flatMap(UUID.from)
+      .map(NotificationId(_))
+      .toRight(s"No field 'notification_id' or invalid UUID found in $doc")
+    timestamp <- Option(doc.getLong("timestamp"))
+      .map(UTCTimestamp(_))
+      .toRight(s"No field 'timestamp' found in $doc")
+    content <- readNotificationContent(doc)
+  } yield Notification(notifId,content, timestamp)
 
 
   // Helpers
@@ -435,4 +473,102 @@ object Schema {
 //        .toRight(s"No field 'sources' for free text post in $doc")
     } yield FreeTextPost(postId, author, content, List(), created, hashtags) // FIXME decode sourcess
 
+
+
+  // Dirty job of identifying the notification content from a doc
+  private[mongo] def readNotificationContent(doc: Document): Either[String, NotificationContent] = {
+    doc.getString("type") match {
+      case "PlatformMessageNotification"       => readPlatformNotificationContent(doc)
+      case "EventModifiedNotification"         => readEventModifiedNotificationContent(doc)
+      case "EventCancelledNotification"        => readEventCancelledNotificationContent(doc)
+      case "NewFollowerNotification"           => readNewFollowerNotificationContent(doc)
+      case "PostLikedNotification"             => readPostLikedNotificationContent(doc)
+      case "YouHaveBeenChallengedNotification" => readYouHaveBeenChallengedNotificationContent(doc)
+      case "ChallengeAcceptedNotification"     => readChallengeAcceptedNotificationContent(doc)
+      case "ChallengeRejectedNotification"     => readChallengeRejectedNotificationContent(doc)
+      case "PollAnsweredNotification"          => readPollAnsweredNotificationContent(doc)
+      case _ => Left(s"Couldn't recognize notification type in $doc")
+    }
+  }
+
+  private[mongo] def readPollAnsweredNotificationContent(doc: Document) =
+    for {
+      pollId <- Option(doc.getString("poll_id"))
+        .flatMap(UUID.from)
+        .map(PollId(_))
+        .toRight(s"No field 'poll_id' for PollAnsweredNotification in $doc")
+      userId <- Option(doc.getString("user_id"))
+        .flatMap(UUID.from)
+        .map(UserId(_))
+        .toRight(s"No field 'user_id' for PollAnsweredNotification in $doc")
+    } yield PollAnsweredNotification(pollId, userId)
+
+  private[mongo] def readChallengeRejectedNotificationContent(doc: Document) =
+    for {
+      challengeId <- Option(doc.getString("challenge_id"))
+        .flatMap(UUID.from)
+        .map(ChallengeId(_))
+        .toRight(s"No field 'challenge_id' for ChallengeRejectedNotification in $doc")
+      userId <- Option(doc.getString("user_id"))
+        .flatMap(UUID.from)
+        .map(UserId(_))
+        .toRight(s"No field 'user_id' for ChallengeRejectedNotification in $doc")
+    } yield ChallengeRejectedNotification(challengeId, userId)
+
+  private[mongo] def readChallengeAcceptedNotificationContent(doc: Document) =
+    for {
+      challengeId <- Option(doc.getString("challenge_id"))
+        .flatMap(UUID.from)
+        .map(ChallengeId(_))
+        .toRight(s"No field 'challenge_id' for ChallengeAcceptedNotification in $doc")
+      userId <- Option(doc.getString("user_id"))
+        .flatMap(UUID.from)
+        .map(UserId(_))
+        .toRight(s"No field 'user_id' for ChallengeAcceptedNotification in $doc")
+    } yield ChallengeAcceptedNotification(challengeId, userId)
+
+  private[mongo] def readYouHaveBeenChallengedNotificationContent(doc: Document) =
+    Option(doc.getString("challenge_id"))
+      .flatMap(UUID.from)
+      .map(ChallengeId(_))
+      .map(YouHaveBeenChallengedNotification(_))
+      .toRight(s"No field 'challenge_id' for YouHaveBeenChallengedNotification in $doc")
+
+  private[mongo] def readPostLikedNotificationContent(doc: Document) =
+    for {
+      postId <- Option(doc.getString("post_id"))
+        .flatMap(UUID.from)
+        .map(PostId(_))
+        .toRight(s"No field 'follower_id' for PostLikedNotification in $doc")
+      likedBy <- Option(doc.getString("liked_by"))
+        .flatMap(UUID.from)
+        .map(UserId(_))
+        .toRight(s"No field 'liked_by' for PostLikedNotification in $doc")
+    } yield PostLikedNotification(postId, likedBy)
+
+  private[mongo] def readNewFollowerNotificationContent(doc: Document) =
+    Option(doc.getString("follower_id"))
+      .flatMap(UUID.from)
+      .map(UserId(_))
+      .map(NewFollowerNotification(_))
+      .toRight(s"No field 'follower_id' for NewFollowerNotification in $doc")
+
+  private[mongo] def readEventCancelledNotificationContent(doc: Document) =
+    Option(doc.getString("event_id"))
+      .flatMap(UUID.from)
+      .map(EventId(_))
+      .map(EventCancelledNotification(_))
+      .toRight(s"No field 'event_id' for EventCancelledNotification in $doc")
+
+  private[mongo] def readEventModifiedNotificationContent(doc: Document) =
+    Option(doc.getString("event_id"))
+      .flatMap(UUID.from)
+      .map(EventId(_))
+      .map(EventModifiedNotification(_))
+      .toRight(s"No field 'event_id' for EventModifiedNotification in $doc")
+
+  private[mongo] def readPlatformNotificationContent(doc: Document) =
+    Option(doc.getString("message"))
+      .map(PlatformMessageNotification(_))
+      .toRight(s"No field 'message' for PlatformMessageNotification in $doc")
 }

@@ -21,6 +21,8 @@ db.posts.tips.drop()
 db.posts.challenges.drop()
 db.posts.challenges.challenged.drop()
 db.posts.challenges.reports.drop()
+db.notifications.drop()
+db.notifications.content.drop()
 
 // Users
 db.users.createIndex({"user_id": 1}, { unique: true })
@@ -49,3 +51,6 @@ db.posts.likes.createIndex({"post_id": 1, "user_id": 1}, {unique: true})
 db.followers.createIndex({"user_id": 1, "follower_id": 1}, {unique: true})
 // Hashtags
 db.hashtags.createIndex({"hashtag": 1, "user_id": 1}, {unique: true})
+// Notifications
+db.notifications.createIndex({"user_id": 1, "notification_id": 1, "timestamp": 1}, {unique: true})
+db.notifications.content.createIndex({"user_id": 1, "notification_id": 1}, {unique: true})

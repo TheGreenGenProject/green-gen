@@ -39,7 +39,7 @@ import org.greengen.store.feed.{InMemoryFeedStore, MongoFeedStore}
 import org.greengen.store.follower.MongoFollowerStore
 import org.greengen.store.hashtag.{InMemoryHashtagStore, MongoHashtagStore}
 import org.greengen.store.like.MongoLikeStore
-import org.greengen.store.notification.InMemoryNotificationStore
+import org.greengen.store.notification.{InMemoryNotificationStore, MongoNotificationStore}
 import org.greengen.store.pin.{InMemoryPinStore, MongoPinStore}
 import org.greengen.store.post.MongoPostStore
 import org.greengen.store.tip.MongoTipStore
@@ -67,7 +67,7 @@ object GreenGenServer extends App {
   val clock = Clock()
   val userService = new UserServiceImpl(new MongoUserStore(db))(clock)
   val authService = new AuthServiceImpl(new InMemoryAuthStore)(clock, userService)
-  val notificationService = new NotificationServiceImpl(new InMemoryNotificationStore)(clock, userService)
+  val notificationService = new NotificationServiceImpl(new MongoNotificationStore(db, clock))(clock, userService)
   val followerService = new FollowerServiceImpl(new MongoFollowerStore(db, clock))(clock, userService, notificationService)
   val tipService = new TipServiceImpl(new MongoTipStore(db))(clock, userService)
   val challengeService = new ChallengeServiceImpl(new MongoChallengeStore(db, clock))(clock, userService, followerService, notificationService)

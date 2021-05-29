@@ -2,6 +2,7 @@ package org.greengen.store.notification
 
 import cats.effect.IO
 import cats.implicits._
+import org.greengen.core.{Page, PagedResult}
 import org.greengen.core.notification.{Notification, NotificationId}
 import org.greengen.core.user.UserId
 
@@ -19,10 +20,14 @@ class InMemoryNotificationStore extends NotificationStore[IO] {
   override def getNotification(id: NotificationId): IO[Option[Notification]] =
     IO(notifications.get(id))
 
-  override def getQueueForUser(userId: UserId): IO[List[Notification]] = for {
+  override def hasUnreadNotifications(userId: UserId): IO[Boolean] =
+    IO(dispatchQueues.getOrElse(userId, List()).nonEmpty)
+
+  override def getQueueForUser(userId: UserId, page: Page): IO[List[Notification]] = for {
     notifIds <- IO(dispatchQueues.getOrElse(userId, List()))
     notifs   <-  notifIds.map(getNotification).sequence
-  } yield notifs.flatten
+    paged    <- IO(PagedResult.page(notifs.flatten, page))
+  } yield paged
 
   override def addToUserQueue(userId: UserId, notificationId: NotificationId): IO[Unit] =
     IO(dispatchQueues.updateWith(userId) {

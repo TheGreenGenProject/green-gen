@@ -4,7 +4,7 @@ import cats.effect.IO
 import cats.implicits._
 import org.greengen.core.notification.{Notification, NotificationId, NotificationService, PlatformMessageNotification}
 import org.greengen.core.user.{UserId, UserService}
-import org.greengen.core.{Clock, IOUtils, Page, PagedResult}
+import org.greengen.core.{Clock, IOUtils, Page}
 import org.greengen.store.notification.NotificationStore
 
 
@@ -13,9 +13,9 @@ class NotificationServiceImpl(notifStore: NotificationStore[IO])
   extends NotificationService[IO] {
 
   override def hasUnreadNotification(userId: UserId): IO[Boolean] = for {
-    _ <- checkUser(userId)
-    q <- notifStore.getQueueForUser(userId)
-  } yield q.nonEmpty
+    _      <- checkUser(userId)
+    unread <- notifStore.hasUnreadNotifications(userId)
+  } yield unread
 
   override def byId(id: NotificationId): IO[Option[Notification]] =
     notifStore.getNotification(id)
@@ -28,8 +28,8 @@ class NotificationServiceImpl(notifStore: NotificationStore[IO])
 
   override def byUser(id: UserId, page: Page, unreadOnly: Boolean): IO[List[Notification]] = for {
     _      <- checkUser(id)
-    notifs <- notifStore.getQueueForUser(id)
-  } yield PagedResult.page(notifs, page)
+    notifs <- notifStore.getQueueForUser(id, page)
+  } yield notifs
 
   override def markAsRead(id: UserId, nid: NotificationId): IO[Unit] =
     notifStore.removeFromUserQueue(id, nid)

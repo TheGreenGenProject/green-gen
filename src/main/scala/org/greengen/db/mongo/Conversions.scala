@@ -4,6 +4,7 @@ import java.math.BigInteger
 
 import cats.effect.{ContextShift, IO}
 import org.greengen.core.challenge.ChallengeId
+import org.greengen.core.notification.NotificationId
 import org.greengen.core.post.PostId
 import org.greengen.core.tip.TipId
 import org.greengen.core.user.UserId
@@ -68,8 +69,14 @@ object Conversions {
   def asChallengeId(doc: Document) =
     ChallengeId(UUID.unsafeFrom(doc.getString("challenge_id")))
 
+  def asPollId(doc: Document) =
+    ChallengeId(UUID.unsafeFrom(doc.getString("poll_id")))
+
   def asTipId(doc: Document) =
     TipId(UUID.unsafeFrom(doc.getString("tip_id")))
+
+  def asNotificationId(doc: Document) =
+    NotificationId(UUID.unsafeFrom(doc.getString("notification_id")))
 
   def safeList[T](xs: List[T]) =
     Option(xs).getOrElse(List())

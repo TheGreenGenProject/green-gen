@@ -1,8 +1,10 @@
 package org.greengen.store.notification
 
+import org.greengen.core.Page
 import org.greengen.core.notification.{Notification, NotificationId}
 import org.greengen.core.user.UserId
 import org.greengen.store.Store
+
 
 trait NotificationStore[F[_]] extends Store[F] {
 
@@ -10,7 +12,9 @@ trait NotificationStore[F[_]] extends Store[F] {
 
   def getNotification(id: NotificationId): F[Option[Notification]]
 
-  def getQueueForUser(userId: UserId): F[List[Notification]]
+  def hasUnreadNotifications(userId: UserId): F[Boolean]
+
+  def getQueueForUser(userId: UserId, page: Page): F[List[Notification]]
 
   def addToUserQueue(userId: UserId, notificationId: NotificationId): F[Unit]
 
