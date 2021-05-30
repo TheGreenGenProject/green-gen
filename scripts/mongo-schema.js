@@ -7,6 +7,7 @@ db.createUser({
     roles: [{ role: "readWrite", db: "greengen" }]
 })
 
+use greengen
 // Dropping everything
 db.users.drop()
 db.followers.drop()

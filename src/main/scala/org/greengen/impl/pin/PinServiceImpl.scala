@@ -9,6 +9,7 @@ import org.greengen.store.pin.PinStore
 
 import scala.collection.concurrent.TrieMap
 
+
 class PinServiceImpl(pinStore: PinStore[IO])
                     (clock: Clock,
                      userService: UserService[IO],

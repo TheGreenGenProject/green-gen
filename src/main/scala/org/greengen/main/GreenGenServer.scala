@@ -12,6 +12,7 @@ import org.greengen.http.hashtag.HttpHashtagService
 import org.greengen.http.like.HttpLikeService
 import org.greengen.http.notification.HttpNotificationService
 import org.greengen.http.pin.HttpPinService
+import org.greengen.http.poll.HttpPollService
 import org.greengen.http.post.HttpPostService
 import org.greengen.http.ranking.HttpRankingService
 import org.greengen.http.tip.HttpTipService
@@ -26,6 +27,7 @@ import org.greengen.impl.hashtag.HashtagServiceImpl
 import org.greengen.impl.like.LikeServiceImpl
 import org.greengen.impl.notification.NotificationServiceImpl
 import org.greengen.impl.pin.PinServiceImpl
+import org.greengen.impl.poll.PollServiceImpl
 import org.greengen.impl.post.PostServiceImpl
 import org.greengen.impl.ranking.RankingServiceImpl
 import org.greengen.impl.reminder.ReminderServiceImpl
@@ -35,16 +37,17 @@ import org.greengen.impl.wall.WallServiceImpl
 import org.greengen.store.auth.InMemoryAuthStore
 import org.greengen.store.challenge.MongoChallengeStore
 import org.greengen.store.event.InMemoryEventStore
-import org.greengen.store.feed.{InMemoryFeedStore, MongoFeedStore}
+import org.greengen.store.feed.MongoFeedStore
 import org.greengen.store.follower.MongoFollowerStore
-import org.greengen.store.hashtag.{InMemoryHashtagStore, MongoHashtagStore}
+import org.greengen.store.hashtag.MongoHashtagStore
 import org.greengen.store.like.MongoLikeStore
-import org.greengen.store.notification.{InMemoryNotificationStore, MongoNotificationStore}
-import org.greengen.store.pin.{InMemoryPinStore, MongoPinStore}
+import org.greengen.store.notification.MongoNotificationStore
+import org.greengen.store.pin.MongoPinStore
+import org.greengen.store.poll.InMemoryPollStore
 import org.greengen.store.post.MongoPostStore
 import org.greengen.store.tip.MongoTipStore
 import org.greengen.store.user.MongoUserStore
-import org.greengen.store.wall.{InMemoryWallStore, MongoWallStore}
+import org.greengen.store.wall.MongoWallStore
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze._
@@ -71,6 +74,7 @@ object GreenGenServer extends App {
   val followerService = new FollowerServiceImpl(new MongoFollowerStore(db, clock))(clock, userService, notificationService)
   val tipService = new TipServiceImpl(new MongoTipStore(db))(clock, userService)
   val challengeService = new ChallengeServiceImpl(new MongoChallengeStore(db, clock))(clock, userService, followerService, notificationService)
+  val pollService = new PollServiceImpl(new InMemoryPollStore(clock))(clock, userService)
   val hashtagService = new HashtagServiceImpl(new MongoHashtagStore(db, clock))(userService)
   val feedService = new FeedServiceImpl(new MongoFeedStore(db, clock))(userService, followerService, hashtagService)
   val wallService = new WallServiceImpl(new MongoWallStore(db, clock))(userService)
@@ -85,7 +89,7 @@ object GreenGenServer extends App {
   TestData
     .init(clock, authService,
       userService, followerService,
-      tipService, challengeService,
+      tipService, challengeService, pollService,
       postService, eventService,
       notificationService)
     .unsafeRunSync()
@@ -105,6 +109,7 @@ object GreenGenServer extends App {
     authMiddleware(HttpWallService.routes(wallService)) <+>
     authMiddleware(HttpFeedService.routes(feedService)) <+>
     authMiddleware(HttpTipService.routes(tipService)) <+>
+    authMiddleware(HttpPollService.routes(clock, pollService)) <+>
     authMiddleware(HttpChallengeService.routes(clock, challengeService)) <+>
     authMiddleware(HttpPinService.routes(pinService)) <+>
     authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>

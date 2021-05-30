@@ -15,7 +15,6 @@ class ChallengeServiceImpl(challengeStore: ChallengeStore[IO])
                            userService: UserService[IO],
                            followerService: FollowerService[IO],
                            notificationService: NotificationService[IO]) extends ChallengeService[IO] {
-  val PageSize = 10
 
   override def create(author: UserId,
                       title: String,
@@ -180,6 +179,7 @@ class ChallengeServiceImpl(challengeStore: ChallengeStore[IO])
     maybeChallenge <- byId(challengeId)
     res            <- IOUtils.from(maybeChallenge, s"Challenge $challengeId doesn't exist")
   } yield res
+
 
   // Filtering
 

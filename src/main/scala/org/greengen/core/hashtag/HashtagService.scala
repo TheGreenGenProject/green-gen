@@ -11,7 +11,7 @@ trait HashtagService[F[_]] {
 
   def followers(hashtag: Hashtag): F[Set[UserId]]
 
-  def countFollowers(hashtag: Hashtag): F[Int]
+  def countFollowers(hashtag: Hashtag): F[Long]
 
   def hashtagsfollowedBy(userId: UserId): F[Set[Hashtag]]
 

@@ -24,7 +24,7 @@ class HashtagServiceImpl(hashtagStore: HashtagStore[IO])
   override def followers(hashtag: Hashtag): IO[Set[UserId]] =
     hashtagStore.getFollowers(hashtag)
 
-  override def countFollowers(hashtag: Hashtag): IO[Int] =
+  override def countFollowers(hashtag: Hashtag): IO[Long] =
     hashtagStore.countFollowers(hashtag)
 
   override def hashtagsfollowedBy(userId: UserId): IO[Set[Hashtag]] =

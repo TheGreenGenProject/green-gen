@@ -11,7 +11,6 @@ object ChallengeId {
 }
 
 
-
 case class ChallengeContent(title: String, description: String)
 // Description of the measure of success of the challenge
 case class SuccessMeasure(

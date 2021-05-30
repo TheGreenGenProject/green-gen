@@ -11,6 +11,7 @@ import org.greengen.http.hashtag.HttpHashtagService
 import org.greengen.http.like.HttpLikeService
 import org.greengen.http.notification.HttpNotificationService
 import org.greengen.http.pin.HttpPinService
+import org.greengen.http.poll.HttpPollService
 import org.greengen.http.post.HttpPostService
 import org.greengen.http.ranking.HttpRankingService
 import org.greengen.http.tip.HttpTipService
@@ -25,12 +26,14 @@ import org.greengen.impl.hashtag.HashtagServiceImpl
 import org.greengen.impl.like.LikeServiceImpl
 import org.greengen.impl.notification.NotificationServiceImpl
 import org.greengen.impl.pin.PinServiceImpl
+import org.greengen.impl.poll.PollServiceImpl
 import org.greengen.impl.post.PostServiceImpl
 import org.greengen.impl.ranking.RankingServiceImpl
 import org.greengen.impl.reminder.ReminderServiceImpl
 import org.greengen.impl.tip.TipServiceImpl
 import org.greengen.impl.user.UserServiceImpl
 import org.greengen.impl.wall.WallServiceImpl
+import org.greengen.main.GreenGenServer.{authMiddleware, clock, pollService}
 import org.greengen.store.auth.InMemoryAuthStore
 import org.greengen.store.challenge.InMemoryChallengeStore
 import org.greengen.store.event.InMemoryEventStore
@@ -40,6 +43,7 @@ import org.greengen.store.hashtag.InMemoryHashtagStore
 import org.greengen.store.like.InMemoryLikeStore
 import org.greengen.store.notification.InMemoryNotificationStore
 import org.greengen.store.pin.InMemoryPinStore
+import org.greengen.store.poll.InMemoryPollStore
 import org.greengen.store.post.InMemoryPostStore
 import org.greengen.store.tip.InMemoryTipStore
 import org.greengen.store.user.InMemoryUserStore
@@ -65,6 +69,7 @@ object InMemoryGreenGenServer extends App {
   val followerService = new FollowerServiceImpl(new InMemoryFollowerStore)(clock, userService, notificationService)
   val tipService = new TipServiceImpl(new InMemoryTipStore)(clock, userService)
   val challengeService = new ChallengeServiceImpl(new InMemoryChallengeStore)(clock, userService, followerService, notificationService)
+  val pollService = new PollServiceImpl(new InMemoryPollStore(clock))(clock, userService)
   val hashtagService = new HashtagServiceImpl(new InMemoryHashtagStore)(userService)
   val feedService = new FeedServiceImpl(new InMemoryFeedStore)(userService, followerService, hashtagService)
   val wallService = new WallServiceImpl(new InMemoryWallStore)(userService)
@@ -79,7 +84,7 @@ object InMemoryGreenGenServer extends App {
   TestData
     .init(clock, authService,
       userService, followerService,
-      tipService, challengeService,
+      tipService, challengeService, pollService,
       postService, eventService,
       notificationService)
     .unsafeRunSync()
@@ -99,6 +104,7 @@ object InMemoryGreenGenServer extends App {
     authMiddleware(HttpWallService.routes(wallService)) <+>
     authMiddleware(HttpFeedService.routes(feedService)) <+>
     authMiddleware(HttpTipService.routes(tipService)) <+>
+    authMiddleware(HttpPollService.routes(clock, pollService)) <+>
     authMiddleware(HttpChallengeService.routes(clock, challengeService)) <+>
     authMiddleware(HttpPinService.routes(pinService)) <+>
     authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>

@@ -94,7 +94,7 @@ object Schema {
       case post: FreeTextPost  => builder.addOne("free_text" -> BsonDocument("content" -> post.content))
       case post: ChallengePost => builder.addOne("challenge_id" -> BsonString(post.challenge.value.uuid))
       case post: TipPost       => builder.addOne("tip_id"  -> BsonString(post.tip.value.uuid))
-      case post: PollPost      => builder.addOne("poll_id" -> BsonString(post.poll.id.uuid))
+      case post: PollPost      => builder.addOne("poll_id" -> BsonString(post.poll.value.uuid))
     }
     builder.result()
   }
@@ -360,7 +360,7 @@ object Schema {
       case ChallengeRejectedNotification(challengeId: ChallengeId, userId: UserId) =>
         Document("type" -> "ChallengeRejectedNotification", "challenge_id" -> challengeId.value.uuid, "user_id" -> userId.value.uuid)
       case PollAnsweredNotification(pollId: PollId, userId: UserId) =>
-        Document("type" -> "PollAnsweredNotification", "poll_id" -> pollId.id.uuid, "user_id" -> userId.value.uuid)
+        Document("type" -> "PollAnsweredNotification", "poll_id" -> pollId.value.uuid, "user_id" -> userId.value.uuid)
     }
     val fields = Document(
       "notification_id" -> notif.id.id.uuid,

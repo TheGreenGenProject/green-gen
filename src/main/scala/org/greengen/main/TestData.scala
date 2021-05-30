@@ -9,6 +9,7 @@ import org.greengen.core.challenge.{ChallengeId, ChallengeService, SuccessMeasur
 import org.greengen.core.event.{EventId, EventService}
 import org.greengen.core.follower.FollowerService
 import org.greengen.core.notification.NotificationService
+import org.greengen.core.poll.{PollId, PollOption, PollService}
 import org.greengen.core.post._
 import org.greengen.core.tip.{TipId, TipService}
 import org.greengen.core.user.{UserId, UserService}
@@ -24,14 +25,16 @@ object TestData {
            followerService: FollowerService[IO],
            tipService: TipService[IO],
            challengeService: ChallengeService[IO],
+           pollService: PollService[IO],
            postService: PostService[IO],
            eventService: EventService[IO],
            notificationService: NotificationService[IO]): IO[Unit] = for {
     _ <- createUsers(authService, userService)
     _ <- makeFollowers(userService, followerService)
     _ <- createTips(userService, tipService)
+    _ <- createPolls(userService, pollService)
     _ <- createChallenges(userService, challengeService)
-    _ <- createPosts(userService, tipService, challengeService, postService)
+    _ <- createPosts(userService, tipService, pollService, challengeService, postService)
     _ <- createEvents(userService, eventService)
     _ <- createNotifications(userService, notificationService)
   } yield ()
@@ -55,11 +58,13 @@ object TestData {
 
   private[this] def createPosts(userService: UserService[IO],
                                 tipService: TipService[IO],
+                                pollService: PollService[IO],
                                 challengeService: ChallengeService[IO],
                                 postService: PostService[IO]): IO[Unit] = for {
     chrisId       <- userIdByPseudo(userService, "Chris")
     elisaId       <- userIdByPseudo(userService, "Elisa")
     docsquirrelId <- userIdByPseudo(userService, "DocSquirrel")
+    catId         <- userIdByPseudo(userService, "TheCat")
     // FreeText
     freeTextId1   <- makeFreeTextPost(postService, chrisId)
     freeTextId2   <- makeFreeTextPost(postService, chrisId)
@@ -67,11 +72,15 @@ object TestData {
     _             <- makeRepost(postService, elisaId, freeTextId1)
     _             <- makeRepost(postService, docsquirrelId, freeTextId2)
     // Tips
-    catId         <- userIdByPseudo(userService, "TheCat")
     _             <- postTipsFromAuthor(postService, tipService, elisaId)
     _             <- postTipsFromAuthor(postService, tipService, chrisId)
     _             <- postTipsFromAuthor(postService, tipService, catId)
     _             <- postTipsFromAuthor(postService, tipService, docsquirrelId)
+    // Polls
+    _             <- postPollsFromAuthor(postService, pollService, elisaId)
+    _             <- postPollsFromAuthor(postService, pollService, chrisId)
+    _             <- postPollsFromAuthor(postService, pollService, catId)
+    _             <- postPollsFromAuthor(postService, pollService, docsquirrelId)
     // Challenges
     _             <- postChallengesFromAuthor(postService, challengeService, elisaId)
     _             <- postChallengesFromAuthor(postService, challengeService, chrisId)
@@ -139,11 +148,26 @@ object TestData {
       now(),
       ht("verde", "something-else", "tip")))
 
+  private[this] def makePollPost(postService: PostService[IO], userId: UserId, pollId: PollId): IO[PostId] =
+    postService.post(PollPost(
+      PostId.newId,
+      userId,
+      pollId,
+      now(),
+      ht("survey", "question","randomquestionoftheday", "poll")))
+
   private[this] def postTipsFromAuthor(postService: PostService[IO],
                                        tipService: TipService[IO],
                                        author: UserId): IO[Unit] = for {
     tipIds <- tipService.byAuthor(author)
     _      <- tipIds.toList.map(makeTipPost(postService, author, _)).sequence
+  } yield ()
+
+  private[this] def postPollsFromAuthor(postService: PostService[IO],
+                                        pollService: PollService[IO],
+                                        author: UserId): IO[Unit] = for {
+    pollIds <- pollService.byAuthor(author, Page.All)
+    _       <- pollIds.map(makePollPost(postService, author, _)).sequence
   } yield ()
 
   private[this] def makeChallengePost(postService: PostService[IO],
@@ -247,6 +271,27 @@ object TestData {
     tipId <- tipService.create(author, content, List(MySelf))
   } yield tipId
 
+  // Polls Helper
+
+  private[this] def createPolls(userService: UserService[IO],
+                                pollService: PollService[IO]): IO[Unit] = for {
+    elisaId       <- userIdByPseudo(userService, "Elisa")
+    _             <- makePoll(pollService, elisaId, "I wonder if all that is useful. What do you think ?")
+    chrisId       <- userIdByPseudo(userService, "Chris")
+    _             <- makePoll(pollService, chrisId, "Do you like cats ?", List("Yes","No","Maybe"))
+    catId         <- userIdByPseudo(userService, "TheCat")
+    _             <- makePoll(pollService, catId, "Do you like Mice ?", List("Yes","No","A Lot !"))
+    docsquirrelId <- userIdByPseudo(userService, "DocSquirrel")
+    _             <- makePoll(pollService, docsquirrelId,
+      "When squirrels are sleeping, they put their tail on the belly ! Did you know ?", List("Yes", "No","Amazing !"))
+  } yield ()
+
+  private[this] def makePoll(pollService: PollService[IO],
+                             author: UserId,
+                             title: String = "This is a great poll ! Do you think GreenGen is useful ?",
+                             options: List[String] = List("Maybe", "Not sure", "We will see !", "Yes, great idea !")): IO[PollId] = for {
+    pollId <- pollService.create(author, title, options.map(PollOption(_)))
+  } yield pollId
 
   // Challenges Helper
 

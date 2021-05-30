@@ -10,7 +10,7 @@ import org.greengen.core.feed.Feed
 import org.greengen.core.like.Like
 import org.greengen.core.notification._
 import org.greengen.core.pin.PinnedPost
-import org.greengen.core.poll.PollId
+import org.greengen.core.poll.{Poll, PollAnswer, PollId, PollOption, PollStats, PollStatsEntry}
 import org.greengen.core.post.{Post, PostId}
 import org.greengen.core.ranking.{Rank, ScoreBreakdown}
 import org.greengen.core.tip.{Tip, TipId}
@@ -77,6 +77,11 @@ object JsonDecoder {
   // Poll
   implicit val PollIdDecoder = jsonOf[IO, PollId]
   implicit val PollIdOptionDecoder = jsonOf[IO, Option[PollId]]
+  implicit val PollDecoder = jsonOf[IO, Poll]
+  implicit val PollOptionDecoder = jsonOf[IO, PollOption]
+  implicit val PollStatsDecoder = jsonOf[IO, PollStats]
+  implicit val PollStatsEntryDecoder = jsonOf[IO, PollStatsEntry]
+  implicit val PollAnswerOptionDecoder = jsonOf[IO, Option[PollAnswer]]
   // EventService
   implicit val EventIdDecoder = jsonOf[IO, EventId]
   implicit val EventIdListDecoder = jsonOf[IO, List[EventId]]

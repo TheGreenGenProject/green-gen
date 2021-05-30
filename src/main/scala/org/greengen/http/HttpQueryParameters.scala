@@ -3,7 +3,7 @@ package org.greengen.http
 import org.greengen.core.Coordinate.{LatLong, Latitude, Longitude}
 import org.greengen.core.challenge.{ChallengeId, SuccessMeasure}
 import org.greengen.core.event.EventId
-import org.greengen.core.poll.PollId
+import org.greengen.core.poll.{PollId, PollOption}
 import org.greengen.core.post.PostId
 import org.greengen.core.tip.TipId
 import org.greengen.core.user.UserId
@@ -11,6 +11,7 @@ import org.greengen.core._
 import org.greengen.core.notification.NotificationId
 import org.http4s.QueryParamDecoder
 import org.http4s.dsl.io.QueryParamDecoderMatcher
+
 
 object HttpQueryParameters {
 
@@ -69,6 +70,10 @@ object HttpQueryParameters {
       case other => throw new IllegalArgumentException(s"Invalid source: $other")
     }.toList)
 
+  private[http] object QuestionQueryParamMatcher extends QueryParamDecoderMatcher[String]("question")
+  private[http] object PollOptionParamMatcher extends QueryParamDecoderMatcher[List[PollOption]]("options")
+  private[http] implicit lazy val pollOptionListQueryParamDecoder: QueryParamDecoder[List[PollOption]] = QueryParamDecoder[String]
+    .map(_.split('+').map(PollOption(_)).toList)
 
   private[http] object FlagReasonQueryParamMatcher extends QueryParamDecoderMatcher[Reason]("reason")
   private[http] implicit lazy val flagReasonQueryParamDecoder: QueryParamDecoder[Reason] = QueryParamDecoder[String]
@@ -80,7 +85,6 @@ object HttpQueryParameters {
       // FIXME incomplete pattern matching - use Json request ?
       case other => throw new IllegalArgumentException(s"Invalid reason $other")
     }
-
 
   private[http] object MaxParticipantQueryParamMatcher extends QueryParamDecoderMatcher[Int]("max-participant")
   private[http] object DescriptionQueryParamMatcher extends QueryParamDecoderMatcher[String]("description")
