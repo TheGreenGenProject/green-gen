@@ -5,6 +5,7 @@ import io.circe.generic.auto._
 import org.greengen.core.Coordinate.LatLong
 import org.greengen.core.auth.Auth
 import org.greengen.core.challenge._
+import org.greengen.core.conversation.{ConversationId, Message, MessageId}
 import org.greengen.core.event.{Event, EventId}
 import org.greengen.core.feed.Feed
 import org.greengen.core.like.Like
@@ -124,5 +125,11 @@ object JsonDecoder {
   implicit val PinnedPosts = jsonOf[IO, List[PinnedPost]]
   // HashtagService
   implicit val IntHashtagListDecoder = jsonOf[IO, List[(Int,Hashtag)]]
+  // ConversationService
+  implicit val MessageIdDecoder = jsonOf[IO, MessageId]
+  implicit val MessageIdListDecoder = jsonOf[IO, List[MessageId]]
+  implicit val MessageDecoder = jsonOf[IO, Message]
+  implicit val MessageListDecoder = jsonOf[IO, List[Message]]
+  implicit val ConversationIdDecoder = jsonOf[IO, ConversationId]
 
 }

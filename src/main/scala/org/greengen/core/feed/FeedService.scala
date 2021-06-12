@@ -1,8 +1,8 @@
 package org.greengen.core.feed
 
-import org.greengen.core.{Hashtag, Page, UTCTimestamp}
 import org.greengen.core.post.PostId
 import org.greengen.core.user.UserId
+import org.greengen.core.{Hashtag, Page}
 
 trait FeedService[F[_]] {
 

@@ -5,6 +5,7 @@ import cats.implicits._
 import org.greengen.core.Clock
 import org.greengen.http.auth.{HttpAuthService, TokenAuthMiddleware}
 import org.greengen.http.challenge.HttpChallengeService
+import org.greengen.http.conversation.HttpConversationService
 import org.greengen.http.feed.HttpFeedService
 import org.greengen.http.follower.HttpFollowerService
 import org.greengen.http.hashtag.HttpHashtagService
@@ -19,6 +20,7 @@ import org.greengen.http.user.HttpUserService
 import org.greengen.http.wall.HttpWallService
 import org.greengen.impl.auth.AuthServiceImpl
 import org.greengen.impl.challenge.ChallengeServiceImpl
+import org.greengen.impl.conversation.ConversationServiceImpl
 import org.greengen.impl.event.EventServiceImpl
 import org.greengen.impl.feed.FeedServiceImpl
 import org.greengen.impl.follower.FollowerServiceImpl
@@ -33,9 +35,10 @@ import org.greengen.impl.reminder.ReminderServiceImpl
 import org.greengen.impl.tip.TipServiceImpl
 import org.greengen.impl.user.UserServiceImpl
 import org.greengen.impl.wall.WallServiceImpl
-import org.greengen.main.GreenGenServer.{authMiddleware, clock, pollService}
+import org.greengen.main.GreenGenServer.{authMiddleware, clock, conversationService, pollService}
 import org.greengen.store.auth.InMemoryAuthStore
 import org.greengen.store.challenge.InMemoryChallengeStore
+import org.greengen.store.conversation.InMemoryConversationStore
 import org.greengen.store.event.InMemoryEventStore
 import org.greengen.store.feed.InMemoryFeedStore
 import org.greengen.store.follower.InMemoryFollowerStore
@@ -78,6 +81,7 @@ object InMemoryGreenGenServer extends App {
   val pinService = new PinServiceImpl(new InMemoryPinStore)(clock, userService, postService)
   val eventService = new EventServiceImpl(new InMemoryEventStore)(clock, userService, notificationService)
   val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
+  val conversationService = new ConversationServiceImpl(new InMemoryConversationStore)(clock, userService, notificationService)
   val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
 
   // FIXME Populating data for testing purpose
@@ -108,6 +112,7 @@ object InMemoryGreenGenServer extends App {
     authMiddleware(HttpChallengeService.routes(clock, challengeService)) <+>
     authMiddleware(HttpPinService.routes(pinService)) <+>
     authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>
+    authMiddleware(HttpConversationService.routes(clock, conversationService)) <+>
     authMiddleware(HttpRankingService.routes(rankingService)) <+>
     authMiddleware(HttpAuthService.routes(authService)) <+>
     authMiddleware(HttpUserService.routes(userService))
