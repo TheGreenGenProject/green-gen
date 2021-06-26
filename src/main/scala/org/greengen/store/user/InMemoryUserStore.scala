@@ -12,12 +12,14 @@ class InMemoryUserStore extends UserStore[IO] {
 
   private[this] val allUsers = new TrieMap[UserId,(User, Profile)]
   private[this] val byHashes = new TrieMap[(Hash, Hash),UserId]
+  private[this] val emailHashes = new TrieMap[Hash, UserId]
   private[this] val byPseudos = new TrieMap[Pseudo, UserId] // Pseudos are unique
 
 
   override def register(userId: UserId, emailHash: Hash, pwHash: Hash, user: User, profile: Profile): IO[Unit] = for {
     _ <- IO(allUsers.put(userId, (user, profile)))
     _ <- IO(byHashes.put((emailHash, pwHash), userId))
+    _ <- IO(emailHashes.put(emailHash, userId))
     _ <- IO(byPseudos.put(profile.pseudo, userId))
   } yield ()
 
@@ -41,6 +43,9 @@ class InMemoryUserStore extends UserStore[IO] {
 
   override def getByUserId(userId: UserId): IO[Option[(User, Profile)]] =
     IO(allUsers.get(userId))
+
+  override def emailExists(emailHash: Hash): IO[Boolean] =
+    IO(emailHashes.contains(emailHash))
 
   override def getByHashes(hashes: (Hash, Hash)): IO[Option[UserId]] =
     IO(byHashes.get(hashes))

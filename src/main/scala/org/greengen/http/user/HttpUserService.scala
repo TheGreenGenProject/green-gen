@@ -12,16 +12,6 @@ import org.http4s.dsl.io._
 
 object HttpUserService {
 
-  def nonAuthRoutes(service: UserService[IO]) = HttpRoutes.of[IO] {
-    // POST
-    case POST -> Root / "user" / "create" :?
-        PseudoQueryParamMatcher(pseudo) +&
-        EmailHashQueryParamMatcher(emailHash) +&
-        PasswordHashQueryParamMatcher(pwHash) +&
-        ProfileIntroductionQueryParamMatcher(intro) =>
-      service.create(pseudo, emailHash, pwHash, intro).flatMap(r => Ok(r.asJson))
-  }
-
   def routes(service: UserService[IO]) = AuthedRoutes.of[UserId, IO] {
     // GET
     case GET -> Root / "user" / "is-enabled" / UUIDVar(id) as _ =>

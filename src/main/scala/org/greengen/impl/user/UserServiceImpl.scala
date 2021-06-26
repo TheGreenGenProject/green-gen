@@ -3,20 +3,20 @@ package org.greengen.impl.user
 import cats.data.OptionT
 import cats.effect.IO
 import org.greengen.core.user._
-import org.greengen.core.{Clock, Hash}
+import org.greengen.core.{Clock, Hash, IOUtils}
 import org.greengen.store.user.UserStore
 
 
 class UserServiceImpl(userStore: UserStore[IO])(clock: Clock) extends UserService[IO] {
 
-  override def create(pseudo: String,
+  override def create(pseudo: Pseudo,
                       emailHash: Hash,
                       pwHash: Hash,
                       introduction: String): IO[(User,Profile)] = for {
     _ <- checkNewPseudo(pseudo)
     id = UserId.newId()
     user = User(id, emailHash, pwHash, true)
-    profile = Profile(id, Pseudo(pseudo), clock.now(), Some(introduction), false)
+    profile = Profile(id, pseudo, clock.now(), Some(introduction), false)
     _ <- userStore.register(id, emailHash, pwHash, user, profile)
   } yield (user, profile)
 
@@ -59,6 +59,9 @@ class UserServiceImpl(userStore: UserStore[IO])(clock: Clock) extends UserServic
     res       <- IO(maybeUser.map(_._2))
   } yield res
 
+  override def emailExists(email: Hash): IO[Boolean] =
+    userStore.emailExists(email)
+
   override def byHash(email: Hash, pwHash: Hash): IO[Option[(User, Profile)]] = (for {
     maybeId   <- OptionT(userStore.getByHashes((email, pwHash)))
     maybeUser <- OptionT(userStore.getByUserId(maybeId))
@@ -70,15 +73,9 @@ class UserServiceImpl(userStore: UserStore[IO])(clock: Clock) extends UserServic
   override def activeUsers(): IO[List[UserId]] =
     userStore.activeUsers()
 
-  val PseudoRE = "([a-zA-Z][a-zA-Z0-9_]+)".r
-  val PseudoMaxSize = 15
-  private[this] def checkNewPseudo(pseudo: String): IO[Unit] = pseudo match {
-    case PseudoRE(validated) if validated.size <= PseudoMaxSize =>
-      userStore.pseudoExists(Pseudo(validated))
-        .flatMap(IO.raiseWhen(_)(new RuntimeException(s"Pseudo $validated already exists. Please try a different one.")))
-    case _ =>
-      IO.raiseError(new RuntimeException(
-        s"Invalid pseudo. A Pseudo must start with a letter, can only contain letters, digits and underscores and be less than $PseudoMaxSize characters"))
-  }
+  private[this] def checkNewPseudo(pseudo: Pseudo): IO[Unit] = for {
+    exists <- userStore.pseudoExists(pseudo)
+    _      <- IOUtils.check(!exists, s"Pseudo ${pseudo.value} already exists. Please try a different one.")
+  } yield ()
 
 }

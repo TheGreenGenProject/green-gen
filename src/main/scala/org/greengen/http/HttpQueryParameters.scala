@@ -6,10 +6,11 @@ import org.greengen.core.event.EventId
 import org.greengen.core.poll.{PollId, PollOption}
 import org.greengen.core.post.PostId
 import org.greengen.core.tip.TipId
-import org.greengen.core.user.UserId
+import org.greengen.core.user.{Pseudo, UserId}
 import org.greengen.core._
 import org.greengen.core.notification.NotificationId
-import org.http4s.QueryParamDecoder
+import org.greengen.core.registration.ValidationCode
+import org.http4s.{ParseFailure, QueryParamDecoder}
 import org.http4s.dsl.io.QueryParamDecoderMatcher
 
 
@@ -136,7 +137,12 @@ object HttpQueryParameters {
   private[http] object MessageQueryParamMatcher extends QueryParamDecoderMatcher[String]("message")
   private[http] object ReasonQueryParamMatcher extends QueryParamDecoderMatcher[String]("reason")
   private[http] object ProfileIntroductionQueryParamMatcher extends QueryParamDecoderMatcher[String]("profile-introduction")
-  private[http] object PseudoQueryParamMatcher extends QueryParamDecoderMatcher[String]("pseudo")
+  private[http] object PseudoQueryParamMatcher extends QueryParamDecoderMatcher[Pseudo]("pseudo")
+  private[http] implicit lazy val pseudoParamDecoder: QueryParamDecoder[Pseudo] = QueryParamDecoder[String]
+    .emap(Pseudo.from(_).left.map(err => ParseFailure(err, err)))
+  private[http] object ValidationCodeQueryParamMatcher extends QueryParamDecoderMatcher[ValidationCode]("validation-code")
+  private[http] implicit lazy val validationCodeParamDecoder: QueryParamDecoder[ValidationCode] = QueryParamDecoder[String]
+    .emap(ValidationCode.from(_).left.map(err => ParseFailure(err, err)))
 
   // TODO add check on hexa string length - since it is a MD5
   private[http] object EmailHashQueryParamMatcher extends QueryParamDecoderMatcher[Hash]("email-hash")

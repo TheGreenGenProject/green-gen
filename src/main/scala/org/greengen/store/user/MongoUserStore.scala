@@ -47,6 +47,12 @@ class MongoUserStore(db: MongoDatabase)
         .map(_.toOption)
   }
 
+  override def emailExists(emailHash: Hash): IO[Boolean] =  firstOptionIO {
+    usersCollection
+      .find(eql("credentials.email_hash",    emailHash.toString))
+      .first()
+  }.map(_.isDefined)
+
   override def getByHashes(hashes: (Hash, Hash)): IO[Option[UserId]] = firstOptionIO {
     val (emailHash, pwHash) = hashes
     usersCollection

@@ -5,7 +5,7 @@ import org.greengen.core.{Hash, UTCTimestamp}
 trait UserService[F[_]] {
 
   // Creates a new user
-  def create(pseudo: String, emailHash: Hash, pwHash: Hash, introduction: String): F[(User,Profile)]
+  def create(pseudo: Pseudo, emailHash: Hash, pwHash: Hash, introduction: String): F[(User,Profile)]
 
   // Delete a user
   def delete(id: UserId): F[Unit]
@@ -25,6 +25,8 @@ trait UserService[F[_]] {
   def byPseudoPrefix(prefix: String): F[List[UserId]]
 
   def profile(id: UserId): F[Option[Profile]]
+
+  def emailExists(email: Hash): F[Boolean]
 
   def byHash(email: Hash, pwHash: Hash): F[Option[(User, Profile)]]
 

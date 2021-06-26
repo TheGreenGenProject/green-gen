@@ -12,7 +12,7 @@ import org.greengen.core.notification.NotificationService
 import org.greengen.core.poll.{PollId, PollOption, PollService}
 import org.greengen.core.post._
 import org.greengen.core.tip.{TipId, TipService}
-import org.greengen.core.user.{UserId, UserService}
+import org.greengen.core.user.{Pseudo, UserId, UserService}
 
 
 
@@ -197,7 +197,7 @@ object TestData {
     emailHash <- IO.fromOption(Hash.md5("chris@green-gen.org"))(fail("Couldn't hash email"))
     pwHash    <- IO.fromOption(Hash.md5("gogogo"))(fail("Couldn't hash password"))
     _         <- userService.create(
-                    pseudo       = "Chris",
+                    pseudo       = Pseudo("Chris"),
                     emailHash    = emailHash ,
                     pwHash       = pwHash,
                     introduction = "Feels good to be the Boss !")
@@ -208,7 +208,7 @@ object TestData {
     emailHash <- IO.fromOption(Hash.md5("elisa@green-gen.org"))(fail("Couldn't hash email"))
     pwHash    <- IO.fromOption(Hash.md5("gogogo"))(fail("Couldn't hash password"))
     _         <- userService.create(
-                    pseudo       = "Elisa",
+                    pseudo       = Pseudo("Elisa"),
                     emailHash    = emailHash ,
                     pwHash       = pwHash,
                     introduction = "Green General !")
@@ -219,7 +219,7 @@ object TestData {
     emailHash <- IO.fromOption(Hash.md5("blackcat@green-gen.org"))(fail("Couldn't hash email"))
     pwHash    <- IO.fromOption(Hash.md5("gogogo"))(fail("Couldn't hash password"))
     _         <- userService.create(
-      pseudo       = "TheCat",
+      pseudo       = Pseudo("TheCat"),
       emailHash    = emailHash ,
       pwHash       = pwHash,
       introduction = "Miaou !")
@@ -230,7 +230,7 @@ object TestData {
     emailHash <- IO.fromOption(Hash.md5("docsquirrel@green-gen.org"))(fail("Couldn't hash email"))
     pwHash    <- IO.fromOption(Hash.md5("gogogo"))(fail("Couldn't hash password"))
     _         <- userService.create(
-      pseudo       = "DocSquirrel",
+      pseudo       = Pseudo("DocSquirrel"),
       emailHash    = emailHash ,
       pwHash       = pwHash,
       introduction = "DocSquirrel can answer all your questions about our little furry friends and animals in general.\nNature lover and squirrel feeder.")

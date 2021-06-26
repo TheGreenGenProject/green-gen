@@ -15,6 +15,7 @@ import org.greengen.http.pin.HttpPinService
 import org.greengen.http.poll.HttpPollService
 import org.greengen.http.post.HttpPostService
 import org.greengen.http.ranking.HttpRankingService
+import org.greengen.http.registration.HttpRegistrationService
 import org.greengen.http.tip.HttpTipService
 import org.greengen.http.user.HttpUserService
 import org.greengen.http.wall.HttpWallService
@@ -31,6 +32,7 @@ import org.greengen.impl.pin.PinServiceImpl
 import org.greengen.impl.poll.PollServiceImpl
 import org.greengen.impl.post.PostServiceImpl
 import org.greengen.impl.ranking.RankingServiceImpl
+import org.greengen.impl.registration.RegistrationServiceImpl
 import org.greengen.impl.reminder.ReminderServiceImpl
 import org.greengen.impl.tip.TipServiceImpl
 import org.greengen.impl.user.UserServiceImpl
@@ -48,6 +50,7 @@ import org.greengen.store.notification.InMemoryNotificationStore
 import org.greengen.store.pin.InMemoryPinStore
 import org.greengen.store.poll.InMemoryPollStore
 import org.greengen.store.post.InMemoryPostStore
+import org.greengen.store.registration.InMemoryRegistrationStore
 import org.greengen.store.tip.InMemoryTipStore
 import org.greengen.store.user.InMemoryUserStore
 import org.greengen.store.wall.InMemoryWallStore
@@ -68,6 +71,7 @@ object InMemoryGreenGenServer extends App {
   val clock = Clock()
   val userService = new UserServiceImpl(new InMemoryUserStore)(clock)
   val authService = new AuthServiceImpl(new InMemoryAuthStore)(clock, userService)
+  val registrationService = new RegistrationServiceImpl(new InMemoryRegistrationStore(clock))(clock, userService)
   val notificationService = new NotificationServiceImpl(new InMemoryNotificationStore)(clock, userService)
   val followerService = new FollowerServiceImpl(new InMemoryFollowerStore)(clock, userService, notificationService)
   val tipService = new TipServiceImpl(new InMemoryTipStore)(clock, userService)
@@ -99,7 +103,7 @@ object InMemoryGreenGenServer extends App {
   // Routes
   val nonAuthRoutes =
     HttpAuthService.nonAuthRoutes(authService) <+>
-    HttpUserService.nonAuthRoutes(userService)
+    HttpRegistrationService.nonAuthRoutes(registrationService)
   val authRoutes =
     authMiddleware(HttpPostService.routes(clock, postService)) <+>
     authMiddleware(HttpFollowerService.routes(followerService)) <+>
