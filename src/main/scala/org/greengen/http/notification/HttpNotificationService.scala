@@ -14,14 +14,16 @@ import org.greengen.http.HttpQueryParameters._
 
 object HttpNotificationService {
 
-  val PageSize = 10
+  val PageSize = 25
 
   def routes(clock: Clock, service: NotificationService[IO]) = AuthedRoutes.of[UserId, IO] {
     // GET
     case GET -> Root / "notification" / "by-id" / UUIDVar(id) as _ =>
       service.byId(NotificationId(UUID.from(id))).flatMap(r => Ok(r.asJson))
-    case GET -> Root / "notification" / "all" / "unread" / IntVar(page) as userId =>
-      service.byUser(userId, Page(page, PageSize)).flatMap(r => Ok(r.asJson))
+    case GET -> Root / "notification" / "all" / IntVar(page) as userId =>
+      service.byUser(userId, Page(page, PageSize), unreadOnly = false).flatMap(r => Ok(r.asJson))
+    case GET -> Root / "notification" / "all" / "unread" /IntVar(page) as userId =>
+      service.byUser(userId, Page(page, PageSize), unreadOnly = true).flatMap(r => Ok(r.asJson))
     case GET -> Root / "notification" / "has-some" as userId =>
       service.hasUnreadNotification(userId).flatMap(r => Ok(r.asJson))
     // POST
@@ -35,9 +37,6 @@ object HttpNotificationService {
         dispatched <- service.dispatch(notif, r.users)
         res <- Ok(dispatched.asJson)
       } yield res
-    case POST -> Root / "notification" / "platform" :?
-      MessageQueryParamMatcher(msg) as _ =>
-      service.platform(msg).flatMap(r => Ok(r.asJson))
   }
 
 }

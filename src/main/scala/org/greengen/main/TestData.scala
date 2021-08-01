@@ -68,6 +68,11 @@ object TestData {
     // FreeText
     freeTextId1   <- makeFreeTextPost(postService, chrisId)
     freeTextId2   <- makeFreeTextPost(postService, chrisId)
+    _             <- makeFreeTextPost(postService, elisaId)
+    _             <- makeFreeTextPost(postService, elisaId)
+    _             <- makeFreeTextPost(postService, elisaId)
+    _             <- postTipsFromAuthor(postService, tipService, elisaId)
+    _             <- makeCountedFreeTextPost(postService, elisaId, 100)
     // Repost
     _             <- makeRepost(postService, elisaId, freeTextId1)
     _             <- makeRepost(postService, docsquirrelId, freeTextId2)
@@ -123,11 +128,24 @@ object TestData {
 
   // Post Helpers
 
+  private[this] def makeCountedFreeTextPost(postService: PostService[IO], userId: UserId, count: Int): IO[Unit] = for {
+    seq <- IO((1 to count).toList)
+    _   <- seq.map { n => postService.post(FreeTextPost(
+      PostId.newId,
+      userId,
+      s"$n - This is a counted free-text #ecology #green post.",
+      List(myself),
+      now(),
+      ht("ecology", "green", "environment","env","noplanetb","plant-based","vegan-metal")))
+    }.sequence
+  } yield ()
+
+
   private[this] def makeFreeTextPost(postService: PostService[IO], userId: UserId): IO[PostId] =
     postService.post(FreeTextPost(
       PostId.newId,
       userId,
-      "This is a free-text post",
+      "This is a free-text post about #ecology, #green, #env, #environment, #plantbased, #veganmetal, #noplanetb",
       List(myself),
       now(),
       ht("ecology", "green", "environment","env","noplanetb","plant-based","vegan-metal")))

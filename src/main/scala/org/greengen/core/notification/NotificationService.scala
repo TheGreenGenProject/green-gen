@@ -6,7 +6,7 @@ import org.greengen.core.user.UserId
 trait NotificationService[F[_]] {
 
   // True if there is unread notifications for the given user
-  def hasUnreadNotification(userId: UserId):F[Boolean]
+  def hasUnreadNotification(userId: UserId): F[Boolean]
 
   def byId(id: NotificationId): F[Option[Notification]]
 
@@ -14,7 +14,7 @@ trait NotificationService[F[_]] {
   def dispatch(notif: Notification, users: List[UserId]): F[Unit]
 
   // Retrieve notifications for a given user id
-  def byUser(id: UserId, page: Page, unreadOnly: Boolean = true): F[List[Notification]]
+  def byUser(id: UserId, page: Page, unreadOnly: Boolean): F[List[NotificationWithReadStatus]]
 
   // Mark a notification as read
   def markAsRead(id: UserId, nid: NotificationId): F[Unit]

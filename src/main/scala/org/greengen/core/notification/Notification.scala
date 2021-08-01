@@ -35,3 +35,11 @@ object Notification {
     Notification(NotificationId.newId, content, clock.now())
 }
 
+case class NotificationWithReadStatus(
+  notification: Notification,
+  status: ReadStatus)
+
+sealed trait ReadStatus
+case class Read(timestamp: UTCTimestamp) extends ReadStatus
+case object Unread extends ReadStatus
+

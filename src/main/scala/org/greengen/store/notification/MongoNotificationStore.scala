@@ -1,14 +1,14 @@
 package org.greengen.store.notification
 
 import cats.effect.{ContextShift, IO}
-import org.greengen.core.notification.{Notification, NotificationId}
-import com.mongodb.client.model.Filters.{and, eq => eql, in}
+import org.greengen.core.notification.{Notification, NotificationId, NotificationWithReadStatus, Read, Unread}
+import com.mongodb.client.model.Filters.{and, in, eq => eql}
 import com.mongodb.client.model.UpdateOptions
 import com.mongodb.client.model.Sorts.descending
-import com.mongodb.client.model.Updates.{combine, setOnInsert}
-import org.greengen.core.{Clock, Page}
+import com.mongodb.client.model.Updates.{combine, setOnInsert, set}
+import org.greengen.core.{Clock, Page, UTCTimestamp}
 import org.greengen.core.user.UserId
-import org.mongodb.scala.MongoDatabase
+import org.mongodb.scala.{Document, MongoDatabase}
 import org.greengen.db.mongo.Conversions
 import org.greengen.db.mongo.Schema
 
@@ -34,7 +34,9 @@ class MongoNotificationStore(db: MongoDatabase, clock: Clock)(implicit cs: Conte
 
   override def hasUnreadNotifications(userId: UserId): IO[Boolean] = firstOptionIO {
     notificationCollection
-      .find(eql("user_id", userId.value.uuid))
+      .find(and(
+        eql("user_id", userId.value.uuid),
+        eql("status", "unread")))
       .limit(1)
   }.map(_.isDefined)
 
@@ -45,16 +47,22 @@ class MongoNotificationStore(db: MongoDatabase, clock: Clock)(implicit cs: Conte
       .map(docToNotif(_).toOption)
   }
 
-  override def getQueueForUser(userId: UserId, page: Page): IO[List[Notification]] = for {
-    ids <- toListIO {
+  override def getQueueForUser(userId: UserId, page: Page, unreadOnly: Boolean): IO[List[NotificationWithReadStatus]] = for {
+    statuses <- IO(if(unreadOnly) Set("unread") else Set("read","unread"))
+    idsAndStatuses <- toListIO {
       notificationCollection
-        .find(eql("user_id", userId.value.uuid))
+        .find(and(
+          eql("user_id", userId.value.uuid),
+          in("status", statuses)
+        ))
         .sort(descending("timestamp"))
         .paged(page)
-        .map(asNotificationId)
+        .map(asNotificationIdWithReadStatus)
     }
-    notifs <- getNotifications(ids)
-  } yield notifs
+    cache = idsAndStatuses.toMap
+    notifs        <- getNotifications(idsAndStatuses.map(_._1))
+    withStatus    <- IO(notifs.flatMap(notif => cache.get(notif.id).map(status => NotificationWithReadStatus(notif, status))))
+  } yield withStatus
 
   override def addToUserQueue(userId: UserId, notificationId: NotificationId): IO[Unit] = unitIO {
     notificationCollection
@@ -64,9 +72,22 @@ class MongoNotificationStore(db: MongoDatabase, clock: Clock)(implicit cs: Conte
       combine(
         setOnInsert("user_id", userId.value.uuid),
         setOnInsert("notification_id", notificationId.id.uuid),
-        setOnInsert("timestamp", clock.now().value)
+        setOnInsert("timestamp", clock.now().value),
+        setOnInsert("status", "unread"),
+        setOnInsert("read_timestamp", null),
       ),
       (new UpdateOptions).upsert(true))
+  }
+
+  override def markAsRead(userId: UserId, notificationId: NotificationId): IO[Unit] = unitIO {
+    notificationCollection
+      .updateOne(and(
+        eql("user_id", userId.value.uuid),
+        eql("notification_id", notificationId.id.uuid)),
+        combine(
+          set("status", "read"),
+          set("read_timestamp", clock.now().value),
+        ))
   }
 
   override def removeFromUserQueue(userId: UserId, notificationId: NotificationId): IO[Unit] = unitIO {
@@ -85,4 +106,13 @@ class MongoNotificationStore(db: MongoDatabase, clock: Clock)(implicit cs: Conte
       .map(docToNotif(_).toOption)
   }.map(_.flatten)
 
+  private[this] def asNotificationIdWithReadStatus(doc: Document) =
+    (asNotificationId(doc), asReadStatus(doc))
+
+  private[this] def asReadStatus(doc: Document) =
+    (doc.getString("status"), Option(doc.getLong("read_timestamp"))) match {
+      case ("read", Some(tmstp)) => Read(UTCTimestamp(tmstp))
+      case ("unread", _)         => Unread
+      case _                     => Unread
+    }
 }

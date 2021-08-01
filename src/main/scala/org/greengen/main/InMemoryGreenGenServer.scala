@@ -72,7 +72,7 @@ object InMemoryGreenGenServer extends App {
   val userService = new UserServiceImpl(new InMemoryUserStore)(clock)
   val authService = new AuthServiceImpl(new InMemoryAuthStore)(clock, userService)
   val registrationService = new RegistrationServiceImpl(new InMemoryRegistrationStore(clock))(clock, userService)
-  val notificationService = new NotificationServiceImpl(new InMemoryNotificationStore)(clock, userService)
+  val notificationService = new NotificationServiceImpl(new InMemoryNotificationStore(clock))(clock, userService)
   val followerService = new FollowerServiceImpl(new InMemoryFollowerStore)(clock, userService, notificationService)
   val tipService = new TipServiceImpl(new InMemoryTipStore)(clock, userService)
   val challengeService = new ChallengeServiceImpl(new InMemoryChallengeStore)(clock, userService, followerService, notificationService)
