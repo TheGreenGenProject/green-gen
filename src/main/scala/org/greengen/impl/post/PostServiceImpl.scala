@@ -25,12 +25,13 @@ class PostServiceImpl(postStore: PostStore[IO])
   } yield post.id
 
   override def repost(user: UserId, postId: PostId): IO[PostId] = for {
-    _ <- checkUser(user)
-    postOpt <- byId(postId)
-    Some(originalPost) = postOpt // FIXME
-    _ <- checkUser(originalPost.author)
+    _            <- checkUser(user)
+    postOpt      <- byId(postId)
+    originalPost <- IOUtils.from(postOpt, s"Cannot find original post ${postId} for Repost")
+    _            <- checkNotARepost(originalPost)
+    _            <- checkUser(originalPost.author)
     repostId = PostId.newId
-    _ <- post(RePost(repostId, user, postId, clock.now(), originalPost.hashtags))
+    _            <- post(RePost(repostId, user, postId, clock.now(), originalPost.hashtags))
   } yield repostId
 
   override def flag(flaggedBy: UserId, post: PostId, reason: Reason): IO[Unit] = for {
@@ -63,4 +64,14 @@ class PostServiceImpl(postStore: PostStore[IO])
     _ <- IOUtils.check(enabled, s"User $user is disabled")
   } yield ()
 
+  private[this] def checkNotARepost(post: Post) = for {
+    reposted  <- isRepost(post)
+    _         <- IOUtils.check(!reposted, s"Can't repost a repost")
+  } yield ()
+
+  private[this] def isRepost(post: Post): IO[Boolean] =
+    post match {
+      case _:RePost => IO(true)
+      case _        => IO(false)
+    }
 }
