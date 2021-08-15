@@ -3,7 +3,7 @@ package org.greengen.impl.user
 import cats.data.OptionT
 import cats.effect.IO
 import org.greengen.core.user._
-import org.greengen.core.{Clock, Hash, IOUtils}
+import org.greengen.core.{Clock, Hash, IOUtils, Page}
 import org.greengen.store.user.UserStore
 
 
@@ -51,8 +51,8 @@ class UserServiceImpl(userStore: UserStore[IO])(clock: Clock) extends UserServic
   override def byPseudo(pseudo: Pseudo): IO[Option[UserId]] =
     userStore.getByPseudo(pseudo)
 
-  override def byPseudoPrefix(prefix: String): IO[List[UserId]] =
-    userStore.getByPseudoPrefix(prefix)
+  override def byPseudoPrefix(prefix: String, page: Page): IO[List[UserId]] =
+    userStore.getByPseudoPrefix(prefix, page)
 
   override def profile(id: UserId): IO[Option[Profile]] = for {
     maybeUser <- userStore.getByUserId(id)

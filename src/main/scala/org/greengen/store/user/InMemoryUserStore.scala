@@ -2,7 +2,7 @@ package org.greengen.store.user
 
 import cats.data.OptionT
 import cats.effect.IO
-import org.greengen.core.Hash
+import org.greengen.core.{Hash, Page, PagedResult}
 import org.greengen.core.user.{Profile, Pseudo, User, UserId}
 
 import scala.collection.concurrent.TrieMap
@@ -53,10 +53,10 @@ class InMemoryUserStore extends UserStore[IO] {
   override def getByPseudo(pseudo: Pseudo): IO[Option[UserId]] =
     IO(byPseudos.get(pseudo))
 
-  override def getByPseudoPrefix(prefix: String): IO[List[UserId]] = IO {
-    byPseudos.collect { case (Pseudo(pseudo), id)
+  override def getByPseudoPrefix(prefix: String, page: Page): IO[List[UserId]] = IO {
+    PagedResult.page(byPseudos.collect { case (Pseudo(pseudo), id)
       if pseudo.toLowerCase.startsWith(prefix.toLowerCase) => id
-    }.toList
+    }.toList, page)
   }
 
   override def pseudoExists(pseudo: Pseudo): IO[Boolean] =

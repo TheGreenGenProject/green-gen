@@ -1,7 +1,7 @@
 package org.greengen.store.user
 
 import cats.effect.IO
-import org.greengen.core.Hash
+import org.greengen.core.{Hash, Page}
 import org.greengen.core.user.{Profile, Pseudo, User, UserId}
 import org.greengen.store.Store
 
@@ -22,7 +22,7 @@ trait UserStore[F[_]] extends Store[F] {
   def getByHashes(hashes: (Hash, Hash)): F[Option[UserId]]
 
   def getByPseudo(pseudo: Pseudo): F[Option[UserId]]
-  def getByPseudoPrefix(prefix: String): F[List[UserId]]
+  def getByPseudoPrefix(prefix: String, page: Page): F[List[UserId]]
   def pseudoExists(pseudo: Pseudo): F[Boolean]
 
   def checkUser(id: UserId): IO[Unit]

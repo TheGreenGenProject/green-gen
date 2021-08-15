@@ -1,6 +1,6 @@
 package org.greengen.core.user
 
-import org.greengen.core.{Hash, UTCTimestamp}
+import org.greengen.core.{Hash, Page, UTCTimestamp}
 
 trait UserService[F[_]] {
 
@@ -22,7 +22,7 @@ trait UserService[F[_]] {
 
   def byPseudo(pseudo: Pseudo): F[Option[UserId]]
 
-  def byPseudoPrefix(prefix: String): F[List[UserId]]
+  def byPseudoPrefix(prefix: String, page: Page): F[List[UserId]]
 
   def profile(id: UserId): F[Option[Profile]]
 

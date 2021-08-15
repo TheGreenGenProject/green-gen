@@ -2,9 +2,9 @@ package org.greengen.store.user
 
 import cats.effect.{ContextShift, IO}
 import com.mongodb.client.model.Filters.{and, regex, eq => eql}
-import com.mongodb.client.model.Updates.{set}
+import com.mongodb.client.model.Updates.set
 import org.greengen.core.user.{Profile, Pseudo, User, UserId}
-import org.greengen.core.{Hash, UUID}
+import org.greengen.core.{Hash, Page, UUID}
 import org.greengen.db.mongo.{Conversions, Schema}
 import org.mongodb.scala.MongoDatabase
 
@@ -75,10 +75,10 @@ class MongoUserStore(db: MongoDatabase)
       .map(UserId(_))
   }
 
-  override def getByPseudoPrefix(prefix: String): IO[List[UserId]] = toListIO {
+  override def getByPseudoPrefix(prefix: String, page: Page): IO[List[UserId]] = toListIO {
     usersCollection
       .find(regex("profile.pseudo", prefix + ".*"))
-      .limit(250) // FIXME
+      .paged(page)
       .map(_.getString("user_id"))
       .map(UUID.unsafeFrom(_))
       .map(UserId(_))
