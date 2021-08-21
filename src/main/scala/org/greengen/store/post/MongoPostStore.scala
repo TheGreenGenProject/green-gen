@@ -4,12 +4,13 @@ import java.util.concurrent.atomic.AtomicReference
 
 import cats.Monad
 import cats.effect.{ContextShift, IO}
-import com.mongodb.client.model.Aggregates.{sortByCount, unwind, limit}
-import com.mongodb.client.model.Filters.{all, eq => eql}
+import com.mongodb.client.model.Aggregates.{limit, sortByCount, unwind}
+import com.mongodb.client.model.Filters.{all, and, eq => eql, exists => exst}
+import com.mongodb.client.model.Sorts.descending
 import org.greengen.core.challenge.ChallengeId
-import org.greengen.core.post.{Post, PostId}
+import org.greengen.core.post.{AllPosts, ChallengePosts, EventPosts, FreeTextPosts, PollPosts, Post, PostId, SearchPostType, TipPosts}
 import org.greengen.core.user.UserId
-import org.greengen.core.{Duration, Hashtag, Reason, UTCTimestamp, UUID}
+import org.greengen.core.{Duration, Hashtag, Page, Reason, UTCTimestamp, UUID}
 import org.greengen.db.mongo.{Conversions, Schema}
 import org.mongodb.scala.MongoDatabase
 import org.mongodb.scala.bson.collection.immutable.Document
@@ -50,9 +51,13 @@ class MongoPostStore(db: MongoDatabase)
       .map(_.toOption)
   }
 
-  override def getByAuthor(author: UserId): IO[Set[PostId]] = toSetIO {
+  override def getByAuthor(author: UserId, postType: SearchPostType, page: Page): IO[List[PostId]] = toListIO {
     postsCollection
-      .find(eql("author", author.value.uuid))
+      .find(and(
+        eql("author", author.value.uuid),
+        postTypeAsMongoFilter(postType)))
+      .sort(descending("created"))
+      .paged(page)
       .map(_.getString("post_id"))
       .map(UUID.unsafeFrom)
       .map(PostId(_))
@@ -67,9 +72,13 @@ class MongoPostStore(db: MongoDatabase)
       .map(PostId(_))
   }
 
-  override def getByHashtags(tags: Set[Hashtag]): IO[Set[PostId]] = toSetIO {
+  override def getByHashtags(tags: Set[Hashtag], postType: SearchPostType, page: Page): IO[List[PostId]] = toListIO {
     postsCollection
-      .find(all("hashtags", tags.map(_.value).toArray:_*))
+      .find(and(
+        all("hashtags", tags.map(_.value).toArray:_*),
+        postTypeAsMongoFilter(postType)))
+      .sort(descending("created"))
+      .paged(page)
       .map(_.getString("post_id"))
       .map(UUID.unsafeFrom)
       .map(PostId(_))
@@ -130,4 +139,12 @@ class MongoPostStore(db: MongoDatabase)
   private[this] def now(): IO[UTCTimestamp] =
     IO(UTCTimestamp(System.currentTimeMillis()))
 
+  private[this] def postTypeAsMongoFilter(postType: SearchPostType) = postType match {
+    case AllPosts       => exst("original_post_id", false) // everything except reposts
+    case ChallengePosts => exst("challenge_id")
+    case PollPosts      => exst("poll_id")
+    case TipPosts       => exst("tip_id")
+    case EventPosts     => exst("event_id")
+    case FreeTextPosts  => exst("content")
+  }
 }

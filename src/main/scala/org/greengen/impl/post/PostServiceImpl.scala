@@ -48,11 +48,11 @@ class PostServiceImpl(postStore: PostStore[IO])
   override def byContent(challenge: ChallengeId): IO[Option[PostId]] =
     postStore.getByChallengeId(challenge)
 
-  override def byAuthor(userId: UserId): IO[Set[PostId]] =
-    postStore.getByAuthor(userId)
+  override def byAuthor(userId: UserId, postType: SearchPostType, page: Page): IO[List[PostId]] =
+    postStore.getByAuthor(userId, postType, page)
 
-  override def byHashtags(tags: Set[Hashtag]): IO[Set[PostId]] =
-    postStore.getByHashtags(tags)
+  override def byHashtags(tags: Set[Hashtag], postType: SearchPostType, page: Page): IO[List[PostId]] =
+    postStore.getByHashtags(tags, postType, page)
 
   override def trendByHashtags(n: Int): IO[List[(Int, Hashtag)]] =
     postStore.trendByHashtags(n)

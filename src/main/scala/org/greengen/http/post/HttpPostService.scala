@@ -24,17 +24,17 @@ object HttpPostService {
       service.byId(PostId(UUID.from(id))).flatMap(r => Ok(r.asJson))
     case GET -> Root / "post" / "by-content" / "challenge" / UUIDVar(id) as _ =>
       service.byContent(ChallengeId(UUID.from(id))).flatMap(r => Ok(r.asJson))
-    case GET -> Root / "post" / "by-author" / UUIDVar(id) / IntVar(page) as _ =>
-      service.byAuthor(UserId(UUID.from(id)))
-        .map(r => r.toList.sortBy(_.value.uuid))
-        .map(r => PagedResult.page(r, Page(page, by=PageSize)))
+    case GET -> Root / "post" / postType / "by-author" / UUIDVar(id) / IntVar(page) as _ =>
+      val searchPostType = SearchPostType.fromString(postType)
+          .getOrElse(AllPosts)
+      service.byAuthor(UserId(UUID.from(id)), searchPostType, Page(page, by=PageSize))
         .flatMap(r => Ok(r.asJson))
-    case GET -> Root / "post" / "by-hashtag" / tags / IntVar(page) as _ =>
+    case GET -> Root / "post" / postType / "by-hashtag" / tags / IntVar(page) as _ =>
+      val searchPostType = SearchPostType.fromString(postType)
+        .getOrElse(AllPosts)
       Try(tags.split('+').map(Hashtag(_)).toSet)
         .fold( _ => BadRequest(),
-              service.byHashtags(_)
-                .map(r => r.toList.sortBy(_.value.uuid))
-                .map(r => PagedResult.page(r, Page(page, by=PageSize)))
+              service.byHashtags(_, searchPostType, Page(page, by=PageSize))
                 .flatMap(r => Ok(r.asJson)))
     case GET -> Root / "post" / "is-flagged" / UUIDVar(id) as _ =>
       service.isFlagged(PostId(UUID.from(id))).flatMap(r => Ok(r.asJson))

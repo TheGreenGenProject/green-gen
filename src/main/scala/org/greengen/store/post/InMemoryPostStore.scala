@@ -1,9 +1,9 @@
 package org.greengen.store.post
 
 import cats.effect.IO
-import org.greengen.core.{Hashtag, Reason, UTCTimestamp}
+import org.greengen.core.{Hashtag, Page, PagedResult, Reason, UTCTimestamp}
 import org.greengen.core.challenge.ChallengeId
-import org.greengen.core.post.{ChallengePost, Post, PostId}
+import org.greengen.core.post.{AllPosts, ChallengePost, ChallengePosts, EventPost, EventPosts, FreeTextPost, FreeTextPosts, PollPost, PollPosts, Post, PostId, RePost, SearchPostType, TipPost, TipPosts}
 import org.greengen.core.user.UserId
 
 import scala.collection.concurrent.TrieMap
@@ -32,17 +32,22 @@ class InMemoryPostStore extends PostStore[IO] {
   override def getPostById(postId: PostId): IO[Option[Post]] =
     IO(posts.get(postId))
 
-  override def getByAuthor(author: UserId): IO[Set[PostId]] =
-    IO(authors.getOrElse(author, Set()))
+  override def getByAuthor(author: UserId, postType: SearchPostType, page: Page): IO[List[PostId]] =
+    for {
+      all <- IO(authors.getOrElse(author, Set()))
+      res <- applySearch(all, postType, page)
+    } yield res
 
   override def getByChallengeId(challengeId: ChallengeId): IO[Option[PostId]] =
     IO(challenges.get(challengeId))
 
-  override def getByHashtags(tags: Set[Hashtag]): IO[Set[PostId]] = IO {
-    tags
-      .map(tag => hashtags.getOrElse(tag, Set[PostId]()))
-      .reduce((a, b) => a.intersect(b))
-  }
+  override def getByHashtags(tags: Set[Hashtag], postType: SearchPostType, page: Page): IO[List[PostId]] =
+    for {
+      all <- IO { tags
+        .map(tag => hashtags.getOrElse(tag, Set[PostId]()))
+        .reduce((a, b) => a.intersect(b)) }
+      res <- applySearch(all, postType, page)
+    } yield res
 
   override def trendByHashtags(n: Int): IO[List[(Int, Hashtag)]] = IO {
     hashtags.toList
@@ -92,5 +97,29 @@ class InMemoryPostStore extends PostStore[IO] {
 
   private[this] def indexByChallengeId(challengeId: ChallengeId, post: Post): Unit =
     challenges.put(challengeId, post.id)
+
+  // Search helpers
+
+  private[this] def applySearch(postIds: Set[PostId], postType: SearchPostType, page: Page): IO[List[PostId]] =
+    for {
+      filtered <- IO(postIds.filter(matchPostType(_, postType)).toList)
+      sorted   <- IO(filtered.sortBy(id => posts.get(id).map(- _.created.value).getOrElse(0L))) // order by desc
+      paged    <- IO(PagedResult.page(sorted, page))
+    } yield paged
+
+  private[this] def matchPostType(postId: PostId, postType: SearchPostType): Boolean =
+    posts.get(postId).exists(matchPostType(_, postType))
+
+  private[this] def matchPostType(post: Post, postType: SearchPostType): Boolean =
+    (post, postType) match {
+      case (_: RePost, _)                     => false // ignoring all reposts
+      case (_, AllPosts)                      => true
+      case (_: TipPost, TipPosts)             => true
+      case (_: ChallengePost, ChallengePosts) => true
+      case (_: PollPost, PollPosts)           => true
+      case (_: EventPost, EventPosts)         => true
+      case (_: FreeTextPost, FreeTextPosts)   => true
+      case _                                  => false
+    }
 
 }

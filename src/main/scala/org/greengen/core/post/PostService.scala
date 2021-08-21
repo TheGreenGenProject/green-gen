@@ -1,7 +1,7 @@
 package org.greengen.core.post
 
 import org.greengen.core.challenge.ChallengeId
-import org.greengen.core.{Hashtag, Reason}
+import org.greengen.core.{Hashtag, Page, Reason}
 import org.greengen.core.user.UserId
 
 trait PostService[F[_]] {
@@ -20,9 +20,9 @@ trait PostService[F[_]] {
 
   def byContent(challenge: ChallengeId): F[Option[PostId]]
 
-  def byAuthor(userId: UserId): F[Set[PostId]]
+  def byAuthor(userId: UserId, postType: SearchPostType, page: Page): F[List[PostId]]
 
-  def byHashtags(hashtags: Set[Hashtag]): F[Set[PostId]]
+  def byHashtags(hashtags: Set[Hashtag], postType: SearchPostType, page: Page): F[List[PostId]]
 
   def trendByHashtags(n: Int): F[List[(Int, Hashtag)]]
 

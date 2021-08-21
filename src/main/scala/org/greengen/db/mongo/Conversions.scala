@@ -44,7 +44,7 @@ object Conversions {
   // FIXME Unefficient pagination using skip
   implicit class paged[T](obs: FindObservable[T]) {
     def paged(page: Page): FindObservable[T] =
-      obs.skip(math.min(0, page.n-1) * page.by).limit(page.by)
+      obs.skip(math.max(0, page.n-1) * page.by).limit(page.by)
   }
 
   // Helpers
