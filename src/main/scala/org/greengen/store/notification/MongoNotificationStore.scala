@@ -48,12 +48,14 @@ class MongoNotificationStore(db: MongoDatabase, clock: Clock)(implicit cs: Conte
   }
 
   override def getQueueForUser(userId: UserId, page: Page, unreadOnly: Boolean): IO[List[NotificationWithReadStatus]] = for {
-    statuses <- IO(if(unreadOnly) Set("unread") else Set("read","unread"))
+    statuses <- IO {
+      if(unreadOnly) in("status", "unread")
+      else in("status","read","unread") }
     idsAndStatuses <- toListIO {
       notificationCollection
         .find(and(
           eql("user_id", userId.value.uuid),
-          in("status", statuses)
+          statuses
         ))
         .sort(descending("timestamp"))
         .paged(page)
