@@ -17,7 +17,7 @@ class ConversationServiceImpl(conversationStore: ConversationStore[IO])
     conversationStore.getConversation(postId)
       .map(_.getOrElse(ConversationId.newId))
 
-  override def countMessages(postId: PostId): IO[Int] =
+  override def countMessages(postId: PostId): IO[Long] =
     conversationStore.countMessages(postId)
 
   override def getMessage(messageId: MessageId): IO[Option[Message]] =

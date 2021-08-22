@@ -41,7 +41,7 @@ import org.greengen.impl.wall.WallServiceImpl
 import org.greengen.main.InMemoryGreenGenServer.{clock, notificationService, userService}
 import org.greengen.store.auth.InMemoryAuthStore
 import org.greengen.store.challenge.MongoChallengeStore
-import org.greengen.store.conversation.InMemoryConversationStore
+import org.greengen.store.conversation.{InMemoryConversationStore, MongoConversationStore}
 import org.greengen.store.event.InMemoryEventStore
 import org.greengen.store.feed.MongoFeedStore
 import org.greengen.store.follower.MongoFollowerStore
@@ -91,7 +91,7 @@ object GreenGenServer extends App {
   val pinService = new PinServiceImpl(new MongoPinStore(db))(clock, userService, postService)
   val eventService = new EventServiceImpl(new InMemoryEventStore)(clock, userService, notificationService)
   val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
-  val conversationService = new ConversationServiceImpl(new InMemoryConversationStore)(clock, userService, notificationService)
+  val conversationService = new ConversationServiceImpl(new MongoConversationStore(db, clock))(clock, userService, notificationService)
   val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
 
   // FIXME Populating data for testing purpose

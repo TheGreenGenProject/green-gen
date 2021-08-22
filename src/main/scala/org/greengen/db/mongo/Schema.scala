@@ -9,6 +9,7 @@ import org.greengen.core.post._
 import org.greengen.core.tip.{Tip, TipId}
 import org.greengen.core.user.{Profile, Pseudo, User, UserId}
 import org.greengen.core._
+import org.greengen.core.conversation.{Conversation, ConversationId, Message, MessageId}
 import org.greengen.db.mongo.Conversions.hexToBytes
 import org.mongodb.scala.bson.collection.Document
 import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonInt64, BsonString}
@@ -95,6 +96,7 @@ object Schema {
       case post: ChallengePost => builder.addOne("challenge_id" -> BsonString(post.challenge.value.uuid))
       case post: TipPost       => builder.addOne("tip_id"  -> BsonString(post.tip.value.uuid))
       case post: PollPost      => builder.addOne("poll_id" -> BsonString(post.poll.value.uuid))
+      case post: EventPost     => builder.addOne("event_id" -> BsonString(post.event.value.uuid))
     }
     builder.result()
   }
@@ -340,6 +342,35 @@ object Schema {
       .map(UTCTimestamp(_))
       .toRight(s"No field 'timestamp' found in $doc")
   } yield PinnedPost(postId, timestamp)
+
+
+  // Conversation
+
+  def messageToDoc(message: Message): Document =
+    Document(
+      "message_id" -> message.id.value.uuid,
+      "author"     -> message.user.value.uuid,
+      "timestamp"  -> message.timestamp.value,
+      "content"    -> message.content
+    )
+
+  def docToMessage(doc: Document): Either[String, Message] = for {
+    uuid <- Option(doc.getString("message_id"))
+      .flatMap(UUID.from)
+      .map(MessageId(_))
+      .toRight(s"No field 'message_id' or invalid UUID found in $doc")
+    author <- Option(doc.getString("author"))
+      .flatMap(UUID.from)
+      .map(UserId(_))
+      .toRight(s"No field 'author' or invalid UUID found in $doc")
+    timestamp <- Option(doc.getLong("timestamp"))
+      .map(UTCTimestamp(_))
+      .toRight(s"No field 'created' found in $doc")
+    content <- Option(doc.getString("content"))
+      .toRight(s"No field 'content' found in $doc")
+  } yield Message(uuid, author, content, timestamp)
+
+  // Notifications
 
   def notifToDoc(notif: Notification): Document = {
     val contentFields: Document = notif.content match {

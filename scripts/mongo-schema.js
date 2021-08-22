@@ -24,6 +24,10 @@ db.posts.challenges.challenged.drop()
 db.posts.challenges.reports.drop()
 db.notifications.drop()
 db.notifications.content.drop()
+db.conversations.messages.drop()
+db.conversations.messages.flags.drop()
+db.conversations.drop()
+db.conversations.posts.drop()
 
 // Users
 db.users.createIndex({"user_id": 1}, { unique: true })
@@ -55,3 +59,10 @@ db.hashtags.createIndex({"hashtag": 1, "user_id": 1}, {unique: true})
 // Notifications
 db.notifications.createIndex({"user_id": 1, "notification_id": 1, "timestamp": 1}, {unique: true})
 db.notifications.content.createIndex({"user_id": 1, "notification_id": 1}, {unique: true})
+// Conversations
+db.conversations.messages.createIndex({"message_id": 1}, {unique: true})
+db.conversations.messages.flags.createIndex({"message_id": 1, "user_id": 1}, {unique: true})
+db.conversations.messages.createIndex({"message_id": 1, "timestamp": 1}, {unique: true})
+db.conversations.createIndex({"conversation_id": 1, "message_id": 1}, {unique: true})
+db.conversations.posts.createIndex({"post_id": 1}, {unique: true})
+db.conversations.posts.createIndex({"conversation_id": 1}, {unique: true})

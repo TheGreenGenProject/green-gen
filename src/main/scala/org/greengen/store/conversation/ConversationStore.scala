@@ -11,7 +11,7 @@ trait ConversationStore[F[_]] extends Store[F] {
 
   def getConversation(postId: PostId): F[Option[ConversationId]]
 
-  def countMessages(postId: PostId): F[Int]
+  def countMessages(postId: PostId): F[Long]
 
   def getMessage(messageId: MessageId): F[Option[Message]]
 
@@ -29,6 +29,6 @@ trait ConversationStore[F[_]] extends Store[F] {
 
   def hasUserFlagged(userId: UserId, messageId: MessageId): F[Boolean]
 
-  def getFlagCount(messageId: MessageId): F[Int]
+  def getFlagCount(messageId: MessageId): F[Long]
 
 }

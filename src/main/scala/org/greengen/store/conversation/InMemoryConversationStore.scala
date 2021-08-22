@@ -20,7 +20,7 @@ class InMemoryConversationStore extends ConversationStore[IO] {
   override def getConversation(postId: PostId): IO[Option[ConversationId]] =
     IO(byPosts.get(postId))
 
-  override def countMessages(postId: PostId): IO[Int] = for {
+  override def countMessages(postId: PostId): IO[Long] = for {
     conversationId <- getConversation(postId)
     count          <- IO(conversationId.flatMap(byConversations.get(_)).map(_.size).getOrElse(0))
   } yield count
@@ -60,7 +60,7 @@ class InMemoryConversationStore extends ConversationStore[IO] {
   override def isFlagged(messageId: MessageId): IO[Boolean] =
     IO(reports.getOrElse(messageId, Set()).nonEmpty)
 
-  override def getFlagCount(messageId: MessageId): IO[Int] =
+  override def getFlagCount(messageId: MessageId): IO[Long] =
     IO(reports.getOrElse(messageId, Set()).size)
 
   override def hasUserFlagged(userId: UserId, messageId: MessageId): IO[Boolean] = {

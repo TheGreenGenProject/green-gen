@@ -9,7 +9,7 @@ trait ConversationService[F[_]] {
 
   def getConversation(postId: PostId): F[ConversationId]
 
-  def countMessages(postId: PostId): F[Int]
+  def countMessages(postId: PostId): F[Long]
 
   def getMessage(messageId: MessageId): F[Option[Message]]
 
