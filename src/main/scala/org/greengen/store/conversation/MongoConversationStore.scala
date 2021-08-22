@@ -21,7 +21,7 @@ class MongoConversationStore(db: MongoDatabase, clock: Clock)(implicit cs: Conte
   import org.greengen.db.mongo.Schema._
 
   val MessagesCollection = "conversations.messages"
-  val FlaggedMessagesCollection = "conversations.messages.flags"
+  val FlaggedMessagesCollection = "conversations.messages.flagged"
   val ConversationsCollection = "conversations"
   val PostConversationsCollection = "conversations.posts"
 
@@ -43,12 +43,12 @@ class MongoConversationStore(db: MongoDatabase, clock: Clock)(implicit cs: Conte
     res            <- OptionT.liftF(countConversationMessages(conversationId))
   } yield res).getOrElse(0L)
 
-  override def getMessage(messageId: MessageId): IO[Option[Message]] = firstOptionIO {
+  override def getMessage(messageId: MessageId): IO[Option[Message]] = flattenFirstOptionIO {
     messageCollection
       .find(eql("message_id", messageId.value.uuid))
       .limit(1)
       .map(docToMessage(_).toOption)
-  }.map(_.flatten)
+  }
 
   override def getMessages(conversationId: ConversationId, page: Page): IO[List[MessageId]] = toListIO {
     conversationCollection

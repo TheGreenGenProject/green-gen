@@ -6,6 +6,7 @@ import cats.effect.{ContextShift, IO}
 import org.greengen.core.challenge.ChallengeId
 import org.greengen.core.conversation.{ConversationId, MessageId}
 import org.greengen.core.notification.NotificationId
+import org.greengen.core.poll.PollId
 import org.greengen.core.post.PostId
 import org.greengen.core.tip.TipId
 import org.greengen.core.user.UserId
@@ -28,6 +29,9 @@ object Conversions {
 
   def firstOptionIO[T](obs: => Observable[T])(implicit cs: ContextShift[IO]): IO[Option[T]] =
     IO.fromFuture(IO(obs.headOption()))
+
+  def flattenFirstOptionIO[T](obs: => Observable[Option[T]])(implicit cs: ContextShift[IO]): IO[Option[T]] =
+    IO.fromFuture(IO(obs.headOption())).map(_.flatten)
 
   def toIO[T](obs: => Observable[T])(implicit cs: ContextShift[IO]): IO[Seq[T]] =
     IO.fromFuture(IO(obs.toFuture()))
@@ -71,7 +75,7 @@ object Conversions {
     ChallengeId(UUID.unsafeFrom(doc.getString("challenge_id")))
 
   def asPollId(doc: Document) =
-    ChallengeId(UUID.unsafeFrom(doc.getString("poll_id")))
+    PollId(UUID.unsafeFrom(doc.getString("poll_id")))
 
   def asTipId(doc: Document) =
     TipId(UUID.unsafeFrom(doc.getString("tip_id")))

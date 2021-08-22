@@ -4,7 +4,7 @@ import org.greengen.core.challenge._
 import org.greengen.core.event.EventId
 import org.greengen.core.notification._
 import org.greengen.core.pin.PinnedPost
-import org.greengen.core.poll.PollId
+import org.greengen.core.poll.{Poll, PollAnswer, PollId, PollOption}
 import org.greengen.core.post._
 import org.greengen.core.tip.{Tip, TipId}
 import org.greengen.core.user.{Profile, Pseudo, User, UserId}
@@ -325,6 +325,54 @@ object Schema {
       "author"  -> tip.author.value.uuid,
       "content" -> tip.content,
       "created" -> tip.created.value
+    )
+
+  def docToPoll(doc: Document): Either[String, Poll] = for {
+    uuid <- Option(doc.getString("poll_id"))
+      .flatMap(UUID.from)
+      .map(PollId(_))
+      .toRight(s"No field 'poll_id' or invalid UUID found in $doc")
+    author <- Option(doc.getString("author"))
+      .flatMap(UUID.from)
+      .map(UserId(_))
+      .toRight(s"No field 'author' or invalid UUID found in $doc")
+    timestamp <- Option(doc.getLong("timestamp"))
+      .map(UTCTimestamp(_))
+      .toRight(s"No field 'timestamp' found in $doc")
+    question <- Option(doc.getString("question"))
+      .toRight(s"No field 'question' found in $doc")
+    options <- Option(doc.getList("options", classOf[String]).asScala.toList.map(PollOption(_)))
+      .toRight(s"No field 'options' found in $doc")
+  } yield Poll(uuid, author, question, options, timestamp)
+
+  def pollToDoc(poll: Poll): Document =
+    Document(
+      "poll_id"  -> poll.id.value.uuid,
+      "author"  -> poll.author.value.uuid,
+      "question" -> poll.question,
+      "options" -> poll.options.map(_.value),
+      "timestamp" -> poll.timestamp.value
+    )
+
+  def docToPollAnswer(doc: Document): Either[String, PollAnswer] = for {
+    userId <- Option(doc.getString("user_id"))
+      .flatMap(UUID.from)
+      .map(UserId(_))
+      .toRight(s"No field 'user_id' or invalid UUID found in $doc")
+    option <- Option(doc.getString("option"))
+      .map(PollOption(_))
+      .toRight(s"No field 'author' or invalid UUID found in $doc")
+    timestamp <- Option(doc.getLong("timestamp"))
+      .map(UTCTimestamp(_))
+      .toRight(s"No field 'timestamp' found in $doc")
+  } yield PollAnswer(userId, option, timestamp)
+
+  def pollAnswerToDoc(pollId: PollId, answer: PollAnswer): Document =
+    Document(
+      "poll_id"  -> pollId.value.uuid,
+      "user_id"  -> answer.userId.value.uuid,
+      "option" -> answer.answer.value,
+      "timestamp" -> answer.timestamp.value
     )
 
   def pinnedPostToDoc(pp: PinnedPost): Document =
