@@ -2,7 +2,7 @@ package org.greengen.store.conversation
 
 import cats.data.OptionT
 import cats.effect.{ContextShift, IO}
-import com.mongodb.client.model.Filters.{and, eq => eql}
+import com.mongodb.client.model.Filters.{and, or, eq => eql}
 import com.mongodb.client.model.Sorts.descending
 import com.mongodb.client.model.Updates.{combine, set, setOnInsert}
 import org.greengen.core.conversation.{ConversationId, Message, MessageId}
@@ -15,6 +15,7 @@ import org.mongodb.scala.bson.collection.immutable.Document
 import org.mongodb.scala.model.UpdateOptions
 
 
+
 class MongoConversationStore(db: MongoDatabase, clock: Clock)(implicit cs: ContextShift[IO]) extends ConversationStore[IO] {
 
   import Conversions._
@@ -24,16 +25,29 @@ class MongoConversationStore(db: MongoDatabase, clock: Clock)(implicit cs: Conte
   val FlaggedMessagesCollection = "conversations.messages.flagged"
   val ConversationsCollection = "conversations"
   val PostConversationsCollection = "conversations.posts"
+  val PrivateConversationsCollection = "conversations.privates"
 
   val messageCollection = db.getCollection(MessagesCollection)
   val flaggedMessageCollection = db.getCollection(FlaggedMessagesCollection)
   val conversationCollection = db.getCollection(ConversationsCollection)
   val postConversationCollection = db.getCollection(PostConversationsCollection)
+  val privateConversationCollection = db.getCollection(PrivateConversationsCollection)
 
 
-  override def getConversation(postId: PostId): IO[Option[ConversationId]] =  firstOptionIO {
+  override def getConversation(postId: PostId): IO[Option[ConversationId]] = firstOptionIO {
     postConversationCollection
       .find(eql("post_id", postId.value.uuid))
+      .limit(1)
+      .map(asConversationId)
+  }
+
+  override def getPrivateConversation(author: UserId, dest: UserId): IO[Option[ConversationId]] = firstOptionIO {
+    privateConversationCollection
+      .find(or(
+        and(eql("user1", author.value.uuid),
+            eql("user2", dest.value.uuid)),
+        and(eql("user2", author.value.uuid),
+            eql("user1", dest.value.uuid))))
       .limit(1)
       .map(asConversationId)
   }
@@ -65,6 +79,12 @@ class MongoConversationStore(db: MongoDatabase, clock: Clock)(implicit cs: Conte
          "message_id" -> message.id.value.uuid,
          "timestamp" -> message.timestamp.value))
   }
+
+  override def addPrivateMessage(author: UserId, dest: UserId, message: Message): IO[Unit] = for {
+    conversationId <- getOrCreatePrivateConversation(author, dest)
+    _              <- addMessageToStore(message)
+    _              <- addMessageToConversation(conversationId, message)
+  } yield ()
 
   override def addMessageToPost(postId: PostId, message: Message): IO[Unit] = for {
     conversationId <- getOrCreateConversationForPost(postId)
@@ -115,6 +135,27 @@ class MongoConversationStore(db: MongoDatabase, clock: Clock)(implicit cs: Conte
          conversationId      <- IOUtils.from(maybeConversationId, s"Couldn't find a conversationId for post ${postId}")
     } yield conversationId
 
+  private[this] def getOrCreatePrivateConversation(author: UserId, dest: UserId): IO[ConversationId] =
+    for { _ <- unitIO {
+      privateConversationCollection
+        .updateOne(or(
+          and(eql("user1", author.value.uuid),
+            eql("user2", dest.value.uuid)),
+          and(eql("user2", author.value.uuid),
+            eql("user1", dest.value.uuid))),
+          combine(
+            setOnInsert("user1", deterministicPair(author, dest)._1.value.uuid),
+            setOnInsert("user2", deterministicPair(author, dest)._2.value.uuid),
+            setOnInsert("conversation_id", ConversationId.newId.value.uuid),
+          ),
+          (new UpdateOptions).upsert(true)
+        )
+      }
+      users = deterministicPair(author, dest)
+      maybeConversationId <- getPrivateConversation(users._1, users._2)
+      conversationId      <- IOUtils.from(maybeConversationId, s"Couldn't find a conversationId between users ${users._1} and ${users._2}")
+    } yield conversationId
+
   private[this] def addMessageToStore(message: Message): IO[Unit] = unitIO {
     messageCollection
       .insertOne(messageToDoc(message))
@@ -140,4 +181,7 @@ class MongoConversationStore(db: MongoDatabase, clock: Clock)(implicit cs: Conte
       )
   }
 
+  private[this] def deterministicPair(author: UserId, dest: UserId): (UserId, UserId) =
+    if(author.value.uuid <= dest.value.uuid) (author, dest)
+    else (dest, author)
 }

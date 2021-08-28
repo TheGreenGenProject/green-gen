@@ -17,6 +17,11 @@ class ConversationServiceImpl(conversationStore: ConversationStore[IO])
     conversationStore.getConversation(postId)
       .map(_.getOrElse(ConversationId.newId))
 
+
+  override def getConversation(author: UserId, dest: UserId): IO[ConversationId] =
+    conversationStore.getPrivateConversation(author, dest)
+      .map(_.getOrElse(ConversationId.newId))
+
   override def countMessages(postId: PostId): IO[Long] =
     conversationStore.countMessages(postId)
 
@@ -28,6 +33,9 @@ class ConversationServiceImpl(conversationStore: ConversationStore[IO])
 
   override def addMessage(postId: PostId, message: Message): IO[Unit] =
     conversationStore.addMessageToPost(postId, message)
+
+  override def addPrivateMessage(author: UserId, dest: UserId, message: Message): IO[Unit] =
+    conversationStore.addPrivateMessage(author, dest, message)
 
   override def flag(userId: UserId, messageId: MessageId): IO[Unit] = for {
     _ <- checkUser(userId)

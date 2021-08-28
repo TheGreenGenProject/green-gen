@@ -9,6 +9,8 @@ trait ConversationService[F[_]] {
 
   def getConversation(postId: PostId): F[ConversationId]
 
+  def getConversation(author: UserId, dest: UserId): F[ConversationId]
+
   def countMessages(postId: PostId): F[Long]
 
   def getMessage(messageId: MessageId): F[Option[Message]]
@@ -16,6 +18,8 @@ trait ConversationService[F[_]] {
   def getConversationMessages(conversationId: ConversationId, page: Page): F[List[MessageId]]
 
   def addMessage(postId: PostId, message: Message): F[Unit]
+
+  def addPrivateMessage(author: UserId, dest: UserId, message: Message): F[Unit]
 
   def flag(userId: UserId, message: MessageId): F[Unit]
 

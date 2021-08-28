@@ -12,6 +12,7 @@ import scala.collection.concurrent.TrieMap
 class InMemoryConversationStore extends ConversationStore[IO] {
 
   private[this] val byPosts = new TrieMap[PostId, ConversationId]
+  private[this] val byUsers = new TrieMap[(UserId, UserId), ConversationId]
   private[this] val messages = new TrieMap[MessageId, Message]
   private[this] val byConversations = new TrieMap[ConversationId, List[MessageId]]
   private[this] val byReporter = new TrieMap[UserId, Set[MessageId]]
@@ -19,6 +20,9 @@ class InMemoryConversationStore extends ConversationStore[IO] {
 
   override def getConversation(postId: PostId): IO[Option[ConversationId]] =
     IO(byPosts.get(postId))
+
+  override def getPrivateConversation(author: UserId, dest: UserId): IO[Option[ConversationId]] =
+    IO(byUsers.get(deterministicPair(author, dest)))
 
   override def countMessages(postId: PostId): IO[Long] = for {
     conversationId <- getConversation(postId)
@@ -38,6 +42,14 @@ class InMemoryConversationStore extends ConversationStore[IO] {
         case Some(id) => IO(id)
         case None     => newConversation(postId)
       }
+    _ <- addMessageToConversation(conversationId, message)
+  } yield ()
+
+  override def addPrivateMessage(author: UserId, dest: UserId, message: Message): IO[Unit] = for {
+    conversationId <- getPrivateConversation(author, dest).flatMap {
+      case Some(id) => IO(id)
+      case None     => newConversation(author, dest)
+    }
     _ <- addMessageToConversation(conversationId, message)
   } yield ()
 
@@ -72,9 +84,21 @@ class InMemoryConversationStore extends ConversationStore[IO] {
   private[this] def newConversation(postId: PostId): IO[ConversationId] = for {
     newid <- IO(ConversationId.newId)
     _     <- IO(byPosts.putIfAbsent(postId, newid))
-    id    <- IO.fromOption(byPosts.get(postId))(new RuntimeException(s"No conversation id for post ${postId}"))
+    id    <- IOUtils.from(byPosts.get(postId), s"No conversation id for post ${postId}")
     _     <- IO(byConversations.putIfAbsent(id, List()))
   } yield id
+
+  private[this] def newConversation(author: UserId, dest: UserId): IO[ConversationId] = for {
+    newid <- IO(ConversationId.newId)
+    users = deterministicPair(author, dest)
+    _     <- IO(byUsers.putIfAbsent(users, newid))
+    id    <- IOUtils.from(byUsers.get(users), s"No conversation id between users $author and $dest")
+    _     <- IO(byConversations.putIfAbsent(id, List()))
+  } yield id
+
+  private[this] def deterministicPair(author: UserId, dest: UserId): (UserId, UserId) =
+    if(author.value.uuid <= dest.value.uuid) (author, dest)
+    else (dest, author)
 
   // Checkers
 

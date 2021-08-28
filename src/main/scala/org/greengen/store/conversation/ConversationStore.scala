@@ -11,6 +11,8 @@ trait ConversationStore[F[_]] extends Store[F] {
 
   def getConversation(postId: PostId): F[Option[ConversationId]]
 
+  def getPrivateConversation(author: UserId, dest: UserId): F[Option[ConversationId]]
+
   def countMessages(postId: PostId): F[Long]
 
   def getMessage(messageId: MessageId): F[Option[Message]]
@@ -20,6 +22,8 @@ trait ConversationStore[F[_]] extends Store[F] {
   def addMessageToConversation(conversationId: ConversationId, message: Message): F[Unit]
 
   def addMessageToPost(postId: PostId, message: Message): F[Unit]
+
+  def addPrivateMessage(author: UserId, dest: UserId, message: Message): F[Unit]
 
   def flag(userId: UserId, messageId: MessageId): F[Unit]
 

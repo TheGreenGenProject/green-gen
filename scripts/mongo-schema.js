@@ -30,6 +30,7 @@ db.conversations.messages.drop()
 db.conversations.messages.flagged.drop()
 db.conversations.drop()
 db.conversations.posts.drop()
+db.conversations.privates.drop()
 
 // Users
 db.users.createIndex({"user_id": 1}, { unique: true })
@@ -69,3 +70,5 @@ db.conversations.messages.createIndex({"message_id": 1, "timestamp": 1}, {unique
 db.conversations.createIndex({"conversation_id": 1, "message_id": 1}, {unique: true})
 db.conversations.posts.createIndex({"post_id": 1}, {unique: true})
 db.conversations.posts.createIndex({"conversation_id": 1}, {unique: true})
+db.conversations.privates.createIndex({"user1": 1, "user2": 1}, {unique: true})
+db.conversations.privates.createIndex({"conversation_id": 1}, {unique: true})

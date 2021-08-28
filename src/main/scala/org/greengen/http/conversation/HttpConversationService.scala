@@ -27,6 +27,13 @@ object HttpConversationService {
         messages       <- messageIds.map(service.getMessage(_)).sequence.map(_.flatten)
         res            <- Ok(messages.asJson)
       } yield res
+    case GET -> Root / "conversation" / "private" / UUIDVar(user1) / "and" / UUIDVar(user2) / IntVar(page) as _ =>
+      for {
+        conversationId <- service.getConversation(UserId(UUID.from(user1)), UserId(UUID.from(user2)))
+        messageIds     <- service.getConversationMessages(conversationId, Page(page, PageSize))
+        messages       <- messageIds.map(service.getMessage(_)).sequence.map(_.flatten)
+        res            <- Ok(messages.asJson)
+      } yield res
     case GET -> Root / "conversation" / "messages" / "count" / UUIDVar(id) as _ =>
       service.countMessages(PostId(UUID.from(id))).flatMap(r => Ok(r.asJson))
     case GET -> Root / "conversation" / "messages" / UUIDVar(id) / IntVar(page) as _ =>
@@ -41,7 +48,13 @@ object HttpConversationService {
     case POST -> Root / "conversation" / "message" :?
       PostIdQueryParamMatcher(postId) +&
       ContentQueryParamMatcher(content) as userId =>
-      service.addMessage(postId, Message(MessageId.newId, userId, content, clock.now())).flatMap(r => Ok(r.asJson))
+      service.addMessage(postId, Message(MessageId.newId, userId, content, clock.now()))
+        .flatMap(r => Ok(r.asJson))
+    case POST -> Root / "conversation" / "message" / "private" :?
+      UserIdQueryParamMatcher(dest) +&
+      ContentQueryParamMatcher(content) as userId =>
+      service.addPrivateMessage(userId, dest, Message(MessageId.newId, userId, content, clock.now()))
+        .flatMap(r => Ok(r.asJson))
     case POST -> Root / "conversation" / "flag" / UUIDVar(id) as userId =>
       service.flag(userId, MessageId(UUID.from(id))).flatMap(r => Ok(r.asJson))
     case POST -> Root / "conversation" / "unflag" / UUIDVar(id) as userId =>
