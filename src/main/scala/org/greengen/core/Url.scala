@@ -9,10 +9,6 @@ case class Url(url: String) {
 }
 
 object Url {
-
-  def apply(url: String): Url =
-    Url(url)
-
   def fromString(url: String): Try[Url] =
     Try(Url(new URL(url).toURI.toString))
 }

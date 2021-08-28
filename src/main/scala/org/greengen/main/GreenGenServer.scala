@@ -12,6 +12,7 @@ import org.greengen.http.follower.HttpFollowerService
 import org.greengen.http.hashtag.HttpHashtagService
 import org.greengen.http.like.HttpLikeService
 import org.greengen.http.notification.HttpNotificationService
+import org.greengen.http.partnership.HttpPartnershipService
 import org.greengen.http.pin.HttpPinService
 import org.greengen.http.poll.HttpPollService
 import org.greengen.http.post.HttpPostService
@@ -29,6 +30,7 @@ import org.greengen.impl.follower.FollowerServiceImpl
 import org.greengen.impl.hashtag.HashtagServiceImpl
 import org.greengen.impl.like.LikeServiceImpl
 import org.greengen.impl.notification.NotificationServiceImpl
+import org.greengen.impl.partnership.PartnershipServiceImpl
 import org.greengen.impl.pin.PinServiceImpl
 import org.greengen.impl.poll.PollServiceImpl
 import org.greengen.impl.post.PostServiceImpl
@@ -38,7 +40,7 @@ import org.greengen.impl.reminder.ReminderServiceImpl
 import org.greengen.impl.tip.TipServiceImpl
 import org.greengen.impl.user.UserServiceImpl
 import org.greengen.impl.wall.WallServiceImpl
-import org.greengen.main.InMemoryGreenGenServer.{clock, notificationService, userService}
+import org.greengen.main.InMemoryGreenGenServer.{authMiddleware, clock, notificationService, partnershipService, userService}
 import org.greengen.store.auth.InMemoryAuthStore
 import org.greengen.store.challenge.MongoChallengeStore
 import org.greengen.store.conversation.{InMemoryConversationStore, MongoConversationStore}
@@ -48,6 +50,7 @@ import org.greengen.store.follower.MongoFollowerStore
 import org.greengen.store.hashtag.MongoHashtagStore
 import org.greengen.store.like.MongoLikeStore
 import org.greengen.store.notification.MongoNotificationStore
+import org.greengen.store.partnership.InMemoryPartnershipStore
 import org.greengen.store.pin.MongoPinStore
 import org.greengen.store.poll.{InMemoryPollStore, MongoPollStore}
 import org.greengen.store.post.MongoPostStore
@@ -93,6 +96,7 @@ object GreenGenServer extends App {
   val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
   val conversationService = new ConversationServiceImpl(new MongoConversationStore(db, clock))(clock, userService, notificationService)
   val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
+  val partnershipService = new PartnershipServiceImpl(new InMemoryPartnershipStore)(clock,userService)
 
   // FIXME Populating data for testing purpose
   TestData
@@ -100,7 +104,7 @@ object GreenGenServer extends App {
       userService, followerService,
       tipService, challengeService, pollService,
       postService, eventService,
-      notificationService)
+      notificationService, partnershipService)
     .unsafeRunSync()
 
   // Token based authentication middleware
@@ -124,6 +128,7 @@ object GreenGenServer extends App {
     authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>
     authMiddleware(HttpConversationService.routes(clock, conversationService)) <+>
     authMiddleware(HttpRankingService.routes(rankingService)) <+>
+    authMiddleware(HttpPartnershipService.routes(partnershipService)) <+>
     authMiddleware(HttpAuthService.routes(authService)) <+>
     authMiddleware(HttpUserService.routes(userService))
   val routes = CORS(nonAuthRoutes <+> authRoutes) // CORS required for browsers

@@ -10,6 +10,7 @@ import org.greengen.core.event.{Event, EventId}
 import org.greengen.core.feed.Feed
 import org.greengen.core.like.Like
 import org.greengen.core.notification._
+import org.greengen.core.partnership.{Partner, PartnerId}
 import org.greengen.core.pin.PinnedPost
 import org.greengen.core.poll.{Poll, PollAnswer, PollId, PollOption, PollStats, PollStatsEntry}
 import org.greengen.core.post.{Post, PostId}
@@ -131,5 +132,9 @@ object JsonDecoder {
   implicit val MessageDecoder = jsonOf[IO, Message]
   implicit val MessageListDecoder = jsonOf[IO, List[Message]]
   implicit val ConversationIdDecoder = jsonOf[IO, ConversationId]
+  // PartnershipService
+  implicit val PartnerIdDecoder = jsonOf[IO, PartnerId]
+  implicit val PartnerDecoder = jsonOf[IO, Partner]
+  implicit val PartnerOptionDecoder = jsonOf[IO, Option[Partner]]
 
 }

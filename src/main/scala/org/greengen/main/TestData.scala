@@ -9,6 +9,7 @@ import org.greengen.core.challenge.{ChallengeId, ChallengeService, SuccessMeasur
 import org.greengen.core.event.{EventId, EventService}
 import org.greengen.core.follower.FollowerService
 import org.greengen.core.notification.NotificationService
+import org.greengen.core.partnership.PartnershipService
 import org.greengen.core.poll.{PollId, PollOption, PollService}
 import org.greengen.core.post._
 import org.greengen.core.tip.{TipId, TipService}
@@ -28,7 +29,8 @@ object TestData {
            pollService: PollService[IO],
            postService: PostService[IO],
            eventService: EventService[IO],
-           notificationService: NotificationService[IO]): IO[Unit] = for {
+           notificationService: NotificationService[IO],
+           partnershipService: PartnershipService[IO]): IO[Unit] = for {
     _ <- createUsers(authService, userService)
     _ <- makeFollowers(userService, followerService)
     _ <- createTips(userService, tipService)
@@ -37,6 +39,7 @@ object TestData {
     _ <- createPosts(userService, tipService, pollService, challengeService, postService)
     _ <- createEvents(userService, eventService)
     _ <- createNotifications(userService, notificationService)
+    _ <- createPartnership(clock, userService, postService, partnershipService)
   } yield ()
 
   private[this] def createUsers(authService: AuthService[IO], userService: UserService[IO]): IO[Unit] = for {
@@ -354,6 +357,23 @@ object TestData {
                                         notificationService: NotificationService[IO]): IO[Unit] = for {
       _ <- notificationService.platform("This is a GreenGen announcement: tatadatadatada !!!")
     } yield ()
+
+
+  // Partnership
+
+  private[this] def createPartnership(clock: Clock,
+                                      userService: UserService[IO],
+                                      postService: PostService[IO],
+                                      partnershipService: PartnershipService[IO]): IO[Unit] = for {
+    elisaId  <- userIdByPseudo(userService, "Elisa")
+    partner  <- partnershipService.registerPartner(
+      userId = elisaId,
+      name = "Elisa & Co",
+      description = "My London picture activity. Buy my stuff !",
+      url = Url("www.google.com"))
+    allPosts <- postService.byAuthor(elisaId, AllPosts, Page.All)
+    _        <- partnershipService.partnership(partner._2, allPosts.head, clock.now(), UTCTimestamp.plusDays(clock.now(), 5))
+  } yield ()
 
   // Helpers
 

@@ -11,6 +11,7 @@ import org.greengen.http.follower.HttpFollowerService
 import org.greengen.http.hashtag.HttpHashtagService
 import org.greengen.http.like.HttpLikeService
 import org.greengen.http.notification.HttpNotificationService
+import org.greengen.http.partnership.HttpPartnershipService
 import org.greengen.http.pin.HttpPinService
 import org.greengen.http.poll.HttpPollService
 import org.greengen.http.post.HttpPostService
@@ -28,6 +29,7 @@ import org.greengen.impl.follower.FollowerServiceImpl
 import org.greengen.impl.hashtag.HashtagServiceImpl
 import org.greengen.impl.like.LikeServiceImpl
 import org.greengen.impl.notification.NotificationServiceImpl
+import org.greengen.impl.partnership.PartnershipServiceImpl
 import org.greengen.impl.pin.PinServiceImpl
 import org.greengen.impl.poll.PollServiceImpl
 import org.greengen.impl.post.PostServiceImpl
@@ -47,6 +49,7 @@ import org.greengen.store.follower.InMemoryFollowerStore
 import org.greengen.store.hashtag.InMemoryHashtagStore
 import org.greengen.store.like.InMemoryLikeStore
 import org.greengen.store.notification.InMemoryNotificationStore
+import org.greengen.store.partnership.InMemoryPartnershipStore
 import org.greengen.store.pin.InMemoryPinStore
 import org.greengen.store.poll.InMemoryPollStore
 import org.greengen.store.post.InMemoryPostStore
@@ -87,6 +90,7 @@ object InMemoryGreenGenServer extends App {
   val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
   val conversationService = new ConversationServiceImpl(new InMemoryConversationStore)(clock, userService, notificationService)
   val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
+  val partnershipService = new PartnershipServiceImpl(new InMemoryPartnershipStore)(clock,userService)
 
   // FIXME Populating data for testing purpose
   TestData
@@ -94,7 +98,7 @@ object InMemoryGreenGenServer extends App {
       userService, followerService,
       tipService, challengeService, pollService,
       postService, eventService,
-      notificationService)
+      notificationService, partnershipService)
     .unsafeRunSync()
 
   // Token based authentication middleware
@@ -118,6 +122,7 @@ object InMemoryGreenGenServer extends App {
     authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>
     authMiddleware(HttpConversationService.routes(clock, conversationService)) <+>
     authMiddleware(HttpRankingService.routes(rankingService)) <+>
+    authMiddleware(HttpPartnershipService.routes(partnershipService)) <+>
     authMiddleware(HttpAuthService.routes(authService)) <+>
     authMiddleware(HttpUserService.routes(userService))
   val routes = CORS(nonAuthRoutes <+> authRoutes) // CORS required for browsers
