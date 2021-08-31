@@ -6,6 +6,7 @@ import org.greengen.core.Clock
 import org.greengen.http.auth.{HttpAuthService, TokenAuthMiddleware}
 import org.greengen.http.challenge.HttpChallengeService
 import org.greengen.http.conversation.HttpConversationService
+import org.greengen.http.event.HttpEventService
 import org.greengen.http.feed.HttpFeedService
 import org.greengen.http.follower.HttpFollowerService
 import org.greengen.http.hashtag.HttpHashtagService
@@ -39,7 +40,6 @@ import org.greengen.impl.reminder.ReminderServiceImpl
 import org.greengen.impl.tip.TipServiceImpl
 import org.greengen.impl.user.UserServiceImpl
 import org.greengen.impl.wall.WallServiceImpl
-import org.greengen.main.GreenGenServer.{authMiddleware, clock, conversationService, pollService}
 import org.greengen.store.auth.InMemoryAuthStore
 import org.greengen.store.challenge.InMemoryChallengeStore
 import org.greengen.store.conversation.InMemoryConversationStore
@@ -86,7 +86,7 @@ object InMemoryGreenGenServer extends App {
   val postService = new PostServiceImpl(new InMemoryPostStore)(clock, userService, wallService, feedService)
   val likeService = new LikeServiceImpl(new InMemoryLikeStore)(clock, userService, notificationService, postService)
   val pinService = new PinServiceImpl(new InMemoryPinStore)(clock, userService, postService)
-  val eventService = new EventServiceImpl(new InMemoryEventStore)(clock, userService, notificationService)
+  val eventService = new EventServiceImpl(new InMemoryEventStore(clock))(clock, userService, notificationService)
   val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
   val conversationService = new ConversationServiceImpl(new InMemoryConversationStore)(clock, userService, notificationService)
   val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
@@ -118,6 +118,7 @@ object InMemoryGreenGenServer extends App {
     authMiddleware(HttpTipService.routes(tipService)) <+>
     authMiddleware(HttpPollService.routes(clock, pollService)) <+>
     authMiddleware(HttpChallengeService.routes(clock, challengeService)) <+>
+    authMiddleware(HttpEventService.routes(eventService)) <+>
     authMiddleware(HttpPinService.routes(pinService)) <+>
     authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>
     authMiddleware(HttpConversationService.routes(clock, conversationService)) <+>

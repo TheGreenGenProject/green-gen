@@ -30,8 +30,8 @@ class RankingServiceImpl(userService: UserService[IO],
     followingCount  <- followerService.countFollowing(userId)
     followerCount   <- followerService.countFollowers(userId)
     postCount       <- postService.byAuthor(userId, AllPosts, Page.All).map(_.size)
-    eventsOrganized <- eventService.byOwnership(userId).map(_.size)
-    eventsAttended  <- eventService.byParticipation(userId).map(_.size)
+    eventsOrganized <- eventService.byOwnership(userId, Page.All).map(_.size)
+    eventsAttended  <- eventService.byParticipation(userId, Page.All).map(_.size)
   } yield ScoreBreakdown.compute(profile, likesReceived, followingCount,
       followerCount, postCount, eventsOrganized, eventsAttended)
 

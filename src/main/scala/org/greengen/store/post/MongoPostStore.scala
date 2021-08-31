@@ -8,6 +8,7 @@ import com.mongodb.client.model.Aggregates.{limit, sortByCount, unwind}
 import com.mongodb.client.model.Filters.{all, and, eq => eql, exists => exst}
 import com.mongodb.client.model.Sorts.descending
 import org.greengen.core.challenge.ChallengeId
+import org.greengen.core.event.EventId
 import org.greengen.core.post.{AllPosts, ChallengePosts, EventPosts, FreeTextPosts, PollPosts, Post, PostId, SearchPostType, TipPosts}
 import org.greengen.core.user.UserId
 import org.greengen.core.{Duration, Hashtag, Page, Reason, UTCTimestamp, UUID}
@@ -66,6 +67,15 @@ class MongoPostStore(db: MongoDatabase)
   override def getByChallengeId(challengeId: ChallengeId): IO[Option[PostId]] = firstOptionIO {
     postsCollection
       .find(eql("challenge_id", challengeId.value.uuid))
+      .limit(1)
+      .map(_.getString("post_id"))
+      .map(UUID.unsafeFrom)
+      .map(PostId(_))
+  }
+
+  override def getByEventId(eventId: EventId): IO[Option[PostId]] = firstOptionIO {
+    postsCollection
+      .find(eql("event_id", eventId.value.uuid))
       .limit(1)
       .map(_.getString("post_id"))
       .map(UUID.unsafeFrom)

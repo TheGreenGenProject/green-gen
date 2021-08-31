@@ -36,8 +36,8 @@ object TestData {
     _ <- createTips(userService, tipService)
     _ <- createPolls(userService, pollService)
     _ <- createChallenges(userService, challengeService)
-    _ <- createPosts(userService, tipService, pollService, challengeService, postService)
     _ <- createEvents(userService, eventService)
+    _ <- createPosts(userService, tipService, pollService, challengeService, eventService, postService)
     _ <- createNotifications(userService, notificationService)
     _ <- createPartnership(clock, userService, postService, partnershipService)
   } yield ()
@@ -63,6 +63,7 @@ object TestData {
                                 tipService: TipService[IO],
                                 pollService: PollService[IO],
                                 challengeService: ChallengeService[IO],
+                                eventService: EventService[IO],
                                 postService: PostService[IO]): IO[Unit] = for {
     chrisId       <- userIdByPseudo(userService, "Chris")
     elisaId       <- userIdByPseudo(userService, "Elisa")
@@ -93,39 +94,53 @@ object TestData {
     _             <- postChallengesFromAuthor(postService, challengeService, elisaId)
     _             <- postChallengesFromAuthor(postService, challengeService, chrisId)
     _             <- postChallengesFromAuthor(postService, challengeService, catId)
+    // Events
+    _             <- postEventsFromOwner(postService, eventService, elisaId)
+    _             <- postEventsFromOwner(postService, eventService, chrisId)
+    _             <- postEventsFromOwner(postService, eventService, catId)
+    _             <- postEventsFromOwner(postService, eventService, docsquirrelId)
   } yield ()
 
   private[this] def createEvents(userService: UserService[IO],
                                  eventService: EventService[IO]): IO[Unit] = for {
-    ownerId <- userIdByPseudo(userService, "Elisa")
-    // FIXME this one doesn't seem to work ...
-//    _       <- makeOnlineEvent(userService, eventService, ownerId)
-    _       <- makeGeoLocatedEvent(userService, eventService, ownerId)
-    _       <- makePhysicalEvent(userService, eventService, ownerId)
+    chrisId       <- userIdByPseudo(userService, "Chris")
+    _             <- makeMapUrlEvent(userService, eventService, chrisId)
+    catId         <- userIdByPseudo(userService, "TheCat")
+    _             <- makeOnlineEvent(userService, eventService, catId)
+    docSquirrelId <- userIdByPseudo(userService, "DocSquirrel")
+    _             <- makeGeoLocatedEvent(userService, eventService, docSquirrelId)
+    elisaId       <- userIdByPseudo(userService, "Elisa")
+    _             <- makePhysicalEvent(userService, eventService, elisaId)
   } yield ()
 
 
   // Event Helper
 
   private[this] def makeOnlineEvent(userService: UserService[IO], eventService: EventService[IO], ownerId: UserId): IO[EventId] =
-    makeEvent(userService, eventService, ownerId, OnLine(Url("www.green-gen.org")))
+    makeEvent(userService, eventService, ownerId, Online(Url("http://www.green-gen.org/events/somewhere-online")))
+
+  private[this] def makeMapUrlEvent(userService: UserService[IO], eventService: EventService[IO], ownerId: UserId): IO[EventId] =
+    makeEvent(userService, eventService, ownerId, MapUrl(Url("https://www.openstreetmap.org/search?query=London#map=17/51.52246/-0.07352")))
 
   private[this] def makeGeoLocatedEvent(userService: UserService[IO], eventService: EventService[IO], ownerId: UserId): IO[EventId] =
-    makeEvent(userService, eventService, ownerId, GeoLocation(LatLong(Latitude(5.023), Longitude(67.45))))
+    makeEvent(userService, eventService, ownerId, GeoLocation(LatLong(Latitude(52.1795), Longitude(0.1490))))
 
   private[this] def makePhysicalEvent(userService: UserService[IO], eventService: EventService[IO], ownerId: UserId): IO[EventId] =
     makeEvent(userService, eventService, ownerId, Address(Some("somewhere"), Some("E2"), Country.UnitedKingdom))
 
-  private[this] def makeEvent(userService: UserService[IO], eventService: EventService[IO], ownerId: UserId, location: Location): IO[EventId] = for {
+  private[this] def makeEvent(userService: UserService[IO],
+                              eventService: EventService[IO],
+                              ownerId: UserId,
+                              location: Location): IO[EventId] = for {
     event   <- eventService.create(ownerId, 5,
-      "This is a fake event happening somewhere on earth, organized by a cat - but nowhere near to your place.",
+      "This is a fake #event happening somewhere on #earth, organized by a #cat - but nowhere near to your place.",
       location,
-      Recurring(now(), Duration.OneHour, Duration.OneWeek, nextYear()))
+      OneOff(UTCTimestamp.plusDays(now(),3), UTCTimestamp.plusDays(now(),4)))
     elisaId <- userIdByPseudo(userService, "Elisa")
     _       <- eventService.requestParticipation(elisaId, event.id)
     _       <- eventService.acceptParticipation(ownerId, elisaId, event.id)
-    chrisId <- userIdByPseudo(userService, "Chris")
-    _       <- eventService.requestParticipation(chrisId, event.id)
+//    chrisId <- userIdByPseudo(userService, "Chris")
+//    _       <- eventService.requestParticipation(chrisId, event.id)
   } yield event.id
 
 
@@ -200,7 +215,7 @@ object TestData {
       userId,
       challengeId,
       now(),
-      ht("verdura", "ichallengeyou","friendsbattle","no-plastic")))
+      ht("verdura", "ichallengeyou","friendsbattle","noplastic")))
     _ <- challengeService.challengeFollowers(userId, challengeId)
   } yield postId
 
@@ -212,6 +227,25 @@ object TestData {
     _            <- challengeIds.map(makeChallengePost(postService, challengeService, author, _)).sequence
   } yield ()
 
+  private[this] def postEventsFromOwner(postService: PostService[IO],
+                                        eventService: EventService[IO],
+                                        ownerId: UserId): IO[Unit] = for {
+    eventIds <- eventService.byOwnership(ownerId, Page.All)
+    _        <- eventIds.map(makeEventPost(postService, eventService, ownerId, _)).sequence
+  } yield ()
+
+  private[this] def makeEventPost(postService: PostService[IO],
+                                  eventService: EventService[IO],
+                                  userId: UserId,
+                                  eventId: EventId): IO[PostId] = for {
+    postId <- postService.post(EventPost(
+      PostId.newId,
+      userId,
+      eventId,
+      now(),
+      ht("event", "meetup","noplastic")))
+  } yield postId
+
   // User helpers
 
   private[this] def chris(authService: AuthService[IO], userService: UserService[IO]): IO[Unit] = for {
@@ -221,7 +255,7 @@ object TestData {
                     pseudo       = Pseudo("Chris"),
                     emailHash    = emailHash ,
                     pwHash       = pwHash,
-                    introduction = "Feels good to be the Boss !")
+                    introduction = "Feels good to be the Boss !\nNow leading the green revolution through an amazing online platform !")
     _        <- authService.authenticate(emailHash, pwHash)
   } yield ()
 

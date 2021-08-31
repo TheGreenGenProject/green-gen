@@ -1,16 +1,20 @@
 package org.greengen.store.event
 
 import cats.effect.IO
+import org.greengen.core.{Clock, Page, PagedResult, UTCTimestamp}
 import org.greengen.core.event.{Event, EventId}
 import org.greengen.core.user.UserId
 
 import scala.collection.concurrent.TrieMap
 
-class InMemoryEventStore extends EventStore[IO] {
+
+class InMemoryEventStore(clock: Clock) extends EventStore[IO] {
 
   private[this] val events = new TrieMap[EventId, Event]()
+  private[this] val disabledEvents = new TrieMap[EventId, UTCTimestamp]()
   private[this] val eventsByOwner = new TrieMap[UserId, List[EventId]]()
-  private[this] val eventsByParticipants = new TrieMap[UserId, List[EventId]]()
+  private[this] val eventsByParticipant = new TrieMap[UserId, Set[EventId]]()
+  private[this] val participantsByEvent = new TrieMap[EventId, Set[UserId]]()
   private[this] val participationRequestsByUser = new TrieMap[UserId, Set[EventId]]()
   private[this] val participationRequestsByEvent = new TrieMap[EventId, Set[UserId]]()
 
@@ -23,34 +27,47 @@ class InMemoryEventStore extends EventStore[IO] {
     }
   }
 
-  override def cancelEvent(eventId: EventId): IO[Unit] = IO {
-    events.updateWith(eventId) {
-      case Some(evt) => Some(evt.copy(enabled = false))
-      case None => None
-    }
-  }
-
+  override def cancelEvent(eventId: EventId): IO[Unit] =
+    IO(disabledEvents.put(eventId, clock.now()))
 
   override def exists(eventId: EventId): IO[Boolean] =
     IO(events.contains(eventId))
 
   override def isEnabled(eventId: EventId): IO[Boolean] =
-    IO(events.get(eventId).map(_.enabled).getOrElse(false))
+    IO(!disabledEvents.contains(eventId))
+
+  override def isParticipating(userId: UserId, eventId: EventId): IO[Boolean] =
+    IO(participantsByEvent.getOrElse(eventId, Set()).contains(userId))
+
+  override def isParticipationRequested(userId: UserId, eventId: EventId): IO[Boolean] =
+    IO(participationRequestsByUser.getOrElse(userId, Set()).contains(eventId))
 
   override def getById(eventId: EventId): IO[Option[Event]] =
     IO(events.get(eventId))
 
-  override def getByIds(ids: List[EventId]): IO[List[Event]] =
-    IO(ids.map(events.get(_)).flatten)
+  override def getByOwner(userId: UserId, page: Page): IO[List[EventId]] =
+    IO(eventsByOwner.get(userId).map(PagedResult.page(_, page)).getOrElse(List()))
 
-  override def getByOwner(userId: UserId): IO[List[EventId]] =
-    IO(eventsByOwner.getOrElse(userId, List()))
+  override def getByParticipation(userId: UserId, page: Page): IO[List[EventId]] = for {
+    requests <- IO(eventsByParticipant.getOrElse(userId, Set()))
+    sorted   <- IO(requests.toList.sortBy(_.value.uuid))
+    paged    <- IO(PagedResult.page(sorted, page))
+  } yield paged
 
-  override def getByParticipation(userId: UserId): IO[List[EventId]] =
-    IO(eventsByParticipants.getOrElse(userId, List()))
+  override def participantCount(eventId: EventId): IO[Long] =
+    IO(participantsByEvent.getOrElse(eventId, Set()).size)
 
-  override def getParticipationRequests(eventId: EventId): IO[List[UserId]] =
-    IO(participationRequestsByEvent.getOrElse(eventId, Set()).toList)
+  override def participants(eventId: EventId, page: Page): IO[List[UserId]] = for {
+    requests <- IO(participantsByEvent.getOrElse(eventId, Set()))
+    sorted   <- IO(requests.toList.sortBy(_.value.uuid))
+    paged    <- IO(PagedResult.page(sorted, page))
+  } yield paged
+
+  override def getParticipationRequests(eventId: EventId, page: Page): IO[List[UserId]] = for {
+    requests <- IO(participationRequestsByEvent.getOrElse(eventId, Set()))
+    sorted   <- IO(requests.toList.sortBy(_.value.uuid))
+    paged    <- IO(PagedResult.page(sorted, page))
+  } yield paged
 
   override def requestParticipation(user: UserId, event: EventId): IO[Unit] = IO {
     participationRequestsByUser.updateWith(user) {
@@ -63,15 +80,38 @@ class InMemoryEventStore extends EventStore[IO] {
     }
   }
 
-  override def removeParticipationRequest(user: UserId, event: EventId): IO[Unit] = IO { events.updateWith(event) {
-    case Some(evt) => Some(evt.copy(participants = evt.participants.filterNot(_==user)))
-    case None => None
-  }}
+  override def cancelParticipation(user: UserId, event: EventId): IO[Unit] = for {
+    _ <- removeParticipationRequest(user, event)
+    _ <- IO { participantsByEvent.updateWith(event) {
+      case Some(users) => Some(users - user)
+      case None        => None
+    }}
+    _ <- IO { eventsByParticipant.updateWith(user) {
+      case Some(events) => Some(events - event)
+      case None        => None
+    }}
+  } yield ()
 
-  override def addParticipation(participant: UserId, event: EventId): IO[Unit] = IO {
-    events.updateWith(event) {
-    case Some(evt) => Some(evt.copy(participants = participant :: evt.participants))
-    case None => None
-  }}
+  override def removeParticipationRequest(user: UserId, event: EventId): IO[Unit] = for {
+    // Removing from participation request indices
+    _ <- IO { participationRequestsByEvent.updateWith(event) {
+      case Some(users) => Some(users - user)
+      case None        => None
+    }}
+    _ <- IO { participationRequestsByUser.updateWith(user) {
+      case Some(events) => Some(events - event)
+      case None        => None
+    }}
+  } yield ()
+
+  override def addParticipation(participant: UserId, event: EventId): IO[Unit] = for {
+    // Adding to the list of participants
+    _ <- IO { participantsByEvent.updateWith(event) {
+      case Some(users) => Some(users + participant)
+      case None        => Some(Set(participant))
+    }}
+    // Removing from participation request indices
+    _ <- removeParticipationRequest(participant, event)
+  } yield ()
 
 }

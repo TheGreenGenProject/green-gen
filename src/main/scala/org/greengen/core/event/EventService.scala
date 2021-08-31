@@ -1,7 +1,7 @@
 package org.greengen.core.event
 
 import org.greengen.core.user.UserId
-import org.greengen.core.{Location, Schedule}
+import org.greengen.core.{Location, Page, Schedule}
 
 trait EventService[F[_]] {
 
@@ -17,22 +17,33 @@ trait EventService[F[_]] {
 
   def byId(id: EventId): F[Option[Event]]
 
-  def byIds(ids: EventId*): F[List[Event]]
+  def byOwnership(id: UserId, page: Page): F[List[EventId]]
 
-  def byOwnership(id: UserId): F[List[EventId]]
+  def isParticipating(eventId: EventId, userId: UserId): F[Boolean]
 
-  def byParticipation(id: UserId): F[List[EventId]]
+  def isParticipationRequested(eventId: EventId, userId: UserId): F[Boolean]
+
+  def isCancelled(eventId: EventId): F[Boolean]
+
+  def byParticipation(id: UserId, page: Page): F[List[EventId]]
+
+  def participants(eventId: EventId, page: Page): F[List[UserId]]
+
+  def participantCount(eventId: EventId): F[Long]
 
   // Retrieve participation requests for a given event
-  def participationRequests(event: EventId): F[List[UserId]]
+  def participationRequests(event: EventId, page: Page): F[List[UserId]]
 
   // User is requesting to join an event
   def requestParticipation(id: UserId, event: EventId): F[Unit]
 
-  // Accept participation
+  // User is canceling its participation request / participation (in case it was accepted)
+  def cancelParticipation(id: UserId, event: EventId): F[Unit]
+
+  // Owner accepts participation
   def acceptParticipation(owner: UserId, participantId: UserId, event: EventId): F[Unit]
 
-  // Reject participation
+  // Owner rejects participation
   def rejectParticipation(owner: UserId, participantId: UserId, event: EventId): F[Unit]
 
 }

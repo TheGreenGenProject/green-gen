@@ -4,6 +4,7 @@ import cats.effect._
 import io.circe.generic.auto._
 import io.circe.syntax._
 import org.greengen.core.challenge.ChallengeId
+import org.greengen.core.event.EventId
 import org.greengen.core.post._
 import org.greengen.core.user.UserId
 import org.greengen.core.{Clock, _}
@@ -24,6 +25,8 @@ object HttpPostService {
       service.byId(PostId(UUID.from(id))).flatMap(r => Ok(r.asJson))
     case GET -> Root / "post" / "by-content" / "challenge" / UUIDVar(id) as _ =>
       service.byContent(ChallengeId(UUID.from(id))).flatMap(r => Ok(r.asJson))
+    case GET -> Root / "post" / "by-content" / "event" / UUIDVar(id) as _ =>
+      service.byContent(EventId(UUID.from(id))).flatMap(r => Ok(r.asJson))
     case GET -> Root / "post" / postType / "by-author" / UUIDVar(id) / IntVar(page) as _ =>
       val searchPostType = SearchPostType.fromString(postType)
           .getOrElse(AllPosts)

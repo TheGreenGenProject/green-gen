@@ -3,6 +3,7 @@ package org.greengen.store.post
 import cats.effect.IO
 import org.greengen.core.{Hashtag, Page, PagedResult, Reason, UTCTimestamp}
 import org.greengen.core.challenge.ChallengeId
+import org.greengen.core.event.EventId
 import org.greengen.core.post.{AllPosts, ChallengePost, ChallengePosts, EventPost, EventPosts, FreeTextPost, FreeTextPosts, PollPost, PollPosts, Post, PostId, RePost, SearchPostType, TipPost, TipPosts}
 import org.greengen.core.user.UserId
 
@@ -17,6 +18,7 @@ class InMemoryPostStore extends PostStore[IO] {
   private[this] val hashtags = new TrieMap[Hashtag, Set[PostId]]()
   private[this] val authors = new TrieMap[UserId, Set[PostId]]()
   private[this] val challenges = new TrieMap[ChallengeId, PostId]()
+  private[this] val events = new TrieMap[EventId, PostId]()
 
 
   override def registerPost(post: Post): IO[Unit] = for {
@@ -40,6 +42,9 @@ class InMemoryPostStore extends PostStore[IO] {
 
   override def getByChallengeId(challengeId: ChallengeId): IO[Option[PostId]] =
     IO(challenges.get(challengeId))
+
+  override def getByEventId(eventId: EventId): IO[Option[PostId]] =
+    IO(events.get(eventId))
 
   override def getByHashtags(tags: Set[Hashtag], postType: SearchPostType, page: Page): IO[List[PostId]] =
     for {
@@ -91,12 +96,16 @@ class InMemoryPostStore extends PostStore[IO] {
   private[this] def indexByContent(post: Post): IO[Unit] = IO {
     post match {
       case cp: ChallengePost => indexByChallengeId(cp.challenge, cp)
+      case ep: EventPost     => indexByEventId(ep.event, ep)
       case _ =>
     }
   }
 
   private[this] def indexByChallengeId(challengeId: ChallengeId, post: Post): Unit =
     challenges.put(challengeId, post.id)
+
+  private[this] def indexByEventId(eventId: EventId, post: Post): Unit =
+    events.put(eventId, post.id)
 
   // Search helpers
 

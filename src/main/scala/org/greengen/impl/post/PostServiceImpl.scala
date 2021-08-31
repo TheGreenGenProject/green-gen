@@ -3,6 +3,7 @@ package org.greengen.impl.post
 import cats.effect.IO
 import org.greengen.core._
 import org.greengen.core.challenge.ChallengeId
+import org.greengen.core.event.EventId
 import org.greengen.core.feed.FeedService
 import org.greengen.core.post._
 import org.greengen.core.user.{UserId, UserService}
@@ -47,6 +48,9 @@ class PostServiceImpl(postStore: PostStore[IO])
 
   override def byContent(challenge: ChallengeId): IO[Option[PostId]] =
     postStore.getByChallengeId(challenge)
+
+  override def byContent(event: EventId): IO[Option[PostId]] =
+    postStore.getByEventId(event)
 
   override def byAuthor(userId: UserId, postType: SearchPostType, page: Page): IO[List[PostId]] =
     postStore.getByAuthor(userId, postType, page)

@@ -1,10 +1,11 @@
 package org.greengen.impl.event
 
 import cats.effect.IO
+import cats.implicits._
 import org.greengen.core.event.{Event, EventId, EventService}
-import org.greengen.core.notification.NotificationService
+import org.greengen.core.notification.{EventCancelledNotification, Notification, NotificationService}
 import org.greengen.core.user.{UserId, UserService}
-import org.greengen.core.{Clock, IOUtils, Location, Schedule}
+import org.greengen.core.{Clock, IOUtils, Location, Page, Schedule}
 import org.greengen.store.event.EventStore
 
 
@@ -22,7 +23,7 @@ class EventServiceImpl(eventStore: EventStore[IO])
     _ <- checkUser(owner)
     _ <- checkMaxParticipants(maxParticipants)
     _ <- checkSchedule(clock, schedule)
-    event = Event(EventId.newId(), owner, List(), maxParticipants, description, location, schedule, enabled = true)
+    event = Event(EventId.newId(), owner, maxParticipants, description, location, schedule)
     _ <- eventStore.registerEvent(owner, event.id, event)
   } yield event
 
@@ -30,25 +31,42 @@ class EventServiceImpl(eventStore: EventStore[IO])
     _ <- checkEvent(id)
     _ <- checkOwner(owner, id)
     _ <- eventStore.cancelEvent(id)
-    // FIXME automatically cancels request
-    // FIXME notify participant and user with a request
+    requests <- eventStore.getParticipationRequests(id, Page.All)
+    participants <- eventStore.participants(id, Page.All)
+    notif = Notification.from(clock, EventCancelledNotification(id))
+    _ <- notificationService.dispatch(notif, requests ++ participants)
+    // Effectively canceling events
+    _ <- requests.map(eventStore.cancelParticipation(_, id)).sequence
+    _ <- participants.map(eventStore.cancelParticipation(_, id)).sequence
   } yield ()
 
   override def byId(id: EventId): IO[Option[Event]] =
     eventStore.getById(id)
 
-  override def byIds(ids: EventId*): IO[List[Event]] =
-    eventStore.getByIds(ids.toList)
+  override def byOwnership(id: UserId, page: Page): IO[List[EventId]] =
+    eventStore.getByOwner(id, page)
 
-  override def byOwnership(id: UserId): IO[List[EventId]] =
-    eventStore.getByOwner(id)
+  override def byParticipation(id: UserId, page: Page): IO[List[EventId]] =
+    eventStore.getByParticipation(id, page)
 
-  override def byParticipation(id: UserId): IO[List[EventId]] =
-    eventStore.getByParticipation(id)
+  override def isParticipating(eventId: EventId, userId: UserId): IO[Boolean] =
+    eventStore.isParticipating(userId, eventId)
 
-  override def participationRequests(event: EventId): IO[List[UserId]] = for {
+  override def isParticipationRequested(eventId: EventId, userId: UserId): IO[Boolean] =
+    eventStore.isParticipationRequested(userId, eventId)
+
+  override def isCancelled(eventId: EventId): IO[Boolean] =
+    eventStore.isEnabled(eventId).map(! _)
+
+  override def participants(eventId: EventId, page: Page): IO[List[UserId]] =
+    eventStore.participants(eventId, page)
+
+  override def participantCount(eventId: EventId): IO[Long] =
+    eventStore.participantCount(eventId)
+
+  override def participationRequests(event: EventId, page: Page): IO[List[UserId]] = for {
     _   <- checkEvent(event)
-    res <- eventStore.getParticipationRequests(event)
+    res <- eventStore.getParticipationRequests(event, page)
   } yield res
 
   override def requestParticipation(user: UserId, event: EventId): IO[Unit] = for {
@@ -56,6 +74,12 @@ class EventServiceImpl(eventStore: EventStore[IO])
     _ <- checkEvent(event)
     _ <- checkEventEnabled(event)
     _ <- eventStore.requestParticipation(user, event)
+  } yield ()
+
+  override def cancelParticipation(user: UserId, event: EventId): IO[Unit] = for {
+    _ <- checkEvent(event)
+    _ <- checkEventEnabled(event)
+    _ <- eventStore.cancelParticipation(user, event)
   } yield ()
 
   override def acceptParticipation(owner: UserId, participant: UserId, event: EventId): IO[Unit] = for {
@@ -101,8 +125,8 @@ class EventServiceImpl(eventStore: EventStore[IO])
 
   private[this] def checkNotParticipatingYet(participant: UserId, id: EventId): IO[Unit] = for {
     event            <- eventStore.getById(id)
-    notParticipating <- IO(event.exists(!_.participants.contains(participant)))
-    _                <- IOUtils.check(notParticipating, s"User $participant is not a participant of the event")
+    notParticipating <- eventStore.isParticipating(participant, id).map(! _)
+    _                <- IOUtils.check(notParticipating, s"User $participant is already participating to the event")
   } yield ()
 
   private[this] def checkMaxParticipants(max: Int): IO[Unit] =

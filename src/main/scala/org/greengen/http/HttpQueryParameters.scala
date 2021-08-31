@@ -92,19 +92,24 @@ object HttpQueryParameters {
 
   private[http] val OnLineLocationRE = "url\\((.+)\\)".r
   private[http] val GeoLocationRE = "geoloc\\((.+),(.+)\\)".r
+  private[http] val GoogleMapLocationRE = "map\\(https?://www\\.google\\.com/maps/.+\\)".r
+  private[http] val OpenStreetMapLocationRE = "map\\(https?://www\\.openstreetmap\\.org/.+\\)".r
   private[http] val AddressRE = "address\\((.*),(.*),(.+)\\)".r
   private[http] object LocationQueryParamMatcher extends QueryParamDecoderMatcher[Location]("location")
   private[http] implicit lazy val locationOnlineQueryParamDecoder: QueryParamDecoder[Location] = QueryParamDecoder[String]
     .map {
       case OnLineLocationRE(url) =>
-        OnLine(Url(url))
+        Online(Url(url))
+      case GoogleMapLocationRE(loc) =>
+        MapUrl(Url(s"https://www.google.com/maps/$loc"))
+      case OpenStreetMapLocationRE(loc) =>
+        MapUrl(Url(s"https://www.openstreetmap.org/maps/$loc"))
       case GeoLocationRE(lat, long) =>
         GeoLocation(LatLong(Latitude(lat.toDouble), Longitude(long.toDouble)))
       case AddressRE(add, zip, country) => Address(
         Option.when(add.nonEmpty)(add),
         Option.when(zip.nonEmpty)(zip),
-        Country.World // FIXME parse country
-      )
+        Country(country))
       case other =>
         throw new IllegalArgumentException(s"Invalid location: $other")
     }

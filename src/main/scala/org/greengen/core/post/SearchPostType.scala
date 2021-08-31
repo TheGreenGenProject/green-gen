@@ -13,11 +13,11 @@ object SearchPostType {
 
   // Reading a post type from a string
   def fromString(str: String): Option[SearchPostType] = Option(str).collect {
-    case "all" => AllPosts
-    case "tips" => TipPosts
-    case "polls" => PollPosts
+    case "all"        => AllPosts
+    case "tips"       => TipPosts
+    case "polls"      => PollPosts
     case "challenges" => ChallengePosts
-    case "events" => EventPosts
+    case "events"     => EventPosts
     case "free-texts" => FreeTextPosts
   }
 

@@ -1,6 +1,7 @@
 package org.greengen.core.post
 
 import org.greengen.core.challenge.ChallengeId
+import org.greengen.core.event.EventId
 import org.greengen.core.{Hashtag, Page, Reason}
 import org.greengen.core.user.UserId
 
@@ -19,6 +20,8 @@ trait PostService[F[_]] {
   def byId(post: PostId): F[Option[Post]]
 
   def byContent(challenge: ChallengeId): F[Option[PostId]]
+
+  def byContent(event: EventId): F[Option[PostId]]
 
   def byAuthor(userId: UserId, postType: SearchPostType, page: Page): F[List[PostId]]
 

@@ -9,15 +9,13 @@ object EventId {
   def newId() = EventId(UUID.random())
 }
 
-case class Event(id: EventId,
-                 owner: UserId,
-                 participants: List[UserId],
-                 maxParticipants: Int,
-                 description: String,
-                 location: Location,
-                 schedule: Schedule,
-                 enabled: Boolean
-)
+case class Event(
+  id: EventId,
+  owner: UserId,
+  maxParticipants: Int,
+  description: String,
+  location: Location,
+  schedule: Schedule)
 
 
 

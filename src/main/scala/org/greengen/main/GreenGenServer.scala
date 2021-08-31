@@ -7,6 +7,7 @@ import org.greengen.db.mongo
 import org.greengen.http.auth.{HttpAuthService, TokenAuthMiddleware}
 import org.greengen.http.challenge.HttpChallengeService
 import org.greengen.http.conversation.HttpConversationService
+import org.greengen.http.event.HttpEventService
 import org.greengen.http.feed.HttpFeedService
 import org.greengen.http.follower.HttpFollowerService
 import org.greengen.http.hashtag.HttpHashtagService
@@ -40,7 +41,7 @@ import org.greengen.impl.reminder.ReminderServiceImpl
 import org.greengen.impl.tip.TipServiceImpl
 import org.greengen.impl.user.UserServiceImpl
 import org.greengen.impl.wall.WallServiceImpl
-import org.greengen.main.InMemoryGreenGenServer.{authMiddleware, clock, notificationService, partnershipService, userService}
+import org.greengen.main.InMemoryGreenGenServer.{authMiddleware, clock, eventService, notificationService, partnershipService, userService}
 import org.greengen.store.auth.InMemoryAuthStore
 import org.greengen.store.challenge.MongoChallengeStore
 import org.greengen.store.conversation.{InMemoryConversationStore, MongoConversationStore}
@@ -92,7 +93,7 @@ object GreenGenServer extends App {
   val postService = new PostServiceImpl(new MongoPostStore(db))(clock, userService, wallService, feedService)
   val likeService = new LikeServiceImpl(new MongoLikeStore(db, clock))(clock, userService, notificationService, postService)
   val pinService = new PinServiceImpl(new MongoPinStore(db))(clock, userService, postService)
-  val eventService = new EventServiceImpl(new InMemoryEventStore)(clock, userService, notificationService)
+  val eventService = new EventServiceImpl(new InMemoryEventStore(clock))(clock, userService, notificationService)
   val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
   val conversationService = new ConversationServiceImpl(new MongoConversationStore(db, clock))(clock, userService, notificationService)
   val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
@@ -124,6 +125,7 @@ object GreenGenServer extends App {
     authMiddleware(HttpTipService.routes(tipService)) <+>
     authMiddleware(HttpPollService.routes(clock, pollService)) <+>
     authMiddleware(HttpChallengeService.routes(clock, challengeService)) <+>
+    authMiddleware(HttpEventService.routes(eventService)) <+>
     authMiddleware(HttpPinService.routes(pinService)) <+>
     authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>
     authMiddleware(HttpConversationService.routes(clock, conversationService)) <+>

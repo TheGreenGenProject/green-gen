@@ -20,10 +20,9 @@ class ReminderServiceImpl(clock: Clock,
   override def reminder(eventId: EventId, schedule: Schedule): IO[Unit] = IO {
     val notificationTask: Runnable = () => for {
       eventOpt <- eventService.byId(eventId)
-      _ <- IOUtils.check(eventOpt.isDefined, s"Event $eventId doesn't exists or has been cancelled")
-      Some(event) = eventOpt
-      users = event.owner :: event.participants
-      _ <- notificationService.dispatch(???, users)
+      event    <- IOUtils.from(eventOpt, s"Event $eventId doesn't exists or has been cancelled")
+      users    <- eventService.participants(event.id, Page.All)
+      _        <- notificationService.dispatch(???, users)
     } yield ()
     // Scheduling
     schedule match {
