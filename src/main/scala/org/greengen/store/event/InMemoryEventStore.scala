@@ -1,6 +1,7 @@
 package org.greengen.store.event
 
 import cats.effect.IO
+import cats.implicits._
 import org.greengen.core.{Clock, Page, PagedResult, UTCTimestamp}
 import org.greengen.core.event.{Event, EventId}
 import org.greengen.core.user.UserId
@@ -45,8 +46,21 @@ class InMemoryEventStore(clock: Clock) extends EventStore[IO] {
   override def getById(eventId: EventId): IO[Option[Event]] =
     IO(events.get(eventId))
 
-  override def getByOwner(userId: UserId, page: Page): IO[List[EventId]] =
-    IO(eventsByOwner.get(userId).map(PagedResult.page(_, page)).getOrElse(List()))
+  override def getByOwner(userId: UserId, page: Page): IO[List[EventId]] = for {
+    requests <- IO(eventsByOwner.getOrElse(userId, Set()))
+    events   <- requests.map(getById).toList.sequence.map(_.flatten)
+    sorted   <- IO(events.sortBy(e => e.schedule.next(clock).map(- _.value).getOrElse(0L)))
+    paged    <- IO(PagedResult.page(sorted.map(_.id), page))
+  } yield paged
+
+  override def getByUser(userId: UserId, page: Page, p: Event => Boolean): IO[List[EventId]] = for {
+    confirmed <- IO(eventsByParticipant.getOrElse(userId, Set()))
+    requests  <- IO(participationRequestsByUser.getOrElse(userId, Set()))
+    events    <- (confirmed ++ requests).map(getById).toList.sequence.map(_.flatten)
+    filtered  <- IO(events.filter(p))
+    sorted    <- IO(filtered.sortBy(e => e.schedule.next(clock).map(- _.value).getOrElse(0L)))
+    paged     <- IO(PagedResult.page(sorted.map(_.id), page))
+  } yield paged
 
   override def getByParticipation(userId: UserId, page: Page): IO[List[EventId]] = for {
     requests <- IO(eventsByParticipant.getOrElse(userId, Set()))

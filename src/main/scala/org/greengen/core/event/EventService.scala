@@ -1,7 +1,7 @@
 package org.greengen.core.event
 
 import org.greengen.core.user.UserId
-import org.greengen.core.{Location, Page, Schedule}
+import org.greengen.core.{Clock, Location, Page, Schedule}
 
 trait EventService[F[_]] {
 
@@ -18,6 +18,8 @@ trait EventService[F[_]] {
   def byId(id: EventId): F[Option[Event]]
 
   def byOwnership(id: UserId, page: Page): F[List[EventId]]
+
+  def byUser(id: UserId, page: Page, filter: Event => Boolean): F[List[EventId]]
 
   def isParticipating(eventId: EventId, userId: UserId): F[Boolean]
 
@@ -45,5 +47,16 @@ trait EventService[F[_]] {
 
   // Owner rejects participation
   def rejectParticipation(owner: UserId, participantId: UserId, event: EventId): F[Unit]
+
+}
+
+
+object EventService {
+
+  val AllEventsFilter = (_: Event) => true
+
+  val IncomingFilter = (clock: Clock, e: Event) => !e.schedule.hasStarted(clock)
+
+  val FinishedFilter = (clock: Clock, e: Event) => e.schedule.isOver(clock)
 
 }

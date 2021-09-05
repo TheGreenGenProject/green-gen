@@ -23,6 +23,8 @@ trait EventStore[F[_]] extends Store[F] {
 
   def getByOwner(userId: UserId, page: Page): F[List[EventId]]
 
+  def getByUser(userId: UserId, page: Page, filter: Event => Boolean): F[List[EventId]]
+
   def getByParticipation(userId: UserId, page: Page): F[List[EventId]]
 
   def getParticipationRequests(eventId: EventId, page: Page): F[List[UserId]]

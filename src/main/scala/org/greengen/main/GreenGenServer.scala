@@ -125,7 +125,7 @@ object GreenGenServer extends App {
     authMiddleware(HttpTipService.routes(tipService)) <+>
     authMiddleware(HttpPollService.routes(clock, pollService)) <+>
     authMiddleware(HttpChallengeService.routes(clock, challengeService)) <+>
-    authMiddleware(HttpEventService.routes(eventService)) <+>
+    authMiddleware(HttpEventService.routes(clock, eventService)) <+>
     authMiddleware(HttpPinService.routes(pinService)) <+>
     authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>
     authMiddleware(HttpConversationService.routes(clock, conversationService)) <+>

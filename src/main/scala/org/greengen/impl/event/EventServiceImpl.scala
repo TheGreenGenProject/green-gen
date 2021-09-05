@@ -46,6 +46,9 @@ class EventServiceImpl(eventStore: EventStore[IO])
   override def byOwnership(id: UserId, page: Page): IO[List[EventId]] =
     eventStore.getByOwner(id, page)
 
+  override def byUser(id: UserId, page: Page, predicate: Event => Boolean): IO[List[EventId]] =
+    eventStore.getByUser(id, page, predicate)
+
   override def byParticipation(id: UserId, page: Page): IO[List[EventId]] =
     eventStore.getByParticipation(id, page)
 
