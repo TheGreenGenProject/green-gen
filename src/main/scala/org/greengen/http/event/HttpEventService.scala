@@ -62,12 +62,11 @@ object HttpEventService {
     case GET -> Root / "event" / "participation" / "requests" / UUIDVar(id) / IntVar(page) as _ =>
       service.participationRequests(EventId(UUID.from(id)), Page(page, by=PageSize)).flatMap(r => Ok(r.asJson))
     // POST
-    case POST -> Root / "event" / "create" :?
-      UserIdQueryParamMatcher(userId) +&
+    case POST -> Root / "event" / "new" :?
         MaxParticipantQueryParamMatcher(maxParticipants) +&
         DescriptionQueryParamMatcher(desc) +&
         LocationQueryParamMatcher(location) +&
-        ScheduleQueryParamMatcher(schedule) as _ =>
+        ScheduleQueryParamMatcher(schedule) as userId =>
       service.create(userId, maxParticipants, desc, location, schedule).flatMap(r => Ok(r.asJson))
     case POST -> Root / "event" / "cancel" :?
         EventIdQueryParamMatcher(eventId) as userId =>
