@@ -3,7 +3,7 @@ package org.greengen.impl.event
 import cats.effect.IO
 import cats.implicits._
 import org.greengen.core.event.{Event, EventId, EventService}
-import org.greengen.core.notification.{EventCancelledNotification, Notification, NotificationService}
+import org.greengen.core.notification.{EventCancelledNotification, EventParticipationRequestAcceptedNotification, EventParticipationRequestRejectedNotification, Notification, NotificationService}
 import org.greengen.core.user.{UserId, UserService}
 import org.greengen.core.{Clock, IOUtils, Location, Page, Schedule}
 import org.greengen.store.event.EventStore
@@ -34,7 +34,7 @@ class EventServiceImpl(eventStore: EventStore[IO])
     requests <- eventStore.getParticipationRequests(id, Page.All)
     participants <- eventStore.participants(id, Page.All)
     notif = Notification.from(clock, EventCancelledNotification(id))
-    _ <- notificationService.dispatch(notif, requests ++ participants)
+    _ <- notificationService.dispatch(notif, owner :: requests ::: participants)
     // Effectively canceling events
     _ <- requests.map(eventStore.cancelParticipation(_, id)).sequence
     _ <- participants.map(eventStore.cancelParticipation(_, id)).sequence
@@ -91,13 +91,16 @@ class EventServiceImpl(eventStore: EventStore[IO])
     _ <- checkEventEnabled(event)
     _ <- checkNotParticipatingYet(participant, event)
     _ <- eventStore.addParticipation(participant, event)
+    notif = Notification.from(clock, EventParticipationRequestAcceptedNotification(event))
+    _ <- notificationService.dispatch(notif, List(participant))
   } yield ()
 
   override def rejectParticipation(owner: UserId, participant: UserId, event: EventId): IO[Unit] = for {
     _ <- checkOwner(owner, event)
     _ <- checkEvent(event)
     _ <- eventStore.removeParticipationRequest(participant, event)
-    _ <- notificationService.dispatch(???, List(participant))
+    notif = Notification.from(clock, EventParticipationRequestRejectedNotification(event))
+    _ <- notificationService.dispatch(notif, List(participant))
   } yield ()
 
 

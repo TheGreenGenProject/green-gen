@@ -61,6 +61,8 @@ object HttpEventService {
       service.byParticipation(UserId(UUID.from(id)), Page(page, by=PageSize)).flatMap(r => Ok(r.asJson))
     case GET -> Root / "event" / "participation" / "requests" / UUIDVar(id) / IntVar(page) as _ =>
       service.participationRequests(EventId(UUID.from(id)), Page(page, by=PageSize)).flatMap(r => Ok(r.asJson))
+    case GET -> Root / "event" / "participation" / "participants" / UUIDVar(id) / IntVar(page) as _ =>
+      service.participants(EventId(UUID.from(id)), Page(page, by=PageSize)).flatMap(r => Ok(r.asJson))
     // POST
     case POST -> Root / "event" / "new" :?
         MaxParticipantQueryParamMatcher(maxParticipants) +&

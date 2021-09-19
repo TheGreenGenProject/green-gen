@@ -17,6 +17,8 @@ object NotificationId {
 sealed trait NotificationContent
 case class PlatformMessageNotification(message: String) extends NotificationContent
 case class EventModifiedNotification(eventId: EventId) extends NotificationContent
+case class EventParticipationRequestAcceptedNotification(eventId: EventId) extends NotificationContent
+case class EventParticipationRequestRejectedNotification(eventId: EventId) extends NotificationContent
 case class EventCancelledNotification(eventId: EventId) extends NotificationContent
 case class NewFollowerNotification(follower: UserId) extends NotificationContent
 case class PostLikedNotification(postId: PostId, likedBy: UserId) extends NotificationContent
