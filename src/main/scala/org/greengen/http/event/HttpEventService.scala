@@ -32,8 +32,10 @@ object HttpEventService {
         .flatMap(r => Ok(r.asJson))
     case GET -> Root / "event" / "by-user" / "accepted" / UUIDVar(id) / IntVar(page) as _ =>
       val userId = UserId(UUID.from(id))
-      val accepted = (e: Event) =>
-        service.isParticipating(e.id, userId).unsafeRunSync()
+      val accepted = (e: Event) => (for {
+        notCancelled  <- service.isCancelled(e.id).map(! _)
+        participating <- service.isParticipating(e.id, userId)
+      } yield notCancelled && participating).unsafeRunSync()
       service.byUser(userId, Page(page, by=PageSize), accepted)
         .flatMap(r => Ok(r.asJson))
     case GET -> Root / "event" / "by-user" / "finished" / UUIDVar(id) / IntVar(page) as _ =>
@@ -41,14 +43,11 @@ object HttpEventService {
         .flatMap(r => Ok(r.asJson))
     case GET -> Root / "event" / "by-user" / "pending-request" / UUIDVar(id) / IntVar(page) as _ =>
       val userId = UserId(UUID.from(id))
-      val pendingRequestFilter = (e: Event) =>
-        service.isParticipationRequested(e.id, userId).unsafeRunSync()
+      val pendingRequestFilter = (e: Event) => (for {
+        notCancelled <- service.isCancelled(e.id).map(! _)
+        requested    <- service.isParticipationRequested(e.id, userId)
+      } yield notCancelled && requested).unsafeRunSync()
       service.byUser(userId, Page(page, by=PageSize), pendingRequestFilter).flatMap(r => Ok(r.asJson))
-    case GET -> Root / "event" / "by-user" / "confirmed" / UUIDVar(id) / IntVar(page) as _ =>
-      val userId = UserId(UUID.from(id))
-      val acceptedRequestFilter = (e: Event) =>
-        service.isParticipating(e.id, userId).unsafeRunSync()
-      service.byUser(userId, Page(page, by=PageSize), acceptedRequestFilter).flatMap(r => Ok(r.asJson))
     case GET -> Root / "event" / "is-participating" / UUIDVar(id) as userId =>
       service.isParticipating(EventId(UUID.from(id)), userId).flatMap(r => Ok(r.asJson))
     case GET -> Root / "event" / "participation"/ "is-requested" / UUIDVar(id) as userId =>

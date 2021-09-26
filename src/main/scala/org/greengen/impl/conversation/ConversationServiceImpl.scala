@@ -13,29 +13,9 @@ class ConversationServiceImpl(conversationStore: ConversationStore[IO])
                               userService: UserService[IO],
                               notificationService: NotificationService[IO]) extends ConversationService[IO] {
 
-  override def getConversation(postId: PostId): IO[ConversationId] =
-    conversationStore.getConversation(postId)
-      .map(_.getOrElse(ConversationId.newId))
-
-
-  override def getConversation(author: UserId, dest: UserId): IO[ConversationId] =
-    conversationStore.getPrivateConversation(author, dest)
-      .map(_.getOrElse(ConversationId.newId))
-
-  override def countMessages(postId: PostId): IO[Long] =
-    conversationStore.countMessages(postId)
-
-  override def getMessage(messageId: MessageId): IO[Option[Message]] =
-    conversationStore.getMessage(messageId)
 
   override def getConversationMessages(conversationId: ConversationId, page: Page): IO[List[MessageId]] =
     conversationStore.getMessages(conversationId, page)
-
-  override def addMessage(postId: PostId, message: Message): IO[Unit] =
-    conversationStore.addMessageToPost(postId, message)
-
-  override def addPrivateMessage(author: UserId, dest: UserId, message: Message): IO[Unit] =
-    conversationStore.addPrivateMessage(author, dest, message)
 
   override def flag(userId: UserId, messageId: MessageId): IO[Unit] = for {
     _ <- checkUser(userId)
@@ -52,6 +32,31 @@ class ConversationServiceImpl(conversationStore: ConversationStore[IO])
 
   override def hasUserFlagged(userId: UserId, messageId: MessageId): IO[Boolean] =
     conversationStore.hasUserFlagged(userId, messageId)
+
+  // Post conversation
+
+  override def getConversation(postId: PostId): IO[ConversationId] =
+    conversationStore.getConversation(postId)
+      .map(_.getOrElse(ConversationId.newId))
+
+  override def countMessages(postId: PostId): IO[Long] =
+    conversationStore.countMessages(postId)
+
+  override def getMessage(messageId: MessageId): IO[Option[Message]] =
+    conversationStore.getMessage(messageId)
+
+  override def addMessage(postId: PostId, message: Message): IO[Unit] =
+    conversationStore.addMessageToPost(postId, message)
+
+  // Private conversation
+
+  override def getConversation(author: UserId, dest: UserId): IO[ConversationId] =
+    conversationStore.getPrivateConversation(author, dest)
+      .map(_.getOrElse(ConversationId.newId))
+
+  override def addPrivateMessage(author: UserId, dest: UserId, message: Message): IO[Unit] =
+    conversationStore.addPrivateMessage(author, dest, message)
+
 
   // Check users
 

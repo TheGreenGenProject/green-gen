@@ -9,21 +9,13 @@ import org.greengen.store.Store
 
 trait ConversationStore[F[_]] extends Store[F] {
 
-  def getConversation(postId: PostId): F[Option[ConversationId]]
-
-  def getPrivateConversation(author: UserId, dest: UserId): F[Option[ConversationId]]
-
-  def countMessages(postId: PostId): F[Long]
+  // Generic
 
   def getMessage(messageId: MessageId): F[Option[Message]]
 
   def getMessages(conversationId: ConversationId, page: Page): F[List[MessageId]]
 
   def addMessageToConversation(conversationId: ConversationId, message: Message): F[Unit]
-
-  def addMessageToPost(postId: PostId, message: Message): F[Unit]
-
-  def addPrivateMessage(author: UserId, dest: UserId, message: Message): F[Unit]
 
   def flag(userId: UserId, messageId: MessageId): F[Unit]
 
@@ -34,5 +26,19 @@ trait ConversationStore[F[_]] extends Store[F] {
   def hasUserFlagged(userId: UserId, messageId: MessageId): F[Boolean]
 
   def getFlagCount(messageId: MessageId): F[Long]
+
+  // Post conversation
+
+  def getConversation(postId: PostId): F[Option[ConversationId]]
+
+  def addMessageToPost(postId: PostId, message: Message): F[Unit]
+
+  def countMessages(postId: PostId): F[Long]
+
+  // Private conversation
+
+  def getPrivateConversation(author: UserId, dest: UserId): F[Option[ConversationId]]
+
+  def addPrivateMessage(author: UserId, dest: UserId, message: Message): F[Unit]
 
 }

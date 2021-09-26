@@ -124,6 +124,10 @@ class InMemoryEventStore(clock: Clock) extends EventStore[IO] {
       case Some(users) => Some(users + participant)
       case None        => Some(Set(participant))
     }}
+    _ <- IO { eventsByParticipant.updateWith(participant) {
+      case Some(events) => Some(events + event)
+      case None         => Some(Set(event))
+    }}
     // Removing from participation request indices
     _ <- removeParticipationRequest(participant, event)
   } yield ()

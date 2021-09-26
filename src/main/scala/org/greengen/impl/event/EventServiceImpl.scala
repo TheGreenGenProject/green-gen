@@ -36,8 +36,8 @@ class EventServiceImpl(eventStore: EventStore[IO])
     notif = Notification.from(clock, EventCancelledNotification(id))
     _ <- notificationService.dispatch(notif, owner :: requests ::: participants)
     // Effectively canceling events
-    _ <- requests.map(eventStore.cancelParticipation(_, id)).sequence
-    _ <- participants.map(eventStore.cancelParticipation(_, id)).sequence
+//    _ <- requests.map(eventStore.cancelParticipation(_, id)).sequence
+//    _ <- participants.map(eventStore.cancelParticipation(_, id)).sequence
   } yield ()
 
   override def byId(id: EventId): IO[Option[Event]] =
