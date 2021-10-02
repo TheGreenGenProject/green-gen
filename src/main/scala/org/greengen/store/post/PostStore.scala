@@ -30,4 +30,6 @@ trait PostStore[F[_]] extends Store[F] {
 
   def isPostFlagged(post: PostId): F[Boolean]
 
+  def randomPosts(n: Int): F[List[PostId]]
+
 }

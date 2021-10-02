@@ -71,6 +71,8 @@ class InMemoryPostStore extends PostStore[IO] {
   override def isPostFlagged(post: PostId): IO[Boolean] =
     IO(flagged.contains(post))
 
+  def randomPosts(n: Int): IO[List[PostId]] =
+    IO(posts.values.map(_.id).take(n).toList)
 
   // Helpers
 

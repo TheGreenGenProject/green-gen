@@ -120,7 +120,17 @@ class MongoPostStore(db: MongoDatabase)
     _      <- cacheTrend(trend)
   } yield trend
 
+  override def randomPosts(n: Int): IO[List[PostId]] = toListIO {
+    postsCollection
+      .find()
+      .limit(n)
+      .map(_.getString("post_id"))
+      .map(UUID.unsafeFrom)
+      .map(PostId(_))
+  }
+
   // Helpers
+
 
   // Mongo query would be
   // db.posts.aggregate([

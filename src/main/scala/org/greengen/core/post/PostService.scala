@@ -15,6 +15,8 @@ trait PostService[F[_]] {
 
   def isFlagged(post: PostId): F[Boolean]
 
+  def initialFeed(userId: UserId, n: Int): F[Unit]
+
   // Search capabilities
 
   def byId(post: PostId): F[Option[Post]]

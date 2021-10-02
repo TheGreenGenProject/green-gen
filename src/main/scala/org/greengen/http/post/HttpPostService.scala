@@ -82,6 +82,8 @@ object HttpPostService {
       SourceListQueryParamMatcher(sources) as userId =>
       service.post(FreeTextPost(PostId.newId, userId, content, sources, clock.now(), hashtags))
         .flatMap(r => Ok(r.asJson))
+    case POST -> Root / "post" / "new" / "feed" as userId =>
+      service.initialFeed(userId, 100).flatMap(r => Ok(r.asJson))
   }
 
 }

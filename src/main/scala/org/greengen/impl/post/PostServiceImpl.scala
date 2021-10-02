@@ -1,6 +1,7 @@
 package org.greengen.impl.post
 
 import cats.effect.IO
+import cats.implicits._
 import org.greengen.core._
 import org.greengen.core.challenge.ChallengeId
 import org.greengen.core.event.EventId
@@ -42,6 +43,11 @@ class PostServiceImpl(postStore: PostStore[IO])
 
   override def isFlagged(post: PostId): IO[Boolean] =
     postStore.isPostFlagged(post)
+
+  override def initialFeed(userId: UserId, n: Int): IO[Unit] = for {
+    posts <- postStore.randomPosts(n)
+    _     <- posts.map(feedService.addToFeed(userId, _)).sequence
+  } yield ()
 
   override def byId(post: PostId): IO[Option[Post]] =
     postStore.getPostById(post)
