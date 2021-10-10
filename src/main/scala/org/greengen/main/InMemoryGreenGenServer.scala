@@ -1,6 +1,6 @@
 package org.greengen.main
 
-import cats.effect.{ContextShift, IO, Timer}
+import cats.effect.{ConcurrentEffect, ContextShift, ExitCode, IO, IOApp, Timer}
 import cats.implicits._
 import org.greengen.core.Clock
 import org.greengen.http.auth.{HttpAuthService, TokenAuthMiddleware}
@@ -65,78 +65,81 @@ import org.http4s.server.middleware.CORS
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
-object InMemoryGreenGenServer extends App {
+object InMemoryGreenGenServer extends IOApp {
 
-  implicit val timer: Timer[IO] = IO.timer(global)
-  implicit val cs: ContextShift[IO] = IO.contextShift(global)
+  def run(args: List[String]): IO[ExitCode] = {
 
-  // Services
-  val clock = Clock()
-  val userService = new UserServiceImpl(new InMemoryUserStore)(clock)
-  val authService = new AuthServiceImpl(new InMemoryAuthStore)(clock, userService)
-  val registrationService = new RegistrationServiceImpl(new InMemoryRegistrationStore(clock))(clock, userService)
-  val notificationService = new NotificationServiceImpl(new InMemoryNotificationStore(clock))(clock, userService)
-  val followerService = new FollowerServiceImpl(new InMemoryFollowerStore)(clock, userService, notificationService)
-  val tipService = new TipServiceImpl(new InMemoryTipStore)(clock, userService)
-  val challengeService = new ChallengeServiceImpl(new InMemoryChallengeStore)(clock, userService, followerService, notificationService)
-  val pollService = new PollServiceImpl(new InMemoryPollStore(clock))(clock, userService)
-  val hashtagService = new HashtagServiceImpl(new InMemoryHashtagStore)(userService)
-  val feedService = new FeedServiceImpl(new InMemoryFeedStore)(userService, followerService, hashtagService)
-  val wallService = new WallServiceImpl(new InMemoryWallStore)(userService)
-  val postService = new PostServiceImpl(new InMemoryPostStore)(clock, userService, wallService, feedService)
-  val likeService = new LikeServiceImpl(new InMemoryLikeStore)(clock, userService, notificationService, postService)
-  val pinService = new PinServiceImpl(new InMemoryPinStore)(clock, userService, postService)
-  val eventService = new EventServiceImpl(new InMemoryEventStore(clock))(clock, userService, notificationService)
-  val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
-  val conversationService = new ConversationServiceImpl(new InMemoryConversationStore)(clock, userService, notificationService)
-  val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
-  val partnershipService = new PartnershipServiceImpl(new InMemoryPartnershipStore)(clock,userService)
+    // Services
+    val clock = Clock()
+    val userService = new UserServiceImpl(new InMemoryUserStore)(clock)
+    val authService = new AuthServiceImpl(new InMemoryAuthStore)(clock, userService)
+    val registrationService = new RegistrationServiceImpl(new InMemoryRegistrationStore(clock))(clock, userService)
+    val notificationService = new NotificationServiceImpl(new InMemoryNotificationStore(clock))(clock, userService)
+    val followerService = new FollowerServiceImpl(new InMemoryFollowerStore)(clock, userService, notificationService)
+    val tipService = new TipServiceImpl(new InMemoryTipStore)(clock, userService)
+    val challengeService = new ChallengeServiceImpl(new InMemoryChallengeStore)(clock, userService, followerService, notificationService)
+    val pollService = new PollServiceImpl(new InMemoryPollStore(clock))(clock, userService)
+    val hashtagService = new HashtagServiceImpl(new InMemoryHashtagStore)(userService)
+    val feedService = new FeedServiceImpl(new InMemoryFeedStore)(userService, followerService, hashtagService)
+    val wallService = new WallServiceImpl(new InMemoryWallStore)(userService)
+    val postService = new PostServiceImpl(new InMemoryPostStore)(clock, userService, wallService, feedService)
+    val likeService = new LikeServiceImpl(new InMemoryLikeStore)(clock, userService, notificationService, postService)
+    val pinService = new PinServiceImpl(new InMemoryPinStore)(clock, userService, postService)
+    val eventService = new EventServiceImpl(new InMemoryEventStore(clock))(clock, userService, notificationService)
+    val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
+    val conversationService = new ConversationServiceImpl(new InMemoryConversationStore)(clock, userService, notificationService)
+    val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
+    val partnershipService = new PartnershipServiceImpl(new InMemoryPartnershipStore)(clock,userService)
 
-  // FIXME Populating data for testing purpose
-  TestData
-    .init(clock, authService,
-      userService, followerService,
-      tipService, challengeService, pollService,
-      postService, eventService,
-      notificationService, partnershipService)
-    .unsafeRunSync()
+    // FIXME Populating data for testing purpose
+    TestData
+      .init(clock, authService,
+        userService, followerService,
+        tipService, challengeService, pollService,
+        postService, eventService,
+        notificationService, partnershipService)
+      .unsafeRunSync()
 
-  // Token based authentication middleware
-  val authMiddleware = TokenAuthMiddleware.authMiddleware(authService)
+    // Token based authentication middleware
+    val authMiddleware = TokenAuthMiddleware.authMiddleware(authService)
 
-  // Routes
-  val nonAuthRoutes =
-    HttpAuthService.nonAuthRoutes(authService) <+>
-    HttpRegistrationService.nonAuthRoutes(registrationService)
-  val authRoutes =
-    authMiddleware(HttpPostService.routes(clock, postService)) <+>
-    authMiddleware(HttpFollowerService.routes(followerService)) <+>
-    authMiddleware(HttpHashtagService.routes(hashtagService)) <+>
-    authMiddleware(HttpLikeService.routes(likeService)) <+>
-    authMiddleware(HttpWallService.routes(wallService)) <+>
-    authMiddleware(HttpFeedService.routes(feedService)) <+>
-    authMiddleware(HttpTipService.routes(tipService)) <+>
-    authMiddleware(HttpPollService.routes(clock, pollService)) <+>
-    authMiddleware(HttpChallengeService.routes(clock, challengeService)) <+>
-    authMiddleware(HttpEventService.routes(clock, eventService)) <+>
-    authMiddleware(HttpPinService.routes(pinService)) <+>
-    authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>
-    authMiddleware(HttpConversationService.routes(clock, conversationService)) <+>
-    authMiddleware(HttpRankingService.routes(rankingService)) <+>
-    authMiddleware(HttpPartnershipService.routes(partnershipService)) <+>
-    authMiddleware(HttpAuthService.routes(authService)) <+>
-    authMiddleware(HttpUserService.routes(userService))
-  val routes = CORS(nonAuthRoutes <+> authRoutes) // CORS required for browsers
+    // Routes
+    val nonAuthRoutes =
+      HttpAuthService.nonAuthRoutes(authService) <+>
+        HttpRegistrationService.nonAuthRoutes(registrationService)
+    val authRoutes =
+      authMiddleware(HttpPostService.routes(clock, postService)) <+>
+        authMiddleware(HttpFollowerService.routes(followerService)) <+>
+        authMiddleware(HttpHashtagService.routes(hashtagService)) <+>
+        authMiddleware(HttpLikeService.routes(likeService)) <+>
+        authMiddleware(HttpWallService.routes(wallService)) <+>
+        authMiddleware(HttpFeedService.routes(feedService)) <+>
+        authMiddleware(HttpTipService.routes(tipService)) <+>
+        authMiddleware(HttpPollService.routes(clock, pollService)) <+>
+        authMiddleware(HttpChallengeService.routes(clock, challengeService)) <+>
+        authMiddleware(HttpEventService.routes(clock, eventService)) <+>
+        authMiddleware(HttpPinService.routes(pinService)) <+>
+        authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>
+        authMiddleware(HttpConversationService.routes(clock, conversationService)) <+>
+        authMiddleware(HttpRankingService.routes(rankingService)) <+>
+        authMiddleware(HttpPartnershipService.routes(partnershipService)) <+>
+        authMiddleware(HttpAuthService.routes(authService)) <+>
+        authMiddleware(HttpUserService.routes(userService))
+    val routes = CORS(nonAuthRoutes <+> authRoutes) // CORS required for browsers
 
-  // App
-  val httpApp = Router("/" -> routes).orNotFound
-  val serverBuilder = BlazeServerBuilder[IO](global)
-    .bindHttp(8080, "localhost")
-    .withHttpApp(httpApp)
-  val fiber = serverBuilder.resource
-    .use(_ => IO.never)
-    .start
-    .unsafeRunSync()
+    // App
+    val port = Option(System.getenv("PORT"))
+      .map(_.toInt)
+      .getOrElse(8080)
+    println(s"App will be opened on port $port")
+    val httpApp = Router("/" -> routes).orNotFound
+    BlazeServerBuilder[IO](global)
+      .bindHttp(port, "0.0.0.0")
+      .withHttpApp(httpApp)
+      .serve
+      .compile
+      .drain
+      .as(ExitCode.Success)
+  }
 
-  Thread.sleep(3600 * 1000)
 }

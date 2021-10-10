@@ -1,3 +1,5 @@
+enablePlugins(JavaAppPackaging)
+
 name := "green-gen"
 
 version := "0.1"

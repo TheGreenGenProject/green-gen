@@ -1,6 +1,6 @@
 package org.greengen.main
 
-import cats.effect.{ContextShift, IO, Timer}
+import cats.effect.{ConcurrentEffect, ContextShift, ExitCode, IO, IOApp, Timer}
 import cats.implicits._
 import org.greengen.core.Clock
 import org.greengen.db.mongo
@@ -41,10 +41,9 @@ import org.greengen.impl.reminder.ReminderServiceImpl
 import org.greengen.impl.tip.TipServiceImpl
 import org.greengen.impl.user.UserServiceImpl
 import org.greengen.impl.wall.WallServiceImpl
-import org.greengen.main.InMemoryGreenGenServer.{authMiddleware, clock, eventService, notificationService, partnershipService, userService}
 import org.greengen.store.auth.InMemoryAuthStore
 import org.greengen.store.challenge.MongoChallengeStore
-import org.greengen.store.conversation.{InMemoryConversationStore, MongoConversationStore}
+import org.greengen.store.conversation.MongoConversationStore
 import org.greengen.store.event.InMemoryEventStore
 import org.greengen.store.feed.MongoFeedStore
 import org.greengen.store.follower.MongoFollowerStore
@@ -53,7 +52,7 @@ import org.greengen.store.like.MongoLikeStore
 import org.greengen.store.notification.MongoNotificationStore
 import org.greengen.store.partnership.InMemoryPartnershipStore
 import org.greengen.store.pin.MongoPinStore
-import org.greengen.store.poll.{InMemoryPollStore, MongoPollStore}
+import org.greengen.store.poll.MongoPollStore
 import org.greengen.store.post.MongoPostStore
 import org.greengen.store.registration.InMemoryRegistrationStore
 import org.greengen.store.tip.MongoTipStore
@@ -67,83 +66,85 @@ import org.http4s.server.middleware.CORS
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
-object GreenGenServer extends App {
+object GreenGenServer extends IOApp {
 
-  implicit val timer: Timer[IO] = IO.timer(global)
-  implicit val cs: ContextShift[IO] = IO.contextShift(global)
+  def run(args: List[String]): IO[ExitCode] = {
 
-  val db = mongo.Database.connection(
-    "mongodb://localhost:27017/",
-    "greengen",
-    "gogogo")
+    val db = mongo.Database.connection(
+      "mongodb://localhost:27017/",
+      "greengen",
+      "gogogo")
 
-  // Services
-  val clock = Clock()
-  val userService = new UserServiceImpl(new MongoUserStore(db))(clock)
-  val authService = new AuthServiceImpl(new InMemoryAuthStore)(clock, userService)
-  val registrationService = new RegistrationServiceImpl(new InMemoryRegistrationStore(clock))(clock, userService)
-  val notificationService = new NotificationServiceImpl(new MongoNotificationStore(db, clock))(clock, userService)
-  val followerService = new FollowerServiceImpl(new MongoFollowerStore(db, clock))(clock, userService, notificationService)
-  val tipService = new TipServiceImpl(new MongoTipStore(db))(clock, userService)
-  val challengeService = new ChallengeServiceImpl(new MongoChallengeStore(db, clock))(clock, userService, followerService, notificationService)
-  val pollService = new PollServiceImpl(new MongoPollStore(db, clock))(clock, userService)
-  val hashtagService = new HashtagServiceImpl(new MongoHashtagStore(db, clock))(userService)
-  val feedService = new FeedServiceImpl(new MongoFeedStore(db, clock))(userService, followerService, hashtagService)
-  val wallService = new WallServiceImpl(new MongoWallStore(db, clock))(userService)
-  val postService = new PostServiceImpl(new MongoPostStore(db))(clock, userService, wallService, feedService)
-  val likeService = new LikeServiceImpl(new MongoLikeStore(db, clock))(clock, userService, notificationService, postService)
-  val pinService = new PinServiceImpl(new MongoPinStore(db))(clock, userService, postService)
-  val eventService = new EventServiceImpl(new InMemoryEventStore(clock))(clock, userService, notificationService)
-  val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
-  val conversationService = new ConversationServiceImpl(new MongoConversationStore(db, clock))(clock, userService, notificationService)
-  val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
-  val partnershipService = new PartnershipServiceImpl(new InMemoryPartnershipStore)(clock,userService)
+    // Services
+    val clock = Clock()
+    val userService = new UserServiceImpl(new MongoUserStore(db))(clock)
+    val authService = new AuthServiceImpl(new InMemoryAuthStore)(clock, userService)
+    val registrationService = new RegistrationServiceImpl(new InMemoryRegistrationStore(clock))(clock, userService)
+    val notificationService = new NotificationServiceImpl(new MongoNotificationStore(db, clock))(clock, userService)
+    val followerService = new FollowerServiceImpl(new MongoFollowerStore(db, clock))(clock, userService, notificationService)
+    val tipService = new TipServiceImpl(new MongoTipStore(db))(clock, userService)
+    val challengeService = new ChallengeServiceImpl(new MongoChallengeStore(db, clock))(clock, userService, followerService, notificationService)
+    val pollService = new PollServiceImpl(new MongoPollStore(db, clock))(clock, userService)
+    val hashtagService = new HashtagServiceImpl(new MongoHashtagStore(db, clock))(userService)
+    val feedService = new FeedServiceImpl(new MongoFeedStore(db, clock))(userService, followerService, hashtagService)
+    val wallService = new WallServiceImpl(new MongoWallStore(db, clock))(userService)
+    val postService = new PostServiceImpl(new MongoPostStore(db))(clock, userService, wallService, feedService)
+    val likeService = new LikeServiceImpl(new MongoLikeStore(db, clock))(clock, userService, notificationService, postService)
+    val pinService = new PinServiceImpl(new MongoPinStore(db))(clock, userService, postService)
+    val eventService = new EventServiceImpl(new InMemoryEventStore(clock))(clock, userService, notificationService)
+    val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
+    val conversationService = new ConversationServiceImpl(new MongoConversationStore(db, clock))(clock, userService, notificationService)
+    val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
+    val partnershipService = new PartnershipServiceImpl(new InMemoryPartnershipStore)(clock, userService)
 
-  // FIXME Populating data for testing purpose
-  TestData
-    .init(clock, authService,
-      userService, followerService,
-      tipService, challengeService, pollService,
-      postService, eventService,
-      notificationService, partnershipService)
-    .unsafeRunSync()
+    // FIXME Populating data for testing purpose
+    TestData
+      .init(clock, authService,
+        userService, followerService,
+        tipService, challengeService, pollService,
+        postService, eventService,
+        notificationService, partnershipService)
+      .unsafeRunSync()
 
-  // Token based authentication middleware
-  val authMiddleware = TokenAuthMiddleware.authMiddleware(authService)
+    // Token based authentication middleware
+    val authMiddleware = TokenAuthMiddleware.authMiddleware(authService)
 
-  // Routes
-  val nonAuthRoutes =
-    HttpAuthService.nonAuthRoutes(authService) <+>
-    HttpRegistrationService.nonAuthRoutes(registrationService)
-  val authRoutes =
-    authMiddleware(HttpPostService.routes(clock, postService)) <+>
-    authMiddleware(HttpFollowerService.routes(followerService)) <+>
-    authMiddleware(HttpHashtagService.routes(hashtagService)) <+>
-    authMiddleware(HttpLikeService.routes(likeService)) <+>
-    authMiddleware(HttpWallService.routes(wallService)) <+>
-    authMiddleware(HttpFeedService.routes(feedService)) <+>
-    authMiddleware(HttpTipService.routes(tipService)) <+>
-    authMiddleware(HttpPollService.routes(clock, pollService)) <+>
-    authMiddleware(HttpChallengeService.routes(clock, challengeService)) <+>
-    authMiddleware(HttpEventService.routes(clock, eventService)) <+>
-    authMiddleware(HttpPinService.routes(pinService)) <+>
-    authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>
-    authMiddleware(HttpConversationService.routes(clock, conversationService)) <+>
-    authMiddleware(HttpRankingService.routes(rankingService)) <+>
-    authMiddleware(HttpPartnershipService.routes(partnershipService)) <+>
-    authMiddleware(HttpAuthService.routes(authService)) <+>
-    authMiddleware(HttpUserService.routes(userService))
-  val routes = CORS(nonAuthRoutes <+> authRoutes) // CORS required for browsers
+    // Routes
+    val nonAuthRoutes =
+      HttpAuthService.nonAuthRoutes(authService) <+>
+        HttpRegistrationService.nonAuthRoutes(registrationService)
+    val authRoutes =
+      authMiddleware(HttpPostService.routes(clock, postService)) <+>
+        authMiddleware(HttpFollowerService.routes(followerService)) <+>
+        authMiddleware(HttpHashtagService.routes(hashtagService)) <+>
+        authMiddleware(HttpLikeService.routes(likeService)) <+>
+        authMiddleware(HttpWallService.routes(wallService)) <+>
+        authMiddleware(HttpFeedService.routes(feedService)) <+>
+        authMiddleware(HttpTipService.routes(tipService)) <+>
+        authMiddleware(HttpPollService.routes(clock, pollService)) <+>
+        authMiddleware(HttpChallengeService.routes(clock, challengeService)) <+>
+        authMiddleware(HttpEventService.routes(clock, eventService)) <+>
+        authMiddleware(HttpPinService.routes(pinService)) <+>
+        authMiddleware(HttpNotificationService.routes(clock, notificationService)) <+>
+        authMiddleware(HttpConversationService.routes(clock, conversationService)) <+>
+        authMiddleware(HttpRankingService.routes(rankingService)) <+>
+        authMiddleware(HttpPartnershipService.routes(partnershipService)) <+>
+        authMiddleware(HttpAuthService.routes(authService)) <+>
+        authMiddleware(HttpUserService.routes(userService))
+    val routes = CORS(nonAuthRoutes <+> authRoutes) // CORS required for browsers
 
-  // App
-  val httpApp = Router("/" -> routes).orNotFound
-  val serverBuilder = BlazeServerBuilder[IO](global)
-    .bindHttp(8080, "localhost")
-    .withHttpApp(httpApp)
-  val fiber = serverBuilder.resource
-    .use(_ => IO.never)
-    .start
-    .unsafeRunSync()
-
-  Thread.sleep(3600 * 1000)
+    // App
+    val port = Option(System.getenv("PORT"))
+      .map(_.toInt)
+      .getOrElse(8080)
+    println(s"App will be opened on port $port")
+    val httpApp = Router("/" -> routes).orNotFound
+    BlazeServerBuilder[IO](global)
+      .bindHttp(port, "localhost")
+      .withHttpApp(httpApp)
+      .serve
+      .compile
+      .drain
+      .as(ExitCode.Success)
+  }
 }
