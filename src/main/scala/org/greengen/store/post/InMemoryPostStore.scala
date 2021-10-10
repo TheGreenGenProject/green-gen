@@ -57,7 +57,7 @@ class InMemoryPostStore extends PostStore[IO] {
   override def trendByHashtags(n: Int): IO[List[(Int, Hashtag)]] = IO {
     hashtags.toList
       .map { case (ht, posts) => (posts.size, ht) }
-      .sortBy(_._1)
+      .sortBy(- _._1)
       .take(n)
   }
 
