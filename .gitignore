@@ -4,3 +4,5 @@ target/
 project/target/
 project/project/
 TODO.txt
+src/main/resources/tweets.txt
+
