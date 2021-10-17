@@ -21,4 +21,7 @@ object IOUtils {
   def from[T](attempt: Try[T]): IO[T] =
     attempt.fold(err => IO.raiseError[T](err), IO.pure(_))
 
+  def defined[T](maybe: IO[Option[T]], err: String): IO[T] =
+    maybe.flatMap(_.fold(IO.raiseError[T](new RuntimeException(err)))(IO.pure))
+
 }

@@ -35,6 +35,14 @@ object HttpQueryParameters {
     .map(UUID.unsafeFrom)
     .map(PostId(_))
 
+  private[http] object PostIdsQueryParamMatcher extends QueryParamDecoderMatcher[List[PostId]]("post-ids")
+  private[http] implicit lazy val postIdsQueryParamDecoder: QueryParamDecoder[List[PostId]] = QueryParamDecoder[String]
+    .map(_.split('+')
+    .filter(_.nonEmpty)
+    .map(UUID.unsafeFrom)
+    .map(PostId(_))
+    .toList)
+
   private[http] object PollIdQueryParamMatcher extends QueryParamDecoderMatcher[PollId]("poll-id")
   private[http] implicit lazy val pollIdQueryParamDecoder: QueryParamDecoder[PollId] = QueryParamDecoder[String]
     .map(UUID.unsafeFrom)

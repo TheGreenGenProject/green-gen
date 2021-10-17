@@ -19,6 +19,7 @@ import org.greengen.core.tip.{Tip, TipId}
 import org.greengen.core.user.{Profile, Pseudo, User, UserId}
 import org.greengen.core.wall.Wall
 import org.greengen.core.{Country, Duration, Hashtag, Location, Schedule, Source, Token, UTCTimestamp, Url}
+import org.greengen.http.post.HttpAggregatedPostService.{AggregatedPostInfo, ChallengeInfo, EventInfo, FreeTextInfo, PollInfo, RepostInfo, TipInfo}
 import org.http4s.circe._
 
 object JsonDecoder {
@@ -136,5 +137,20 @@ object JsonDecoder {
   implicit val PartnerIdDecoder = jsonOf[IO, PartnerId]
   implicit val PartnerDecoder = jsonOf[IO, Partner]
   implicit val PartnerOptionDecoder = jsonOf[IO, Option[Partner]]
+  // AggregatedService
+  implicit val AggregatedPostInfoListDecoder = jsonOf[IO, List[AggregatedPostInfo]]
+  implicit val AggregatedPostInfoDecoder = jsonOf[IO, AggregatedPostInfo]
+  implicit val EventInfoDecoder = jsonOf[IO, EventInfo]
+  implicit val EventInfoOptionDecoder = jsonOf[IO, Option[EventInfo]]
+  implicit val ChallengeInfoDecoder = jsonOf[IO, ChallengeInfo]
+  implicit val ChallengeInfoOptionDecoder = jsonOf[IO, Option[ChallengeInfo]]
+  implicit val PollInfoDecoder = jsonOf[IO, PollInfo]
+  implicit val PollInfoOptionDecoder = jsonOf[IO, Option[PollInfo]]
+  implicit val TipInfoDecoder = jsonOf[IO, TipInfo]
+  implicit val TipInfoOptionDecoder = jsonOf[IO, Option[TipInfo]]
+  implicit val RepostInfoDecoder = jsonOf[IO, RepostInfo]
+  implicit val RepostInfoOptionDecoder = jsonOf[IO, Option[RepostInfo]]
+  implicit val FreeTextInfoDecoder = jsonOf[IO, FreeTextInfo]
+  implicit val FreeTextInfoOptionDecoder = jsonOf[IO, Option[FreeTextInfo]]
 
 }

@@ -15,7 +15,7 @@ import org.greengen.http.notification.HttpNotificationService
 import org.greengen.http.partnership.HttpPartnershipService
 import org.greengen.http.pin.HttpPinService
 import org.greengen.http.poll.HttpPollService
-import org.greengen.http.post.HttpPostService
+import org.greengen.http.post.{HttpAggregatedPostService, HttpPostService}
 import org.greengen.http.ranking.HttpRankingService
 import org.greengen.http.registration.HttpRegistrationService
 import org.greengen.http.tip.HttpTipService
@@ -108,7 +108,19 @@ object InMemoryGreenGenServer extends IOApp {
       HttpAuthService.nonAuthRoutes(authService) <+>
         HttpRegistrationService.nonAuthRoutes(registrationService)
     val authRoutes =
-      authMiddleware(HttpPostService.routes(clock, postService)) <+>
+        authMiddleware(HttpPostService.routes(clock, postService)) <+>
+        authMiddleware(HttpAggregatedPostService.routes(clock: Clock,
+          userService,
+          postService,
+          challengeService,
+          pollService,
+          eventService,
+          tipService,
+          pinService,
+          likeService,
+          followerService,
+          partnershipService,
+          conversationService)) <+>
         authMiddleware(HttpFollowerService.routes(followerService)) <+>
         authMiddleware(HttpHashtagService.routes(hashtagService)) <+>
         authMiddleware(HttpLikeService.routes(likeService)) <+>

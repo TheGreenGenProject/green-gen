@@ -64,3 +64,39 @@ case class FreeTextPost(id: PostId,
                         sources: List[Source],
                         created: UTCTimestamp,
                         hashtags: Set[Hashtag]) extends Post
+
+
+
+object Post {
+
+  def asEvent(p: Post): Option[EventPost] = p match {
+    case p: EventPost => Some(p)
+    case _            => None
+  }
+
+  def asPoll(p: Post): Option[PollPost] = p match {
+    case p: PollPost => Some(p)
+    case _           => None
+  }
+
+  def asTip(p: Post): Option[TipPost] = p match {
+    case p: TipPost => Some(p)
+    case _           => None
+  }
+
+  def asChallenge(p: Post): Option[ChallengePost] = p match {
+    case p: ChallengePost => Some(p)
+    case _                => None
+  }
+
+  def asFreeText(p: Post): Option[FreeTextPost] = p match {
+    case p: FreeTextPost => Some(p)
+    case _               => None
+  }
+
+  def asRepost(p: Post): Option[RePost] = p match {
+    case p: RePost => Some(p)
+    case _         => None
+  }
+
+}

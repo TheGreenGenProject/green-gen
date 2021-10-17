@@ -16,7 +16,7 @@ import org.greengen.http.notification.HttpNotificationService
 import org.greengen.http.partnership.HttpPartnershipService
 import org.greengen.http.pin.HttpPinService
 import org.greengen.http.poll.HttpPollService
-import org.greengen.http.post.HttpPostService
+import org.greengen.http.post.{HttpAggregatedPostService, HttpPostService}
 import org.greengen.http.ranking.HttpRankingService
 import org.greengen.http.registration.HttpRegistrationService
 import org.greengen.http.tip.HttpTipService
@@ -115,6 +115,18 @@ object GreenGenServer extends IOApp {
         HttpRegistrationService.nonAuthRoutes(registrationService)
     val authRoutes =
       authMiddleware(HttpPostService.routes(clock, postService)) <+>
+      authMiddleware(HttpAggregatedPostService.routes(clock: Clock,
+          userService,
+          postService,
+          challengeService,
+          pollService,
+          eventService,
+          tipService,
+          pinService,
+          likeService,
+          followerService,
+          partnershipService,
+          conversationService)) <+>
         authMiddleware(HttpFollowerService.routes(followerService)) <+>
         authMiddleware(HttpHashtagService.routes(hashtagService)) <+>
         authMiddleware(HttpLikeService.routes(likeService)) <+>
@@ -140,7 +152,7 @@ object GreenGenServer extends IOApp {
     println(s"App will be opened on port $port")
     val httpApp = Router("/" -> routes).orNotFound
     BlazeServerBuilder[IO](global)
-      .bindHttp(port, "localhost")
+      .bindHttp(port, "0.0.0.0")
       .withHttpApp(httpApp)
       .serve
       .compile
