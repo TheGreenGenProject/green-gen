@@ -6124,7 +6124,7 @@ var $author$project$Query$QueryUtils$authHeader = function (userInfo) {
 		'Authorization',
 		$author$project$Data$Token$toString(userInfo.token));
 };
-var $author$project$Query$QueryUtils$baseUrl = 'http://ancient-journey-03206.herokuapp.com';
+var $author$project$Query$QueryUtils$baseUrl = 'http://green-generation.herokuapp.com';
 var $elm$http$Http$BadStatus_ = F2(
 	function (a, b) {
 		return {$: 'BadStatus_', a: a, b: b};
