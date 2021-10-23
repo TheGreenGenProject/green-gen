@@ -3,6 +3,7 @@ package org.greengen.main
 import cats.effect.{ConcurrentEffect, ContextShift, ExitCode, IO, IOApp, Timer}
 import cats.implicits._
 import org.greengen.core.Clock
+import org.greengen.http.HttpStaticFilesService
 import org.greengen.http.auth.{HttpAuthService, TokenAuthMiddleware}
 import org.greengen.http.challenge.HttpChallengeService
 import org.greengen.http.conversation.HttpConversationService
@@ -105,8 +106,9 @@ object InMemoryGreenGenServer extends IOApp {
 
     // Routes
     val nonAuthRoutes =
+      HttpStaticFilesService.nonAuthRoutes(contextShift) <+>
       HttpAuthService.nonAuthRoutes(authService) <+>
-        HttpRegistrationService.nonAuthRoutes(registrationService)
+      HttpRegistrationService.nonAuthRoutes(registrationService)
     val authRoutes =
         authMiddleware(HttpPostService.routes(clock, postService)) <+>
         authMiddleware(HttpAggregatedPostService.routes(clock: Clock,

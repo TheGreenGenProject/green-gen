@@ -4,6 +4,7 @@ import cats.effect.{ConcurrentEffect, ContextShift, ExitCode, IO, IOApp, Timer}
 import cats.implicits._
 import org.greengen.core.Clock
 import org.greengen.db.mongo
+import org.greengen.http.HttpStaticFilesService
 import org.greengen.http.auth.{HttpAuthService, TokenAuthMiddleware}
 import org.greengen.http.challenge.HttpChallengeService
 import org.greengen.http.conversation.HttpConversationService
@@ -41,6 +42,7 @@ import org.greengen.impl.reminder.ReminderServiceImpl
 import org.greengen.impl.tip.TipServiceImpl
 import org.greengen.impl.user.UserServiceImpl
 import org.greengen.impl.wall.WallServiceImpl
+import org.greengen.main.InMemoryGreenGenServer.contextShift
 import org.greengen.store.auth.InMemoryAuthStore
 import org.greengen.store.challenge.MongoChallengeStore
 import org.greengen.store.conversation.MongoConversationStore
@@ -111,6 +113,7 @@ object GreenGenServer extends IOApp {
 
     // Routes
     val nonAuthRoutes =
+      HttpStaticFilesService.nonAuthRoutes(contextShift) <+>
       HttpAuthService.nonAuthRoutes(authService) <+>
         HttpRegistrationService.nonAuthRoutes(registrationService)
     val authRoutes =
