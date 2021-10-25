@@ -5520,10 +5520,63 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$element = _Browser_element;
+var $mdgriffith$elm_ui$Element$Desktop = {$: 'Desktop'};
 var $author$project$State$AppState$LoginPage = {$: 'LoginPage'};
 var $author$project$State$UserState$NotLogged = {$: 'NotLogged'};
+var $mdgriffith$elm_ui$Element$Portrait = {$: 'Portrait'};
 var $author$project$Data$Schedule$UTC = function (a) {
 	return {$: 'UTC', a: a};
+};
+var $mdgriffith$elm_ui$Internal$Model$Rgba = F4(
+	function (a, b, c, d) {
+		return {$: 'Rgba', a: a, b: b, c: c, d: d};
+	});
+var $mdgriffith$elm_ui$Element$rgb255 = F3(
+	function (red, green, blue) {
+		return A4($mdgriffith$elm_ui$Internal$Model$Rgba, red / 255, green / 255, blue / 255, 1);
+	});
+var $author$project$View$Theme$darkCharcoal = A3($mdgriffith$elm_ui$Element$rgb255, 46, 52, 54);
+var $author$project$View$Theme$darkGrey = A3($mdgriffith$elm_ui$Element$rgb255, 186, 189, 182);
+var $author$project$View$Theme$darkOrange = A3($mdgriffith$elm_ui$Element$rgb255, 206, 92, 0);
+var $author$project$View$Theme$grey = A3($mdgriffith$elm_ui$Element$rgb255, 211, 215, 207);
+var $author$project$View$Theme$lightBlue = A3($mdgriffith$elm_ui$Element$rgb255, 114, 159, 207);
+var $author$project$View$Theme$lightCharcoal = A3($mdgriffith$elm_ui$Element$rgb255, 136, 138, 133);
+var $author$project$View$Theme$lightOrange = A3($mdgriffith$elm_ui$Element$rgb255, 252, 175, 62);
+var $author$project$View$Theme$lightPurple = A3($mdgriffith$elm_ui$Element$rgb255, 173, 127, 168);
+var $author$project$View$Theme$white = A3($mdgriffith$elm_ui$Element$rgb255, 255, 255, 255);
+var $author$project$View$Theme$darkModeTheme = {
+	alertColor: $author$project$View$Theme$darkOrange,
+	appBackground: $author$project$View$Theme$darkCharcoal,
+	appForeground: $author$project$View$Theme$white,
+	appTitleForeground: $author$project$View$Theme$darkOrange,
+	background: $author$project$View$Theme$lightCharcoal,
+	disabled: A3($mdgriffith$elm_ui$Element$rgb255, 85, 87, 83),
+	disabledButton: $author$project$View$Theme$grey,
+	disabledTabForeground: $author$project$View$Theme$lightCharcoal,
+	enabledButton: $author$project$View$Theme$darkOrange,
+	errorForeground: A3($mdgriffith$elm_ui$Element$rgb255, 164, 25, 0),
+	flaggedForeground: $author$project$View$Theme$darkGrey,
+	foreground: $author$project$View$Theme$darkCharcoal,
+	hashtagForeground: $author$project$View$Theme$lightPurple,
+	linkForeground: $author$project$View$Theme$lightBlue,
+	partnerBackground: $author$project$View$Theme$lightOrange,
+	partnerForeground: $author$project$View$Theme$darkCharcoal,
+	progressColor: $author$project$View$Theme$darkOrange,
+	remainingProgressColor: $author$project$View$Theme$lightCharcoal,
+	tabForeground: $author$project$View$Theme$darkOrange,
+	textFieldBackground: $author$project$View$Theme$darkCharcoal,
+	textFieldForeground: $author$project$View$Theme$lightBlue,
+	textFieldPlaceHolder: $author$project$View$Theme$lightBlue,
+	userLinkForeground: $author$project$View$Theme$lightBlue
+};
+var $author$project$View$UIStyle$desktop = {
+	defaultFontSize: 10,
+	extraLarge: _Utils_Tuple2(96, 96),
+	large: _Utils_Tuple2(48, 48),
+	normal: _Utils_Tuple2(24, 24),
+	small: _Utils_Tuple2(16, 16),
+	theme: $author$project$View$Theme$darkModeTheme,
+	tiny: _Utils_Tuple2(12, 12)
 };
 var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
@@ -5574,6 +5627,7 @@ var $author$project$State$WallState$empty = {currentPage: $author$project$Data$P
 var $author$project$State$AppState$empty = {
 	cache: $author$project$State$Cache$empty,
 	challenge: $author$project$State$ChallengeState$empty,
+	device: {_class: $mdgriffith$elm_ui$Element$Desktop, orientation: $mdgriffith$elm_ui$Element$Portrait},
 	display: $author$project$State$AppState$LoginPage,
 	event: $author$project$State$EventState$empty,
 	eventDetails: $author$project$State$EventDetailsState$empty,
@@ -5584,6 +5638,7 @@ var $author$project$State$AppState$empty = {
 	previous: _List_Nil,
 	search: $author$project$State$SearchState$empty,
 	timestamp: $author$project$Data$Schedule$UTC(0),
+	uiStyle: $author$project$View$UIStyle$desktop,
 	user: $author$project$State$UserState$NotLogged,
 	wall: $author$project$State$WallState$empty,
 	windowSize: {height: 0, width: 0}
@@ -6032,6 +6087,9 @@ var $author$project$State$AppState$EventDetailsPage = function (a) {
 	return {$: 'EventDetailsPage', a: a};
 };
 var $author$project$State$AppState$FeedPage = {$: 'FeedPage'};
+var $author$project$Update$Msg$IdentifyDevice = function (a) {
+	return {$: 'IdentifyDevice', a: a};
+};
 var $author$project$State$UserState$LoggedIn = function (a) {
 	return {$: 'LoggedIn', a: a};
 };
@@ -7320,6 +7378,24 @@ var $author$project$State$FormState$checkingPseudoAvailability = function (formS
 					serverValidatedPseudo: $elm$core$Maybe$Nothing
 				})
 		});
+};
+var $mdgriffith$elm_ui$Element$BigDesktop = {$: 'BigDesktop'};
+var $mdgriffith$elm_ui$Element$Landscape = {$: 'Landscape'};
+var $mdgriffith$elm_ui$Element$Phone = {$: 'Phone'};
+var $mdgriffith$elm_ui$Element$Tablet = {$: 'Tablet'};
+var $elm$core$Basics$min = F2(
+	function (x, y) {
+		return (_Utils_cmp(x, y) < 0) ? x : y;
+	});
+var $mdgriffith$elm_ui$Element$classifyDevice = function (window) {
+	return {
+		_class: function () {
+			var shortSide = A2($elm$core$Basics$min, window.width, window.height);
+			var longSide = A2($elm$core$Basics$max, window.width, window.height);
+			return (shortSide < 600) ? $mdgriffith$elm_ui$Element$Phone : ((longSide <= 1200) ? $mdgriffith$elm_ui$Element$Tablet : (((longSide > 1200) && (longSide <= 1920)) ? $mdgriffith$elm_ui$Element$Desktop : $mdgriffith$elm_ui$Element$BigDesktop));
+		}(),
+		orientation: (_Utils_cmp(window.width, window.height) < 0) ? $mdgriffith$elm_ui$Element$Portrait : $mdgriffith$elm_ui$Element$Landscape
+	};
 };
 var $author$project$State$FormState$clearNewChallengeWizardState = function (formState) {
 	return _Utils_update(
@@ -14741,6 +14817,28 @@ var $author$project$State$Cache$simulatePollAnswer = F3(
 			pollId,
 			A2($author$project$Data$Poll$updatePollStats, option, stats));
 	});
+var $author$project$View$UIStyle$mobile = {
+	defaultFontSize: 9,
+	extraLarge: _Utils_Tuple2(96, 96),
+	large: _Utils_Tuple2(48, 48),
+	normal: _Utils_Tuple2(24, 24),
+	small: _Utils_Tuple2(16, 16),
+	theme: $author$project$View$Theme$darkModeTheme,
+	tiny: _Utils_Tuple2(12, 12)
+};
+var $author$project$View$UIStyle$uiStyleFor = function (device) {
+	var _v0 = device._class;
+	switch (_v0.$) {
+		case 'Desktop':
+			return $author$project$View$UIStyle$desktop;
+		case 'BigDesktop':
+			return $author$project$View$UIStyle$desktop;
+		case 'Tablet':
+			return $author$project$View$UIStyle$mobile;
+		default:
+			return $author$project$View$UIStyle$mobile;
+	}
+};
 var $author$project$Update$Msg$HttpCommentUnflagged = function (a) {
 	return {$: 'HttpCommentUnflagged', a: a};
 };
@@ -15102,15 +15200,30 @@ var $author$project$Update$Logic$update = F2(
 						_Utils_update(
 							state,
 							{timestamp: now}));
-				case 'SetWindowSize':
-					var width = msg.a;
-					var height = msg.b;
+				case 'IdentifyDevice':
+					var device = msg.a;
+					var dev = A2($elm$core$Debug$log, 'Window size', device);
 					return $author$project$Update$Logic$nocmd(
 						_Utils_update(
 							state,
 							{
-								windowSize: {height: height, width: width}
+								device: dev,
+								uiStyle: $author$project$View$UIStyle$uiStyleFor(device)
 							}));
+				case 'SetWindowSize':
+					var width = msg.a;
+					var height = msg.b;
+					var winSize = A2(
+						$elm$core$Debug$log,
+						'Device identified as',
+						{height: height, width: width});
+					return A2(
+						$author$project$Update$Logic$update,
+						$author$project$Update$Msg$IdentifyDevice(
+							$mdgriffith$elm_ui$Element$classifyDevice(winSize)),
+						_Utils_update(
+							state,
+							{windowSize: winSize}));
 				case 'ChangeWallPage':
 					var page = msg.a;
 					var displayCommand = A2(
@@ -16695,18 +16808,6 @@ var $author$project$Update$Logic$update = F2(
 			}
 		}
 	});
-var $mdgriffith$elm_ui$Internal$Model$Rgba = F4(
-	function (a, b, c, d) {
-		return {$: 'Rgba', a: a, b: b, c: c, d: d};
-	});
-var $mdgriffith$elm_ui$Element$rgb255 = F3(
-	function (red, green, blue) {
-		return A4($mdgriffith$elm_ui$Internal$Model$Rgba, red / 255, green / 255, blue / 255, 1);
-	});
-var $author$project$View$Theme$darkCharcoal = A3($mdgriffith$elm_ui$Element$rgb255, 46, 52, 54);
-var $author$project$View$Theme$appBackground = $author$project$View$Theme$darkCharcoal;
-var $author$project$View$Theme$white = A3($mdgriffith$elm_ui$Element$rgb255, 255, 255, 255);
-var $author$project$View$Theme$appForeground = $author$project$View$Theme$white;
 var $mdgriffith$elm_ui$Internal$Model$Colored = F3(
 	function (a, b, c) {
 		return {$: 'Colored', a: a, b: b, c: c};
@@ -19333,10 +19434,6 @@ var $mdgriffith$elm_ui$Internal$Model$hasSmallCaps = function (typeface) {
 		return false;
 	}
 };
-var $elm$core$Basics$min = F2(
-	function (x, y) {
-		return (_Utils_cmp(x, y) < 0) ? x : y;
-	});
 var $mdgriffith$elm_ui$Internal$Model$renderProps = F3(
 	function (force, _v0, existing) {
 		var key = _v0.a;
@@ -22309,8 +22406,6 @@ var $mdgriffith$elm_ui$Element$Border$color = function (clr) {
 			'border-color',
 			clr));
 };
-var $author$project$View$Theme$lightCharcoal = A3($mdgriffith$elm_ui$Element$rgb255, 136, 138, 133);
-var $author$project$View$Theme$disabledTabForeground = $author$project$View$Theme$lightCharcoal;
 var $mdgriffith$elm_ui$Element$Font$italic = $mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.italic);
 var $mdgriffith$elm_ui$Internal$Model$PaddingStyle = F5(
 	function (a, b, c, d, e) {
@@ -22342,8 +22437,10 @@ var $mdgriffith$elm_ui$Element$Font$size = function (i) {
 		$mdgriffith$elm_ui$Internal$Flag$fontSize,
 		$mdgriffith$elm_ui$Internal$Model$FontSize(i));
 };
-var $author$project$View$Theme$darkOrange = A3($mdgriffith$elm_ui$Element$rgb255, 206, 92, 0);
-var $author$project$View$Theme$tabForeground = $author$project$View$Theme$darkOrange;
+var $author$project$View$Style$relFontSize = F2(
+	function (ui, sz) {
+		return $mdgriffith$elm_ui$Element$Font$size(ui.defaultFontSize + sz);
+	});
 var $mdgriffith$elm_ui$Internal$Model$BorderWidth = F5(
 	function (a, b, c, d, e) {
 		return {$: 'BorderWidth', a: a, b: b, c: c, d: d, e: e};
@@ -22389,17 +22486,17 @@ var $mdgriffith$elm_ui$Element$Border$widthEach = function (_v0) {
 			bottom,
 			left));
 };
-var $author$project$View$Style$tabButton = F3(
-	function (label, msg, selected) {
+var $author$project$View$Style$tabButton = F4(
+	function (ui, label, msg, selected) {
 		return A2(
 			$mdgriffith$elm_ui$Element$Input$button,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(14),
+					A2($author$project$View$Style$relFontSize, ui, 4),
 					$mdgriffith$elm_ui$Element$Font$color(
-					selected ? $author$project$View$Theme$tabForeground : $author$project$View$Theme$disabledTabForeground),
+					selected ? ui.theme.tabForeground : ui.theme.disabledTabForeground),
 					selected ? $mdgriffith$elm_ui$Element$Font$italic : $mdgriffith$elm_ui$Element$Font$regular,
-					$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$tabForeground),
+					$mdgriffith$elm_ui$Element$Border$color(ui.theme.tabForeground),
 					$mdgriffith$elm_ui$Element$Border$widthEach(
 					{
 						bottom: selected ? 3 : 0,
@@ -22414,29 +22511,9 @@ var $author$project$View$Style$tabButton = F3(
 				onPress: $elm$core$Maybe$Just(msg)
 			});
 	});
-var $author$project$View$ChallengeScreen$challengeTabButton = F3(
-	function (label, msg, selected) {
-		return A3($author$project$View$Style$tabButton, label, msg, selected);
-	});
-var $mdgriffith$elm_ui$Internal$Model$AsRow = {$: 'AsRow'};
-var $mdgriffith$elm_ui$Internal$Model$asRow = $mdgriffith$elm_ui$Internal$Model$AsRow;
-var $mdgriffith$elm_ui$Element$row = F2(
-	function (attrs, children) {
-		return A4(
-			$mdgriffith$elm_ui$Internal$Model$element,
-			$mdgriffith$elm_ui$Internal$Model$asRow,
-			$mdgriffith$elm_ui$Internal$Model$div,
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.contentLeft + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.contentCenterY)),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
-					A2(
-						$elm$core$List$cons,
-						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
-						attrs))),
-			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
+var $author$project$View$ChallengeScreen$challengeTabButton = F4(
+	function (ui, label, msg, selected) {
+		return A4($author$project$View$Style$tabButton, ui, label, msg, selected);
 	});
 var $mdgriffith$elm_ui$Internal$Model$SpacingStyle = F3(
 	function (a, b, c) {
@@ -22457,50 +22534,249 @@ var $mdgriffith$elm_ui$Element$spacing = function (x) {
 			x,
 			x));
 };
+var $mdgriffith$elm_ui$Internal$Model$AsRow = {$: 'AsRow'};
+var $mdgriffith$elm_ui$Internal$Model$asRow = $mdgriffith$elm_ui$Internal$Model$AsRow;
+var $mdgriffith$elm_ui$Internal$Model$Padding = F5(
+	function (a, b, c, d, e) {
+		return {$: 'Padding', a: a, b: b, c: c, d: d, e: e};
+	});
+var $mdgriffith$elm_ui$Internal$Model$Spaced = F3(
+	function (a, b, c) {
+		return {$: 'Spaced', a: a, b: b, c: c};
+	});
+var $mdgriffith$elm_ui$Internal$Model$extractSpacingAndPadding = function (attrs) {
+	return A3(
+		$elm$core$List$foldr,
+		F2(
+			function (attr, _v0) {
+				var pad = _v0.a;
+				var spacing = _v0.b;
+				return _Utils_Tuple2(
+					function () {
+						if (pad.$ === 'Just') {
+							var x = pad.a;
+							return pad;
+						} else {
+							if ((attr.$ === 'StyleClass') && (attr.b.$ === 'PaddingStyle')) {
+								var _v3 = attr.b;
+								var name = _v3.a;
+								var t = _v3.b;
+								var r = _v3.c;
+								var b = _v3.d;
+								var l = _v3.e;
+								return $elm$core$Maybe$Just(
+									A5($mdgriffith$elm_ui$Internal$Model$Padding, name, t, r, b, l));
+							} else {
+								return $elm$core$Maybe$Nothing;
+							}
+						}
+					}(),
+					function () {
+						if (spacing.$ === 'Just') {
+							var x = spacing.a;
+							return spacing;
+						} else {
+							if ((attr.$ === 'StyleClass') && (attr.b.$ === 'SpacingStyle')) {
+								var _v6 = attr.b;
+								var name = _v6.a;
+								var x = _v6.b;
+								var y = _v6.c;
+								return $elm$core$Maybe$Just(
+									A3($mdgriffith$elm_ui$Internal$Model$Spaced, name, x, y));
+							} else {
+								return $elm$core$Maybe$Nothing;
+							}
+						}
+					}());
+			}),
+		_Utils_Tuple2($elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing),
+		attrs);
+};
+var $mdgriffith$elm_ui$Internal$Model$paddingNameFloat = F4(
+	function (top, right, bottom, left) {
+		return 'pad-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(top) + ('-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(right) + ('-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(bottom) + ('-' + $mdgriffith$elm_ui$Internal$Model$floatClass(left)))))));
+	});
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $mdgriffith$elm_ui$Element$wrappedRow = F2(
+	function (attrs, children) {
+		var _v0 = $mdgriffith$elm_ui$Internal$Model$extractSpacingAndPadding(attrs);
+		var padded = _v0.a;
+		var spaced = _v0.b;
+		if (spaced.$ === 'Nothing') {
+			return A4(
+				$mdgriffith$elm_ui$Internal$Model$element,
+				$mdgriffith$elm_ui$Internal$Model$asRow,
+				$mdgriffith$elm_ui$Internal$Model$div,
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.contentLeft + (' ' + ($mdgriffith$elm_ui$Internal$Style$classes.contentCenterY + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.wrapped)))),
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
+							attrs))),
+				$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
+		} else {
+			var _v2 = spaced.a;
+			var spaceName = _v2.a;
+			var x = _v2.b;
+			var y = _v2.c;
+			var newPadding = function () {
+				if (padded.$ === 'Just') {
+					var _v5 = padded.a;
+					var name = _v5.a;
+					var t = _v5.b;
+					var r = _v5.c;
+					var b = _v5.d;
+					var l = _v5.e;
+					if ((_Utils_cmp(r, x / 2) > -1) && (_Utils_cmp(b, y / 2) > -1)) {
+						var newTop = t - (y / 2);
+						var newRight = r - (x / 2);
+						var newLeft = l - (x / 2);
+						var newBottom = b - (y / 2);
+						return $elm$core$Maybe$Just(
+							A2(
+								$mdgriffith$elm_ui$Internal$Model$StyleClass,
+								$mdgriffith$elm_ui$Internal$Flag$padding,
+								A5(
+									$mdgriffith$elm_ui$Internal$Model$PaddingStyle,
+									A4($mdgriffith$elm_ui$Internal$Model$paddingNameFloat, newTop, newRight, newBottom, newLeft),
+									newTop,
+									newRight,
+									newBottom,
+									newLeft)));
+					} else {
+						return $elm$core$Maybe$Nothing;
+					}
+				} else {
+					return $elm$core$Maybe$Nothing;
+				}
+			}();
+			if (newPadding.$ === 'Just') {
+				var pad = newPadding.a;
+				return A4(
+					$mdgriffith$elm_ui$Internal$Model$element,
+					$mdgriffith$elm_ui$Internal$Model$asRow,
+					$mdgriffith$elm_ui$Internal$Model$div,
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.contentLeft + (' ' + ($mdgriffith$elm_ui$Internal$Style$classes.contentCenterY + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.wrapped)))),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
+							A2(
+								$elm$core$List$cons,
+								$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
+								_Utils_ap(
+									attrs,
+									_List_fromArray(
+										[pad]))))),
+					$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
+			} else {
+				var halfY = -(y / 2);
+				var halfX = -(x / 2);
+				return A4(
+					$mdgriffith$elm_ui$Internal$Model$element,
+					$mdgriffith$elm_ui$Internal$Model$asEl,
+					$mdgriffith$elm_ui$Internal$Model$div,
+					attrs,
+					$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+						_List_fromArray(
+							[
+								A4(
+								$mdgriffith$elm_ui$Internal$Model$element,
+								$mdgriffith$elm_ui$Internal$Model$asRow,
+								$mdgriffith$elm_ui$Internal$Model$div,
+								A2(
+									$elm$core$List$cons,
+									$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.contentLeft + (' ' + ($mdgriffith$elm_ui$Internal$Style$classes.contentCenterY + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.wrapped)))),
+									A2(
+										$elm$core$List$cons,
+										$mdgriffith$elm_ui$Internal$Model$Attr(
+											A2(
+												$elm$html$Html$Attributes$style,
+												'margin',
+												$elm$core$String$fromFloat(halfY) + ('px' + (' ' + ($elm$core$String$fromFloat(halfX) + 'px'))))),
+										A2(
+											$elm$core$List$cons,
+											$mdgriffith$elm_ui$Internal$Model$Attr(
+												A2(
+													$elm$html$Html$Attributes$style,
+													'width',
+													'calc(100% + ' + ($elm$core$String$fromInt(x) + 'px)'))),
+											A2(
+												$elm$core$List$cons,
+												$mdgriffith$elm_ui$Internal$Model$Attr(
+													A2(
+														$elm$html$Html$Attributes$style,
+														'height',
+														'calc(100% + ' + ($elm$core$String$fromInt(y) + 'px)'))),
+												A2(
+													$elm$core$List$cons,
+													A2(
+														$mdgriffith$elm_ui$Internal$Model$StyleClass,
+														$mdgriffith$elm_ui$Internal$Flag$spacing,
+														A3($mdgriffith$elm_ui$Internal$Model$SpacingStyle, spaceName, x, y)),
+													_List_Nil))))),
+								$mdgriffith$elm_ui$Internal$Model$Unkeyed(children))
+							])));
+			}
+		}
+	});
 var $author$project$View$ChallengeScreen$challengeTabs = function (state) {
 	return A2(
-		$mdgriffith$elm_ui$Element$row,
+		$mdgriffith$elm_ui$Element$wrappedRow,
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$spacing(5)
 			]),
 		_List_fromArray(
 			[
-				A3(
+				A4(
 				$author$project$View$ChallengeScreen$challengeTabButton,
+				state.uiStyle,
 				'On going',
 				$author$project$Update$Msg$ChangeChallengeTab($author$project$State$ChallengeState$OnGoingTab),
-				_Utils_eq(state.currentTab, $author$project$State$ChallengeState$OnGoingTab)),
-				A3(
+				_Utils_eq(state.challenge.currentTab, $author$project$State$ChallengeState$OnGoingTab)),
+				A4(
 				$author$project$View$ChallengeScreen$challengeTabButton,
+				state.uiStyle,
 				'Report due',
 				$author$project$Update$Msg$ChangeChallengeTab($author$project$State$ChallengeState$ReportDueTab),
-				_Utils_eq(state.currentTab, $author$project$State$ChallengeState$ReportDueTab)),
-				A3(
+				_Utils_eq(state.challenge.currentTab, $author$project$State$ChallengeState$ReportDueTab)),
+				A4(
 				$author$project$View$ChallengeScreen$challengeTabButton,
+				state.uiStyle,
 				'Upcoming',
 				$author$project$Update$Msg$ChangeChallengeTab($author$project$State$ChallengeState$UpcomingTab),
-				_Utils_eq(state.currentTab, $author$project$State$ChallengeState$UpcomingTab)),
-				A3(
+				_Utils_eq(state.challenge.currentTab, $author$project$State$ChallengeState$UpcomingTab)),
+				A4(
 				$author$project$View$ChallengeScreen$challengeTabButton,
+				state.uiStyle,
 				'Finished',
 				$author$project$Update$Msg$ChangeChallengeTab($author$project$State$ChallengeState$FinishedTab),
-				_Utils_eq(state.currentTab, $author$project$State$ChallengeState$FinishedTab)),
-				A3(
+				_Utils_eq(state.challenge.currentTab, $author$project$State$ChallengeState$FinishedTab)),
+				A4(
 				$author$project$View$ChallengeScreen$challengeTabButton,
+				state.uiStyle,
 				'On tracks',
 				$author$project$Update$Msg$ChangeChallengeTab($author$project$State$ChallengeState$OnTracksTab),
-				_Utils_eq(state.currentTab, $author$project$State$ChallengeState$OnTracksTab)),
-				A3(
+				_Utils_eq(state.challenge.currentTab, $author$project$State$ChallengeState$OnTracksTab)),
+				A4(
 				$author$project$View$ChallengeScreen$challengeTabButton,
+				state.uiStyle,
 				'Failed',
 				$author$project$Update$Msg$ChangeChallengeTab($author$project$State$ChallengeState$FailedTab),
-				_Utils_eq(state.currentTab, $author$project$State$ChallengeState$FailedTab)),
-				A3(
+				_Utils_eq(state.challenge.currentTab, $author$project$State$ChallengeState$FailedTab)),
+				A4(
 				$author$project$View$ChallengeScreen$challengeTabButton,
+				state.uiStyle,
 				'Authored',
 				$author$project$Update$Msg$ChangeChallengeTab($author$project$State$ChallengeState$AuthoredTab),
-				_Utils_eq(state.currentTab, $author$project$State$ChallengeState$AuthoredTab))
+				_Utils_eq(state.challenge.currentTab, $author$project$State$ChallengeState$AuthoredTab))
 			]));
 };
 var $mdgriffith$elm_ui$Internal$Model$Fill = function (a) {
@@ -22575,6 +22851,7 @@ var $author$project$Update$Msg$LoadMore = F2(
 	function (a, b) {
 		return {$: 'LoadMore', a: a, b: b};
 	});
+var $mdgriffith$elm_ui$Element$Font$bold = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.bold);
 var $mdgriffith$elm_ui$Element$el = F2(
 	function (attrs, child) {
 		return A4(
@@ -22592,13 +22869,34 @@ var $mdgriffith$elm_ui$Element$el = F2(
 				_List_fromArray(
 					[child])));
 	});
+var $author$project$View$Style$bold = function (txt) {
+	return A2(
+		$mdgriffith$elm_ui$Element$el,
+		_List_fromArray(
+			[$mdgriffith$elm_ui$Element$Font$bold]),
+		$mdgriffith$elm_ui$Element$text(txt));
+};
 var $mdgriffith$elm_ui$Element$htmlAttribute = $mdgriffith$elm_ui$Internal$Model$Attr;
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $author$project$View$InfiniteScroll$infinitePrefix = 'infinite-scroll-';
+var $author$project$View$Style$noSelectionEffect = $mdgriffith$elm_ui$Element$htmlAttribute(
+	A2($elm$html$Html$Attributes$style, 'box-shadow', 'none'));
+var $mdgriffith$elm_ui$Internal$Model$Empty = {$: 'Empty'};
+var $mdgriffith$elm_ui$Element$none = $mdgriffith$elm_ui$Internal$Model$Empty;
+var $author$project$View$Style$relSize = F3(
+	function (ui, sz, x) {
+		return A2(
+			$mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, sz)
+				]),
+			x);
+	});
 var $mdgriffith$elm_ui$Internal$Flag$overflow = $mdgriffith$elm_ui$Internal$Flag$flag(20);
 var $mdgriffith$elm_ui$Element$scrollbarY = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.scrollbarsY);
-var $author$project$View$InfiniteScroll$infiniteScroll = F3(
-	function (id, scrollMsg, elt) {
+var $author$project$View$InfiniteScroll$infiniteScrollWithMoreButton = F5(
+	function (ui, showButton, id, scrollMsg, elt) {
 		var onScrollMsg = A2(
 			$author$project$Update$Msg$LoadMore,
 			_Utils_ap($author$project$View$InfiniteScroll$infinitePrefix, id),
@@ -22610,6 +22908,27 @@ var $author$project$View$InfiniteScroll$infiniteScroll = F3(
 					'scroll',
 					$elm$json$Json$Decode$succeed(msg)));
 		};
+		var loadMoreButton = A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$centerX,
+					$mdgriffith$elm_ui$Element$padding(1),
+					$author$project$View$Style$noSelectionEffect,
+					$mdgriffith$elm_ui$Element$Border$width(0)
+				]),
+			{
+				label: A3(
+					$author$project$View$Style$relSize,
+					ui,
+					3,
+					$author$project$View$Style$bold('. . .')),
+				onPress: $elm$core$Maybe$Just(
+					A2(
+						$author$project$Update$Msg$LoadMore,
+						_Utils_ap($author$project$View$InfiniteScroll$infinitePrefix, id),
+						scrollMsg))
+			});
 		var htmlId = function (ref) {
 			return $mdgriffith$elm_ui$Element$htmlAttribute(
 				$elm$html$Html$Attributes$id(
@@ -22625,7 +22944,19 @@ var $author$project$View$InfiniteScroll$infiniteScroll = F3(
 					onScroll(onScrollMsg),
 					htmlId(id)
 				]),
-			elt);
+			A2(
+				$mdgriffith$elm_ui$Element$column,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+						$mdgriffith$elm_ui$Element$spacing(2)
+					]),
+				_List_fromArray(
+					[
+						elt,
+						showButton ? loadMoreButton : $mdgriffith$elm_ui$Element$none
+					])));
 	});
 var $author$project$State$GenericPage$isEmpty = function (_v0) {
 	var items = _v0.items;
@@ -22635,14 +22966,25 @@ var $author$project$Data$Page$isFirst = function (_v0) {
 	var n = _v0.a;
 	return n === 1;
 };
+var $author$project$View$UIStyle$isMobile = function (device) {
+	var _v0 = device._class;
+	switch (_v0.$) {
+		case 'Desktop':
+			return false;
+		case 'BigDesktop':
+			return false;
+		case 'Tablet':
+			return false;
+		default:
+			return true;
+	}
+};
 var $author$project$Data$Page$next = function (_v0) {
 	var n = _v0.a;
 	return $author$project$Data$Page$Page(n + 1);
 };
 var $mdgriffith$elm_ui$Internal$Model$Left = {$: 'Left'};
 var $mdgriffith$elm_ui$Element$alignLeft = $mdgriffith$elm_ui$Internal$Model$AlignX($mdgriffith$elm_ui$Internal$Model$Left);
-var $author$project$View$Theme$background = $author$project$View$Theme$lightCharcoal;
-var $author$project$View$Theme$grey = A3($mdgriffith$elm_ui$Element$rgb255, 211, 215, 207);
 var $mdgriffith$elm_ui$Internal$Model$Px = function (a) {
 	return {$: 'Px', a: a};
 };
@@ -22658,8 +23000,8 @@ var $mdgriffith$elm_ui$Element$Border$rounded = function (radius) {
 			'border-radius',
 			$elm$core$String$fromInt(radius) + 'px'));
 };
-var $author$project$View$Style$loadingFixedTextLine = F2(
-	function (font, w) {
+var $author$project$View$Style$loadingFixedTextLine = F3(
+	function (ui, font, w) {
 		return A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
@@ -22672,7 +23014,7 @@ var $author$project$View$Style$loadingFixedTextLine = F2(
 					[
 						$mdgriffith$elm_ui$Element$width(
 						$mdgriffith$elm_ui$Element$px(w)),
-						$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$grey),
+						$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
 						$mdgriffith$elm_ui$Element$Border$rounded(8),
 						$mdgriffith$elm_ui$Element$Font$size(font)
 					]),
@@ -22683,27 +23025,28 @@ var $mdgriffith$elm_ui$Internal$Model$AlignY = function (a) {
 };
 var $mdgriffith$elm_ui$Internal$Model$Top = {$: 'Top'};
 var $mdgriffith$elm_ui$Element$alignTop = $mdgriffith$elm_ui$Internal$Model$AlignY($mdgriffith$elm_ui$Internal$Model$Top);
-var $author$project$View$Style$loadingTextLine = function (font) {
-	return A2(
-		$mdgriffith$elm_ui$Element$el,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$padding(4)
-			]),
-		A2(
+var $author$project$View$Style$loadingTextLine = F2(
+	function (ui, font) {
+		return A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$grey),
-					$mdgriffith$elm_ui$Element$Border$rounded(8),
-					$mdgriffith$elm_ui$Element$Font$size(font)
+					$mdgriffith$elm_ui$Element$padding(4)
 				]),
-			$mdgriffith$elm_ui$Element$text('')));
-};
-var $author$project$View$Style$loadingTextBlock = F2(
-	function (font, rowCount) {
+			A2(
+				$mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+						$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
+						$mdgriffith$elm_ui$Element$Border$rounded(8),
+						$mdgriffith$elm_ui$Element$Font$size(font)
+					]),
+				$mdgriffith$elm_ui$Element$text('')));
+	});
+var $author$project$View$Style$loadingTextBlock = F3(
+	function (ui, font, rowCount) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -22714,11 +23057,11 @@ var $author$project$View$Style$loadingTextBlock = F2(
 				]),
 			A2(
 				$elm$core$List$cons,
-				A2($author$project$View$Style$loadingFixedTextLine, font, 100),
+				A3($author$project$View$Style$loadingFixedTextLine, ui, font, 100),
 				A2(
 					$elm$core$List$map,
 					function (_v0) {
-						return $author$project$View$Style$loadingTextLine(font);
+						return A2($author$project$View$Style$loadingTextLine, ui, font);
 					},
 					A2($elm$core$List$range, 1, rowCount - 1))));
 	});
@@ -22777,90 +23120,138 @@ var $elm$core$List$repeat = F2(
 	function (n, value) {
 		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
 	});
-var $author$project$View$PostRenderer$renderLoadingSinglePost = A2(
-	$mdgriffith$elm_ui$Element$column,
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$alignLeft,
-			$mdgriffith$elm_ui$Element$spacing(5),
-			$mdgriffith$elm_ui$Element$padding(10)
-		]),
-	_List_fromArray(
-		[
+var $mdgriffith$elm_ui$Element$row = F2(
+	function (attrs, children) {
+		return A4(
+			$mdgriffith$elm_ui$Internal$Model$element,
+			$mdgriffith$elm_ui$Internal$Model$asRow,
+			$mdgriffith$elm_ui$Internal$Model$div,
 			A2(
-			$mdgriffith$elm_ui$Element$el,
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$spacing(5),
-					$mdgriffith$elm_ui$Element$paddingEach(
-					{bottom: 2, left: 0, right: 0, top: 0}),
-					$mdgriffith$elm_ui$Element$Border$widthEach(
-					{bottom: 2, left: 0, right: 0, top: 0}),
-					$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background)
-				]),
-			A2(
-				$mdgriffith$elm_ui$Element$row,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$alignLeft]),
-				_List_fromArray(
-					[
-						A2($author$project$View$Style$loadingFixedTextLine, 12, 16),
-						A2($author$project$View$Style$loadingFixedTextLine, 12, 100),
-						A2($author$project$View$Style$loadingFixedTextLine, 12, 35)
-					]))),
-			A2($author$project$View$Style$loadingTextBlock, 12, 3),
-			A2(
-			$mdgriffith$elm_ui$Element$row,
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$alignLeft,
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-				]),
-			A2(
-				$elm$core$List$repeat,
-				5,
-				A2($author$project$View$Style$loadingFixedTextLine, 8, 12)))
-		]));
-var $author$project$View$PostRenderer$renderLoadingPostPage = function (count) {
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.contentLeft + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.contentCenterY)),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
+						attrs))),
+			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
+	});
+var $author$project$View$PostRenderer$renderLoadingSinglePost = function (ui) {
 	return A2(
 		$mdgriffith$elm_ui$Element$column,
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$centerX,
+				$mdgriffith$elm_ui$Element$alignLeft,
 				$mdgriffith$elm_ui$Element$spacing(5),
 				$mdgriffith$elm_ui$Element$padding(10)
 			]),
-		A2(
-			$elm$core$List$map,
-			function (_v0) {
-				return $author$project$View$PostRenderer$renderLoadingSinglePost;
-			},
-			A2($elm$core$List$range, 1, count)));
+		_List_fromArray(
+			[
+				A2(
+				$mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+						$mdgriffith$elm_ui$Element$spacing(5),
+						$mdgriffith$elm_ui$Element$paddingEach(
+						{bottom: 2, left: 0, right: 0, top: 0}),
+						$mdgriffith$elm_ui$Element$Border$widthEach(
+						{bottom: 2, left: 0, right: 0, top: 0}),
+						$mdgriffith$elm_ui$Element$Border$color(ui.theme.background)
+					]),
+				A2(
+					$mdgriffith$elm_ui$Element$row,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$alignLeft]),
+					_List_fromArray(
+						[
+							A3($author$project$View$Style$loadingFixedTextLine, ui, 12, 16),
+							A3($author$project$View$Style$loadingFixedTextLine, ui, 12, 100),
+							A3($author$project$View$Style$loadingFixedTextLine, ui, 12, 35)
+						]))),
+				A3($author$project$View$Style$loadingTextBlock, ui, 12, 3),
+				A2(
+				$mdgriffith$elm_ui$Element$row,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$alignLeft,
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+					]),
+				A2(
+					$elm$core$List$repeat,
+					5,
+					A3($author$project$View$Style$loadingFixedTextLine, ui, 8, 12)))
+			]));
 };
-var $author$project$View$ChallengeScreen$renderLoadingPosts = $author$project$View$PostRenderer$renderLoadingPostPage(2);
+var $author$project$View$PostRenderer$renderLoadingPostPage = F2(
+	function (ui, count) {
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$centerX,
+					$mdgriffith$elm_ui$Element$spacing(5),
+					$mdgriffith$elm_ui$Element$padding(10)
+				]),
+			A2(
+				$elm$core$List$map,
+				function (_v0) {
+					return $author$project$View$PostRenderer$renderLoadingSinglePost(ui);
+				},
+				A2($elm$core$List$range, 1, count)));
+	});
+var $author$project$View$ChallengeScreen$renderLoadingPosts = function (ui) {
+	return A2($author$project$View$PostRenderer$renderLoadingPostPage, ui, 2);
+};
 var $mdgriffith$elm_ui$Internal$Flag$fontAlignment = $mdgriffith$elm_ui$Internal$Flag$flag(12);
 var $mdgriffith$elm_ui$Element$Font$center = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontAlignment, $mdgriffith$elm_ui$Internal$Style$classes.textCenter);
 var $mdgriffith$elm_ui$Internal$Model$CenterY = {$: 'CenterY'};
 var $mdgriffith$elm_ui$Element$centerY = $mdgriffith$elm_ui$Internal$Model$AlignY($mdgriffith$elm_ui$Internal$Model$CenterY);
-var $author$project$View$ScreenUtils$emptyScreen = function (txt) {
-	return A2(
-		$mdgriffith$elm_ui$Element$el,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$centerX,
-				$mdgriffith$elm_ui$Element$centerY,
-				$mdgriffith$elm_ui$Element$Font$size(48),
-				$mdgriffith$elm_ui$Element$Font$center,
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
-				$mdgriffith$elm_ui$Element$Font$italic
-			]),
-		$mdgriffith$elm_ui$Element$text(txt));
+var $mdgriffith$elm_ui$Internal$Model$Paragraph = {$: 'Paragraph'};
+var $mdgriffith$elm_ui$Element$paragraph = F2(
+	function (attrs, children) {
+		return A4(
+			$mdgriffith$elm_ui$Internal$Model$element,
+			$mdgriffith$elm_ui$Internal$Model$asParagraph,
+			$mdgriffith$elm_ui$Internal$Model$div,
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$Paragraph),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Element$spacing(5),
+						attrs))),
+			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
+	});
+var $author$project$View$ScreenUtils$emptyScreen = F2(
+	function (ui, txt) {
+		return A2(
+			$mdgriffith$elm_ui$Element$paragraph,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$centerX,
+					$mdgriffith$elm_ui$Element$centerY,
+					A2($author$project$View$Style$relFontSize, ui, 36),
+					$mdgriffith$elm_ui$Element$Font$center,
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.background),
+					$mdgriffith$elm_ui$Element$Font$italic
+				]),
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$text(txt)
+				]));
+	});
+var $author$project$View$ChallengeScreen$renderNoPostPage = function (ui) {
+	return A2($author$project$View$ScreenUtils$emptyScreen, ui, 'No challenges');
 };
-var $author$project$View$ChallengeScreen$renderNoPostPage = $author$project$View$ScreenUtils$emptyScreen('No challenges');
 var $author$project$State$Cache$getPost = F2(
 	function (cache, id) {
 		return A2(
@@ -22881,8 +23272,6 @@ var $author$project$View$ScreenUtils$neverElement = A2(
 	_List_fromArray(
 		[$mdgriffith$elm_ui$Element$Font$italic]),
 	$mdgriffith$elm_ui$Element$text('You should NEVER see this'));
-var $mdgriffith$elm_ui$Internal$Model$Empty = {$: 'Empty'};
-var $mdgriffith$elm_ui$Element$none = $mdgriffith$elm_ui$Internal$Model$Empty;
 var $author$project$State$Cache$partnerForPost = F2(
 	function (cache, postId) {
 		return A2(
@@ -22895,18 +23284,15 @@ var $author$project$State$Cache$hasPartnership = F2(
 		return $author$project$Utils$MaybeUtils$nonEmpty(
 			A2($author$project$State$Cache$partnerForPost, cache, postId));
 	});
-var $author$project$View$Theme$lightOrange = A3($mdgriffith$elm_ui$Element$rgb255, 252, 175, 62);
-var $author$project$View$Theme$partnerBackground = $author$project$View$Theme$lightOrange;
-var $author$project$View$Theme$partnerForeground = $author$project$View$Theme$darkCharcoal;
-var $author$project$View$PartnershipStyle$postDecoration = F3(
-	function (cache, postId, elmt) {
+var $author$project$View$PartnershipStyle$postDecoration = F4(
+	function (ui, cache, postId, elmt) {
 		return A2($author$project$State$Cache$hasPartnership, cache, postId) ? A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$partnerForeground),
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$partnerBackground),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.partnerForeground),
+					$mdgriffith$elm_ui$Element$Background$color(ui.theme.partnerBackground),
 					$mdgriffith$elm_ui$Element$Border$width(2),
 					$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$lightOrange),
 					$mdgriffith$elm_ui$Element$Border$rounded(6)
@@ -22928,43 +23314,23 @@ var $author$project$State$Cache$getChallenge = F2(
 var $author$project$Update$Msg$PerformSearchFromHashtag = function (a) {
 	return {$: 'PerformSearchFromHashtag', a: a};
 };
-var $author$project$View$Theme$lightPurple = A3($mdgriffith$elm_ui$Element$rgb255, 173, 127, 168);
-var $author$project$View$Theme$hashtagForeground = $author$project$View$Theme$lightPurple;
 var $mdgriffith$elm_ui$Element$Font$semiBold = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.textSemiBold);
-var $author$project$View$Style$hashtagStyle = function (ht) {
-	var tag = ht.a;
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$italic,
-				$mdgriffith$elm_ui$Element$Font$semiBold,
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$hashtagForeground)
-			]),
-		{
-			label: $mdgriffith$elm_ui$Element$text('#' + tag),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$PerformSearchFromHashtag(ht))
-		});
-};
-var $mdgriffith$elm_ui$Internal$Model$Paragraph = {$: 'Paragraph'};
-var $mdgriffith$elm_ui$Element$paragraph = F2(
-	function (attrs, children) {
-		return A4(
-			$mdgriffith$elm_ui$Internal$Model$element,
-			$mdgriffith$elm_ui$Internal$Model$asParagraph,
-			$mdgriffith$elm_ui$Internal$Model$div,
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$Paragraph),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-					A2(
-						$elm$core$List$cons,
-						$mdgriffith$elm_ui$Element$spacing(5),
-						attrs))),
-			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
+var $author$project$View$Style$hashtagStyle = F2(
+	function (ui, ht) {
+		var tag = ht.a;
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$Font$italic,
+					$mdgriffith$elm_ui$Element$Font$semiBold,
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.hashtagForeground)
+				]),
+			{
+				label: $mdgriffith$elm_ui$Element$text('#' + tag),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$PerformSearchFromHashtag(ht))
+			});
 	});
 var $author$project$Utils$TextUtils$HashtagQuote = function (a) {
 	return {$: 'HashtagQuote', a: a};
@@ -23021,10 +23387,8 @@ var $author$project$Utils$TextUtils$parseQuotedText = function (txt) {
 var $author$project$State$AppState$PseudoPage = function (a) {
 	return {$: 'PseudoPage', a: a};
 };
-var $author$project$View$Theme$lightBlue = A3($mdgriffith$elm_ui$Element$rgb255, 114, 159, 207);
-var $author$project$View$Theme$userLinkForeground = $author$project$View$Theme$lightBlue;
-var $author$project$View$Style$userStyle = F2(
-	function (pseudo, userId) {
+var $author$project$View$Style$userStyle = F3(
+	function (ui, pseudo, userId) {
 		var page = A2(
 			$elm$core$Maybe$withDefault,
 			$author$project$State$AppState$PseudoPage(pseudo),
@@ -23035,7 +23399,7 @@ var $author$project$View$Style$userStyle = F2(
 				[
 					$mdgriffith$elm_ui$Element$Font$italic,
 					$mdgriffith$elm_ui$Element$Font$semiBold,
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$userLinkForeground)
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.userLinkForeground)
 				]),
 			{
 				label: $mdgriffith$elm_ui$Element$text('@' + pseudo),
@@ -23043,65 +23407,66 @@ var $author$project$View$Style$userStyle = F2(
 					$author$project$Update$Msg$DisplayPage(page))
 			});
 	});
-var $author$project$View$Style$quotedText = function (str) {
-	var quoted = $author$project$Utils$TextUtils$parseQuotedText(str);
-	var quoteToString = function (s) {
-		switch (s.$) {
-			case 'Str':
-				var x = s.a;
-				return $mdgriffith$elm_ui$Element$text(x);
-			case 'UserQuote':
-				var x = s.a;
-				return A2(
-					$author$project$View$Style$userStyle,
-					A2($elm$core$String$dropLeft, 1, x),
-					$elm$core$Maybe$Nothing);
-			default:
-				var x = s.a;
-				return $author$project$View$Style$hashtagStyle(
-					$author$project$Data$Hashtag$Hashtag(
-						A2($elm$core$String$dropLeft, 1, x)));
-		}
-	};
-	return A2(
-		$mdgriffith$elm_ui$Element$paragraph,
-		_List_Nil,
-		A2(
-			$elm$core$List$intersperse,
-			$mdgriffith$elm_ui$Element$text(' '),
-			A2($elm$core$List$map, quoteToString, quoted)));
-};
-var $author$project$View$Style$multiLineQuotedText = function (txt) {
-	var lines = A2($elm$core$String$split, '\n', txt);
-	return A2(
-		$mdgriffith$elm_ui$Element$column,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$spacing(1)
-			]),
-		A2($elm$core$List$map, $author$project$View$Style$quotedText, lines));
-};
-var $author$project$View$Style$postBodyStyle = function (e) {
-	return A2(
-		$mdgriffith$elm_ui$Element$paragraph,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$Font$size(10)
-			]),
-		_List_fromArray(
-			[e]));
-};
+var $author$project$View$Style$quotedText = F2(
+	function (ui, str) {
+		var quoted = $author$project$Utils$TextUtils$parseQuotedText(str);
+		var quoteToString = function (s) {
+			switch (s.$) {
+				case 'Str':
+					var x = s.a;
+					return $mdgriffith$elm_ui$Element$text(x);
+				case 'UserQuote':
+					var x = s.a;
+					return A3(
+						$author$project$View$Style$userStyle,
+						ui,
+						A2($elm$core$String$dropLeft, 1, x),
+						$elm$core$Maybe$Nothing);
+				default:
+					var x = s.a;
+					return A2(
+						$author$project$View$Style$hashtagStyle,
+						ui,
+						$author$project$Data$Hashtag$Hashtag(
+							A2($elm$core$String$dropLeft, 1, x)));
+			}
+		};
+		return A2(
+			$mdgriffith$elm_ui$Element$paragraph,
+			_List_Nil,
+			A2(
+				$elm$core$List$intersperse,
+				$mdgriffith$elm_ui$Element$text(' '),
+				A2($elm$core$List$map, quoteToString, quoted)));
+	});
+var $author$project$View$Style$multiLineQuotedText = F2(
+	function (ui, txt) {
+		var lines = A2($elm$core$String$split, '\n', txt);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(1)
+				]),
+			A2(
+				$elm$core$List$map,
+				$author$project$View$Style$quotedText(ui),
+				lines));
+	});
+var $author$project$View$Style$postBodyStyle = F2(
+	function (ui, e) {
+		return A2(
+			$mdgriffith$elm_ui$Element$paragraph,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					A2($author$project$View$Style$relFontSize, ui, 0)
+				]),
+			_List_fromArray(
+				[e]));
+	});
 var $mdgriffith$elm_ui$Internal$Model$Right = {$: 'Right'};
 var $mdgriffith$elm_ui$Element$alignRight = $mdgriffith$elm_ui$Internal$Model$AlignX($mdgriffith$elm_ui$Internal$Model$Right);
-var $mdgriffith$elm_ui$Element$Font$bold = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.bold);
-var $author$project$View$Style$bold = function (txt) {
-	return A2(
-		$mdgriffith$elm_ui$Element$el,
-		_List_fromArray(
-			[$mdgriffith$elm_ui$Element$Font$bold]),
-		$mdgriffith$elm_ui$Element$text(txt));
-};
 var $author$project$View$Theme$charcoal = A3($mdgriffith$elm_ui$Element$rgb255, 85, 87, 83);
 var $author$project$View$Theme$darkRed = A3($mdgriffith$elm_ui$Element$rgb255, 164, 25, 0);
 var $author$project$View$Chart$Donut$defaultConfig = {cornerRadius: 0.0, innerRadius: 24, outerRadius: 48, padAngle: 0.0};
@@ -25113,8 +25478,8 @@ var $elm_community$typed_svg$TypedSvg$Attributes$InPx$width = function (value) {
 	return $elm_community$typed_svg$TypedSvg$Attributes$width(
 		$elm_community$typed_svg$TypedSvg$Types$px(value));
 };
-var $author$project$View$Chart$Donut$drawDoubleChart = F4(
-	function (outerConfig, outerModel, innerConfig, innerModel) {
+var $author$project$View$Chart$Donut$drawDoubleChart = F5(
+	function (ui, outerConfig, outerModel, innerConfig, innerModel) {
 		var outerRadius = outerConfig.outerRadius;
 		var outerPieData = A2(
 			$gampleman$elm_visualization$Shape$pie,
@@ -25148,7 +25513,7 @@ var $author$project$View$Chart$Donut$drawDoubleChart = F4(
 						$elm_community$typed_svg$TypedSvg$Types$Paint(color)),
 						$elm_community$typed_svg$TypedSvg$Attributes$stroke(
 						$elm_community$typed_svg$TypedSvg$Types$Paint(
-							$author$project$View$Chart$Donut$convertColor($author$project$View$Theme$appBackground)))
+							$author$project$View$Chart$Donut$convertColor(ui.theme.appBackground)))
 					]));
 		};
 		var innerRadius = innerConfig.outerRadius;
@@ -25204,65 +25569,67 @@ var $author$project$View$Chart$Donut$drawDoubleChart = F4(
 	});
 var $mdgriffith$elm_ui$Internal$Model$unstyled = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Unstyled, $elm$core$Basics$always);
 var $mdgriffith$elm_ui$Element$html = $mdgriffith$elm_ui$Internal$Model$unstyled;
-var $author$project$View$Chart$Donut$doubleDonutWithConfig = F4(
-	function (outerconfig, outerData, innerconfig, innerData) {
+var $author$project$View$Chart$Donut$doubleDonutWithConfig = F5(
+	function (ui, outerconfig, outerData, innerconfig, innerData) {
 		return $mdgriffith$elm_ui$Element$html(
-			A4($author$project$View$Chart$Donut$drawDoubleChart, outerconfig, outerData, innerconfig, innerData));
+			A5($author$project$View$Chart$Donut$drawDoubleChart, ui, outerconfig, outerData, innerconfig, innerData));
 	});
-var $author$project$View$Chart$Donut$doubleTinyDonut = F2(
-	function (outerData, innerData) {
+var $author$project$View$Chart$Donut$doubleTinyDonut = F3(
+	function (ui, outerData, innerData) {
 		var outerConfig = _Utils_update(
 			$author$project$View$Chart$Donut$defaultConfig,
 			{innerRadius: 16.0, outerRadius: 24.0});
 		var innerConfig = _Utils_update(
 			$author$project$View$Chart$Donut$defaultConfig,
 			{innerRadius: 8.0, outerRadius: 16.0});
-		return A4($author$project$View$Chart$Donut$doubleDonutWithConfig, outerConfig, outerData, innerConfig, innerData);
+		return A5($author$project$View$Chart$Donut$doubleDonutWithConfig, ui, outerConfig, outerData, innerConfig, innerData);
 	});
 var $author$project$View$Theme$lightGreen = A3($mdgriffith$elm_ui$Element$rgb255, 138, 226, 52);
 var $author$project$View$Theme$orange = A3($mdgriffith$elm_ui$Element$rgb255, 245, 121, 0);
-var $author$project$View$PostRenderer$renderChallengeStatistics = function (stats) {
-	var contestants = stats.acceptedCount;
-	var total = stats.elapsedPeriodCount * contestants;
-	var failure = stats.failureCount / total;
-	var partial = stats.partialSuccessCount / total;
-	var skipped = stats.skippedCount / total;
-	var success = stats.successCount / total;
-	return A2(
-		$mdgriffith$elm_ui$Element$column,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$spacing(5),
-				$mdgriffith$elm_ui$Element$Font$size(8)
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-				A2(
-					$author$project$View$Chart$Donut$doubleTinyDonut,
+var $author$project$View$PostRenderer$renderChallengeStatistics = F2(
+	function (ui, stats) {
+		var contestants = stats.acceptedCount;
+		var total = stats.elapsedPeriodCount * contestants;
+		var failure = stats.failureCount / total;
+		var partial = stats.partialSuccessCount / total;
+		var skipped = stats.skippedCount / total;
+		var success = stats.successCount / total;
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(5),
+					A2($author$project$View$Style$relFontSize, ui, -2)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
-						[
-							_Utils_Tuple2(skipped, $author$project$View$Theme$charcoal),
-							_Utils_Tuple2(failure, $author$project$View$Theme$darkRed),
-							_Utils_Tuple2(partial, $author$project$View$Theme$orange),
-							_Utils_Tuple2(success, $author$project$View$Theme$lightGreen)
-						]),
+						[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
+					A3(
+						$author$project$View$Chart$Donut$doubleTinyDonut,
+						ui,
+						_List_fromArray(
+							[
+								_Utils_Tuple2(skipped, $author$project$View$Theme$charcoal),
+								_Utils_Tuple2(failure, $author$project$View$Theme$darkRed),
+								_Utils_Tuple2(partial, $author$project$View$Theme$orange),
+								_Utils_Tuple2(success, $author$project$View$Theme$lightGreen)
+							]),
+						_List_fromArray(
+							[
+								_Utils_Tuple2(stats.elapsedPeriodCount, $author$project$View$Theme$lightPurple),
+								_Utils_Tuple2(stats.totalPeriodCount, $author$project$View$Theme$grey)
+							]))),
+					A2(
+					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
-						[
-							_Utils_Tuple2(stats.elapsedPeriodCount, $author$project$View$Theme$lightPurple),
-							_Utils_Tuple2(stats.totalPeriodCount, $author$project$View$Theme$grey)
-						]))),
-				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$alignRight]),
-				$author$project$View$Style$bold(
-					$elm$core$String$fromInt(contestants) + ' contestant(s)'))
-			]));
-};
+						[$mdgriffith$elm_ui$Element$alignRight]),
+					$author$project$View$Style$bold(
+						$elm$core$String$fromInt(contestants) + ' contestant(s)'))
+				]));
+	});
 var $author$project$View$Style$empty = $mdgriffith$elm_ui$Element$none;
 var $author$project$View$Style$verticalSeparator = F2(
 	function (thickness, color) {
@@ -25287,8 +25654,8 @@ var $author$project$View$Style$verticalSeparator = F2(
 					A2($mdgriffith$elm_ui$Element$el, _List_Nil, $author$project$View$Style$empty)
 				]));
 	});
-var $author$project$View$PostRenderer$renderChallengePost = F2(
-	function (cache, post) {
+var $author$project$View$PostRenderer$renderChallengePost = F3(
+	function (ui, cache, post) {
 		var _v0 = post.content;
 		if (_v0.$ === 'ChallengePost') {
 			var id = _v0.a;
@@ -25310,9 +25677,9 @@ var $author$project$View$PostRenderer$renderChallengePost = F2(
 							$mdgriffith$elm_ui$Element$none,
 							A2(
 								$elm$core$Maybe$map,
-								$author$project$View$PostRenderer$renderChallengeStatistics,
+								$author$project$View$PostRenderer$renderChallengeStatistics(ui),
 								A2($author$project$State$Cache$getChallengeStatistics, cache, id))),
-							A2($author$project$View$Style$verticalSeparator, 1, $author$project$View$Theme$background),
+							A2($author$project$View$Style$verticalSeparator, 1, ui.theme.background),
 							A2(
 							$mdgriffith$elm_ui$Element$column,
 							_List_fromArray(
@@ -25328,15 +25695,19 @@ var $author$project$View$PostRenderer$renderChallengePost = F2(
 									_List_fromArray(
 										[
 											$mdgriffith$elm_ui$Element$Font$semiBold,
-											$mdgriffith$elm_ui$Element$Font$size(10)
+											A2($author$project$View$Style$relFontSize, ui, 0)
 										]),
-									$author$project$View$Style$quotedText(challenge.title)),
-									$author$project$View$Style$postBodyStyle(
-									$author$project$View$Style$multiLineQuotedText(challenge.content))
+									A2($author$project$View$Style$quotedText, ui, challenge.title)),
+									A2(
+									$author$project$View$Style$postBodyStyle,
+									ui,
+									A2($author$project$View$Style$multiLineQuotedText, ui, challenge.content))
 								]))
 						]));
 			} else {
-				return $author$project$View$Style$postBodyStyle(
+				return A2(
+					$author$project$View$Style$postBodyStyle,
+					ui,
 					$mdgriffith$elm_ui$Element$text(
 						$author$project$Data$Challenge$toString(id)));
 			}
@@ -25363,7 +25734,6 @@ var $author$project$State$Cache$isConversationClosed = F2(
 	function (cache, id) {
 		return !A2($author$project$State$Cache$isConversationOpened, cache, id);
 	});
-var $author$project$View$Theme$darkGrey = A3($mdgriffith$elm_ui$Element$rgb255, 186, 189, 182);
 var $author$project$State$Cache$getUserPseudo = F2(
 	function (cache, id) {
 		return A2(
@@ -25391,18 +25761,19 @@ var $author$project$State$Cache$isFlagged = F2(
 					$author$project$Data$Conversation$toString(id),
 					cache.flaggedMessages)));
 	});
-var $author$project$View$Style$postFooterStyle = function (e) {
-	return A2(
-		$mdgriffith$elm_ui$Element$el,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$Font$size(10),
-				$mdgriffith$elm_ui$Element$Border$rounded(5),
-				$mdgriffith$elm_ui$Element$padding(5)
-			]),
-		e);
-};
+var $author$project$View$Style$postFooterStyle = F2(
+	function (ui, e) {
+		return A2(
+			$mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					A2($author$project$View$Style$relFontSize, ui, 0),
+					$mdgriffith$elm_ui$Element$Border$rounded(5),
+					$mdgriffith$elm_ui$Element$padding(5)
+				]),
+			e);
+	});
 var $PanagiotisGeorgiadis$elm_datetime$DateTime$Internal$DateTime = function (a) {
 	return {$: 'DateTime', a: a};
 };
@@ -25773,8 +26144,6 @@ var $mdgriffith$elm_ui$Element$rotate = function (angle) {
 			_Utils_Tuple3(0, 0, 1),
 			angle));
 };
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var $lemol$ant_design_icons_elm_ui$Ant$Icon$iconBase = F3(
 	function (theme, attrs, svgIcon) {
@@ -25825,7 +26194,24 @@ var $lemol$ant_design_icons_elm_ui$Ant$Icon$icon = $lemol$ant_design_icons_elm_u
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$flagOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$flagOutlined);
 };
-var $author$project$View$Icons$flag = $lemol$ant_design_icons_elm_ui$Ant$Icons$flagOutlined;
+var $lemol$ant_design_icons_elm_ui$Ant$Icon$Height = function (a) {
+	return {$: 'Height', a: a};
+};
+var $lemol$ant_design_icons_elm_ui$Ant$Icon$height = $lemol$ant_design_icons_elm_ui$Ant$Icon$Height;
+var $lemol$ant_design_icons_elm_ui$Ant$Icon$Width = function (a) {
+	return {$: 'Width', a: a};
+};
+var $lemol$ant_design_icons_elm_ui$Ant$Icon$width = $lemol$ant_design_icons_elm_ui$Ant$Icon$Width;
+var $author$project$View$Icons$toWidthHeight = function (_v0) {
+	var w = _v0.a;
+	var h = _v0.b;
+	return _List_fromArray(
+		[
+			$lemol$ant_design_icons_elm_ui$Ant$Icon$width(w),
+			$lemol$ant_design_icons_elm_ui$Ant$Icon$height(h)
+		]);
+};
+var $author$project$View$Icons$flag = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$flagOutlined);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$FlagFilled$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -25850,7 +26236,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$flagFilled = $lemol$ant_design_ico
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$flagFilled = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$flagFilled);
 };
-var $author$project$View$Icons$flagged = $lemol$ant_design_icons_elm_ui$Ant$Icons$flagFilled;
+var $author$project$View$Icons$flagged = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$flagFilled);
 var $author$project$State$Cache$isFlaggedByUser = F2(
 	function (cache, id) {
 		return A2(
@@ -25866,24 +26252,11 @@ var $author$project$State$Cache$isFlaggedByUser = F2(
 					$author$project$Data$Conversation$toString(id),
 					cache.flaggedMessages)));
 	});
-var $lemol$ant_design_icons_elm_ui$Ant$Icon$Height = function (a) {
-	return {$: 'Height', a: a};
-};
-var $lemol$ant_design_icons_elm_ui$Ant$Icon$height = $lemol$ant_design_icons_elm_ui$Ant$Icon$Height;
-var $lemol$ant_design_icons_elm_ui$Ant$Icon$Width = function (a) {
-	return {$: 'Width', a: a};
-};
-var $lemol$ant_design_icons_elm_ui$Ant$Icon$width = $lemol$ant_design_icons_elm_ui$Ant$Icon$Width;
-var $author$project$View$Icons$tiny = _List_fromArray(
-	[
-		$lemol$ant_design_icons_elm_ui$Ant$Icon$width(12),
-		$lemol$ant_design_icons_elm_ui$Ant$Icon$height(12)
-	]);
-var $author$project$View$PostRenderer$renderFlagAction = F2(
-	function (cache, message) {
+var $author$project$View$PostRenderer$renderFlagAction = F3(
+	function (ui, cache, message) {
 		var flaggedByUser = A2($author$project$State$Cache$isFlaggedByUser, cache, message.id);
 		var icon = flaggedByUser ? $author$project$View$Icons$flagged : $author$project$View$Icons$flag;
-		var col = flaggedByUser ? $author$project$View$Theme$darkRed : $author$project$View$Theme$background;
+		var col = flaggedByUser ? ui.theme.alertColor : ui.theme.background;
 		var action = (flaggedByUser ? $author$project$Update$Msg$UnflagComment : $author$project$Update$Msg$FlagComment)(message.id);
 		return A2(
 			$mdgriffith$elm_ui$Element$Input$button,
@@ -25898,20 +26271,23 @@ var $author$project$View$PostRenderer$renderFlagAction = F2(
 						[
 							$mdgriffith$elm_ui$Element$Font$color(col)
 						]),
-					icon($author$project$View$Icons$tiny)),
+					icon(ui.tiny)),
 				onPress: $elm$core$Maybe$Just(action)
 			});
 	});
-var $author$project$View$PostRenderer$renderFlagWarning = function (flagged) {
-	return flagged ? A2(
-		$mdgriffith$elm_ui$Element$el,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$darkRed)
-			]),
-		$author$project$View$Style$postFooterStyle(
-			$mdgriffith$elm_ui$Element$text('*** This message has been reported ***'))) : $mdgriffith$elm_ui$Element$none;
-};
+var $author$project$View$PostRenderer$renderFlagWarning = F2(
+	function (ui, flagged) {
+		return flagged ? A2(
+			$mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$darkRed)
+				]),
+			A2(
+				$author$project$View$Style$postFooterStyle,
+				ui,
+				$mdgriffith$elm_ui$Element$text('*** This message has been reported ***'))) : $mdgriffith$elm_ui$Element$none;
+	});
 var $author$project$View$Style$rightGap = F2(
 	function (sp, x) {
 		return A2(
@@ -25924,8 +26300,8 @@ var $author$project$View$Style$rightGap = F2(
 				]),
 			x);
 	});
-var $author$project$View$PostRenderer$renderConversationMessage = F4(
-	function (tmstp, cache, _v0, message) {
+var $author$project$View$PostRenderer$renderConversationMessage = F5(
+	function (ui, tmstp, cache, _v0, message) {
 		var pseudo = A2(
 			$elm$core$Maybe$withDefault,
 			'<unknown>',
@@ -25933,13 +26309,13 @@ var $author$project$View$PostRenderer$renderConversationMessage = F4(
 		var flagged = A2($author$project$State$Cache$isFlagged, cache, message.id);
 		var contentStyle = flagged ? A2(
 			$elm$core$Basics$composeR,
-			$author$project$View$Style$postBodyStyle,
+			$author$project$View$Style$postBodyStyle(ui),
 			$mdgriffith$elm_ui$Element$el(
 				_List_fromArray(
 					[
-						$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$darkGrey),
+						$mdgriffith$elm_ui$Element$Font$color(ui.theme.flaggedForeground),
 						$mdgriffith$elm_ui$Element$Font$italic
-					]))) : $author$project$View$Style$postBodyStyle;
+					]))) : $author$project$View$Style$postBodyStyle(ui);
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -25957,21 +26333,26 @@ var $author$project$View$PostRenderer$renderConversationMessage = F4(
 						]),
 					_List_fromArray(
 						[
-							$author$project$View$Style$postBodyStyle(
 							A2(
+							$author$project$View$Style$postBodyStyle,
+							ui,
+							A3(
 								$author$project$View$Style$userStyle,
+								ui,
 								pseudo,
 								$elm$core$Maybe$Just(message.author))),
 							A2(
 							$author$project$View$Style$rightGap,
 							5,
-							$author$project$View$Style$postFooterStyle(
+							A2(
+								$author$project$View$Style$postFooterStyle,
+								ui,
 								A2($author$project$View$PostRenderer$renderCommentDate, tmstp, message.timestamp))),
 							A2(
 							$author$project$View$Style$rightGap,
 							20,
-							A2($author$project$View$PostRenderer$renderFlagAction, cache, message)),
-							$author$project$View$PostRenderer$renderFlagWarning(flagged)
+							A3($author$project$View$PostRenderer$renderFlagAction, ui, cache, message)),
+							A2($author$project$View$PostRenderer$renderFlagWarning, ui, flagged)
 						])),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
@@ -25981,7 +26362,7 @@ var $author$project$View$PostRenderer$renderConversationMessage = F4(
 							{bottom: 0, left: 15, right: 0, top: 0})
 						]),
 					contentStyle(
-						$author$project$View$Style$multiLineQuotedText(message.content)))
+						A2($author$project$View$Style$multiLineQuotedText, ui, message.content)))
 				]));
 	});
 var $author$project$Update$Msg$PostNewComment = F2(
@@ -25994,7 +26375,6 @@ var $author$project$Update$Msg$UpdateNewPostComment = F2(
 	});
 var $mdgriffith$elm_ui$Internal$Model$Bottom = {$: 'Bottom'};
 var $mdgriffith$elm_ui$Element$alignBottom = $mdgriffith$elm_ui$Internal$Model$AlignY($mdgriffith$elm_ui$Internal$Model$Bottom);
-var $author$project$View$Theme$foreground = $author$project$View$Theme$darkCharcoal;
 var $author$project$State$Cache$getComment = F2(
 	function (cache, id) {
 		return A2(
@@ -26343,10 +26723,6 @@ var $mdgriffith$elm_ui$Element$Input$isPixel = function (len) {
 		}
 	}
 };
-var $mdgriffith$elm_ui$Internal$Model$paddingNameFloat = F4(
-	function (top, right, bottom, left) {
-		return 'pad-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(top) + ('-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(right) + ('-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(bottom) + ('-' + $mdgriffith$elm_ui$Internal$Model$floatClass(left)))))));
-	});
 var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
 	function (isMultiline, stacked, attr, els) {
 		switch (attr.$) {
@@ -26874,21 +27250,20 @@ var $mdgriffith$elm_ui$Element$Input$Placeholder = F2(
 		return {$: 'Placeholder', a: a, b: b};
 	});
 var $mdgriffith$elm_ui$Element$Input$placeholder = $mdgriffith$elm_ui$Element$Input$Placeholder;
-var $author$project$View$Style$placeholderStyle = function (txt) {
-	return $elm$core$Maybe$Just(
-		A2(
-			$mdgriffith$elm_ui$Element$Input$placeholder,
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$Font$italic,
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$lightBlue)
-				]),
-			$mdgriffith$elm_ui$Element$text(txt)));
-};
-var $author$project$View$Theme$textFieldBackground = $author$project$View$Theme$darkCharcoal;
-var $author$project$View$Theme$textFieldForeground = $author$project$View$Theme$lightBlue;
-var $author$project$View$PostRenderer$renderMessageInput = F2(
-	function (cache, postId) {
+var $author$project$View$Style$placeholderStyle = F2(
+	function (ui, txt) {
+		return $elm$core$Maybe$Just(
+			A2(
+				$mdgriffith$elm_ui$Element$Input$placeholder,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Font$italic,
+						$mdgriffith$elm_ui$Element$Font$color(ui.theme.textFieldPlaceHolder)
+					]),
+				$mdgriffith$elm_ui$Element$text(txt)));
+	});
+var $author$project$View$PostRenderer$renderMessageInput = F3(
+	function (ui, cache, postId) {
 		var currentComment = A2(
 			$elm$core$Maybe$withDefault,
 			'',
@@ -26908,16 +27283,16 @@ var $author$project$View$PostRenderer$renderMessageInput = F2(
 					_List_fromArray(
 						[
 							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$Font$size(11),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground)
+							A2($author$project$View$Style$relFontSize, ui, 1),
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.textFieldForeground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.textFieldBackground)
 						]),
 					{
 						label: $mdgriffith$elm_ui$Element$Input$labelHidden('hidden comment'),
 						onChange: function (txt) {
 							return A2($author$project$Update$Msg$UpdateNewPostComment, postId, txt);
 						},
-						placeholder: $author$project$View$Style$placeholderStyle('Enter a comment ...'),
+						placeholder: A2($author$project$View$Style$placeholderStyle, ui, 'Enter a comment ...'),
 						spellcheck: true,
 						text: A2(
 							$elm$core$Maybe$withDefault,
@@ -26933,8 +27308,8 @@ var $author$project$View$PostRenderer$renderMessageInput = F2(
 							$mdgriffith$elm_ui$Element$Border$width(2),
 							$mdgriffith$elm_ui$Element$Border$rounded(5),
 							$mdgriffith$elm_ui$Element$padding(5),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.background)
 						]),
 					{
 						label: $mdgriffith$elm_ui$Element$text('Post'),
@@ -26983,8 +27358,8 @@ var $author$project$View$Style$horizontalSeparator = F2(
 				]));
 	});
 var $author$project$Data$Conversation$pageSize = 10;
-var $author$project$View$PostRenderer$renderMoreMessageSeparator = F2(
-	function (cache, postId) {
+var $author$project$View$PostRenderer$renderMoreMessageSeparator = F3(
+	function (ui, cache, postId) {
 		var messagesCacheSize = $elm$core$List$length(
 			A2($author$project$State$Cache$getConversationMessages, cache, postId));
 		var nextPage = ((messagesCacheSize / $author$project$Data$Conversation$pageSize) | 0) + 1;
@@ -27003,7 +27378,7 @@ var $author$project$View$PostRenderer$renderMoreMessageSeparator = F2(
 						[
 							$mdgriffith$elm_ui$Element$alignLeft,
 							$mdgriffith$elm_ui$Element$Border$width(0),
-							$mdgriffith$elm_ui$Element$Font$size(10),
+							A2($author$project$View$Style$relFontSize, ui, 0),
 							$mdgriffith$elm_ui$Element$padding(5)
 						]),
 					{
@@ -27011,7 +27386,7 @@ var $author$project$View$PostRenderer$renderMoreMessageSeparator = F2(
 							$mdgriffith$elm_ui$Element$el,
 							_List_fromArray(
 								[
-									$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$darkGrey)
+									$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground)
 								]),
 							$mdgriffith$elm_ui$Element$text('More ...')),
 						onPress: $elm$core$Maybe$Just(
@@ -27020,11 +27395,11 @@ var $author$project$View$PostRenderer$renderMoreMessageSeparator = F2(
 								postId,
 								$author$project$Data$Page$Page(nextPage)))
 					}),
-					A2($author$project$View$Style$horizontalSeparator, 1, $author$project$View$Theme$background)
+					A2($author$project$View$Style$horizontalSeparator, 1, ui.theme.background)
 				]));
 	});
-var $author$project$View$PostRenderer$renderOpenedConversation = F3(
-	function (tmstp, cache, postId) {
+var $author$project$View$PostRenderer$renderOpenedConversation = F4(
+	function (ui, tmstp, cache, postId) {
 		var messages = A2($author$project$State$Cache$getConversationMessages, cache, postId);
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
@@ -27038,22 +27413,22 @@ var $author$project$View$PostRenderer$renderOpenedConversation = F3(
 			_Utils_ap(
 				_List_fromArray(
 					[
-						A2($author$project$View$PostRenderer$renderMessageInput, cache, postId)
+						A3($author$project$View$PostRenderer$renderMessageInput, ui, cache, postId)
 					]),
 				_Utils_ap(
 					A2(
 						$elm$core$List$map,
-						A3($author$project$View$PostRenderer$renderConversationMessage, tmstp, cache, postId),
+						A4($author$project$View$PostRenderer$renderConversationMessage, ui, tmstp, cache, postId),
 						messages),
 					_List_fromArray(
 						[
-							A2($author$project$View$PostRenderer$renderMoreMessageSeparator, cache, postId)
+							A3($author$project$View$PostRenderer$renderMoreMessageSeparator, ui, cache, postId)
 						]))));
 	});
-var $author$project$View$PostRenderer$renderConversation = F3(
-	function (tmstp, cache, postId) {
+var $author$project$View$PostRenderer$renderConversation = F4(
+	function (ui, tmstp, cache, postId) {
 		var closed = A2($author$project$State$Cache$isConversationClosed, cache, postId);
-		return closed ? $mdgriffith$elm_ui$Element$none : A3($author$project$View$PostRenderer$renderOpenedConversation, tmstp, cache, postId);
+		return closed ? $mdgriffith$elm_ui$Element$none : A4($author$project$View$PostRenderer$renderOpenedConversation, ui, tmstp, cache, postId);
 	});
 var $author$project$State$Cache$getEvent = F2(
 	function (cache, id) {
@@ -27110,7 +27485,6 @@ var $author$project$Data$Location$formatAddress = function (address) {
 		return '<Invalid address>';
 	}
 };
-var $author$project$View$Theme$linkForeground = $author$project$View$Theme$lightBlue;
 var $elm$html$Html$Attributes$href = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
@@ -27168,77 +27542,78 @@ var $author$project$Data$Location$toMapUrl = F2(
 				return $author$project$Data$Url$Url('https://www.openstreetmap.org');
 		}
 	});
-var $author$project$View$PostRenderer$renderLocation = function (loc) {
-	switch (loc.$) {
-		case 'Online':
-			var url = loc.a.a;
-			return A2(
-				$mdgriffith$elm_ui$Element$newTabLink,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$size(10)
-					]),
-				{
-					label: A2(
-						$mdgriffith$elm_ui$Element$el,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$linkForeground)
-							]),
-						$mdgriffith$elm_ui$Element$text('online')),
-					url: url
-				});
-		case 'MapUrl':
-			var url = loc.a.a;
-			return A2(
-				$mdgriffith$elm_ui$Element$newTabLink,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$size(10)
-					]),
-				{
-					label: A2(
-						$mdgriffith$elm_ui$Element$el,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$linkForeground)
-							]),
-						$mdgriffith$elm_ui$Element$text('See on maps')),
-					url: url
-				});
-		case 'GeoLocation':
-			var geo = loc;
-			var _v1 = A2($author$project$Data$Location$toMapUrl, 17, geo);
-			var url = _v1.a;
-			return A2(
-				$mdgriffith$elm_ui$Element$newTabLink,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$size(10)
-					]),
-				{
-					label: A2(
-						$mdgriffith$elm_ui$Element$el,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$linkForeground)
-							]),
-						$mdgriffith$elm_ui$Element$text('See on maps')),
-					url: url
-				});
-		default:
-			var address = loc;
-			return A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$blue),
-						$mdgriffith$elm_ui$Element$Font$size(10)
-					]),
-				$mdgriffith$elm_ui$Element$text(
-					$author$project$Data$Location$formatAddress(address)));
-	}
-};
+var $author$project$View$PostRenderer$renderLocation = F2(
+	function (ui, loc) {
+		switch (loc.$) {
+			case 'Online':
+				var url = loc.a.a;
+				return A2(
+					$mdgriffith$elm_ui$Element$newTabLink,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, ui, 0)
+						]),
+					{
+						label: A2(
+							$mdgriffith$elm_ui$Element$el,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$Font$color(ui.theme.linkForeground)
+								]),
+							$mdgriffith$elm_ui$Element$text('online')),
+						url: url
+					});
+			case 'MapUrl':
+				var url = loc.a.a;
+				return A2(
+					$mdgriffith$elm_ui$Element$newTabLink,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, ui, 0)
+						]),
+					{
+						label: A2(
+							$mdgriffith$elm_ui$Element$el,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$Font$color(ui.theme.linkForeground)
+								]),
+							$mdgriffith$elm_ui$Element$text('See on maps')),
+						url: url
+					});
+			case 'GeoLocation':
+				var geo = loc;
+				var _v1 = A2($author$project$Data$Location$toMapUrl, 17, geo);
+				var url = _v1.a;
+				return A2(
+					$mdgriffith$elm_ui$Element$newTabLink,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, ui, 0)
+						]),
+					{
+						label: A2(
+							$mdgriffith$elm_ui$Element$el,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$Font$color(ui.theme.linkForeground)
+								]),
+							$mdgriffith$elm_ui$Element$text('See on maps')),
+						url: url
+					});
+			default:
+				var address = loc;
+				return A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$blue),
+							A2($author$project$View$Style$relFontSize, ui, 0)
+						]),
+					$mdgriffith$elm_ui$Element$text(
+						$author$project$Data$Location$formatAddress(address)));
+		}
+	});
 var $author$project$Data$Schedule$day = function (_v0) {
 	var ms = _v0.a;
 	return A2(
@@ -27347,93 +27722,84 @@ var $author$project$Data$Schedule$year = function (_v0) {
 		$elm$time$Time$utc,
 		$elm$time$Time$millisToPosix(ms));
 };
-var $author$project$View$PostRenderer$renderNextDate = function (schedule) {
-	var timestamp = $author$project$Data$Schedule$start(schedule);
-	var weekday = $mdgriffith$elm_ui$Element$text(
-		$author$project$Data$Schedule$weekDay(timestamp));
-	var year = A2(
-		$mdgriffith$elm_ui$Element$el,
-		_List_fromArray(
-			[$mdgriffith$elm_ui$Element$centerX]),
-		$mdgriffith$elm_ui$Element$text(
-			$author$project$Utils$TextUtils$format4Digits(
-				$author$project$Data$Schedule$year(timestamp))));
-	var month = $mdgriffith$elm_ui$Element$text(
-		$author$project$Data$Schedule$month(timestamp));
-	var day = $mdgriffith$elm_ui$Element$text(
-		$author$project$Utils$TextUtils$format2Digits(
-			$author$project$Data$Schedule$day(timestamp)));
-	return A2(
-		$mdgriffith$elm_ui$Element$column,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$alignLeft,
-				$mdgriffith$elm_ui$Element$spacing(5),
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background),
-				$mdgriffith$elm_ui$Element$Border$rounded(3)
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$centerY,
-						$mdgriffith$elm_ui$Element$Font$size(12),
-						$mdgriffith$elm_ui$Element$Font$semiBold,
-						$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-						$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
-						$mdgriffith$elm_ui$Element$padding(2),
-						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-					]),
-				year),
-				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$centerX,
-						$mdgriffith$elm_ui$Element$Font$size(10),
-						$mdgriffith$elm_ui$Element$paddingEach(
-						{bottom: 3, left: 3, right: 3, top: 0})
-					]),
-				weekday),
-				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$centerX,
-						$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
-						$mdgriffith$elm_ui$Element$Font$size(14),
-						$mdgriffith$elm_ui$Element$Font$bold,
-						$mdgriffith$elm_ui$Element$paddingEach(
-						{bottom: 3, left: 3, right: 3, top: 0})
-					]),
-				day),
-				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$centerX,
-						$mdgriffith$elm_ui$Element$Font$size(10),
-						$mdgriffith$elm_ui$Element$paddingEach(
-						{bottom: 3, left: 3, right: 3, top: 0})
-					]),
-				month)
-			]));
-};
-var $author$project$View$Style$size = F2(
-	function (sz, x) {
-		return A2(
+var $author$project$View$PostRenderer$renderNextDate = F2(
+	function (ui, schedule) {
+		var timestamp = $author$project$Data$Schedule$start(schedule);
+		var weekday = $mdgriffith$elm_ui$Element$text(
+			$author$project$Data$Schedule$weekDay(timestamp));
+		var year = A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
+				[$mdgriffith$elm_ui$Element$centerX]),
+			$mdgriffith$elm_ui$Element$text(
+				$author$project$Utils$TextUtils$format4Digits(
+					$author$project$Data$Schedule$year(timestamp))));
+		var month = $mdgriffith$elm_ui$Element$text(
+			$author$project$Data$Schedule$month(timestamp));
+		var day = $mdgriffith$elm_ui$Element$text(
+			$author$project$Utils$TextUtils$format2Digits(
+				$author$project$Data$Schedule$day(timestamp)));
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(sz)
+					$mdgriffith$elm_ui$Element$alignLeft,
+					$mdgriffith$elm_ui$Element$spacing(5),
+					$mdgriffith$elm_ui$Element$Border$width(1),
+					$mdgriffith$elm_ui$Element$Border$color(ui.theme.background),
+					$mdgriffith$elm_ui$Element$Border$rounded(3)
 				]),
-			x);
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$centerY,
+							A2($author$project$View$Style$relFontSize, ui, 2),
+							$mdgriffith$elm_ui$Element$Font$semiBold,
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
+							$mdgriffith$elm_ui$Element$padding(2),
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+						]),
+					year),
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$centerX,
+							A2($author$project$View$Style$relFontSize, ui, 0),
+							$mdgriffith$elm_ui$Element$paddingEach(
+							{bottom: 3, left: 3, right: 3, top: 0})
+						]),
+					weekday),
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$centerX,
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.background),
+							A2($author$project$View$Style$relFontSize, ui, 4),
+							$mdgriffith$elm_ui$Element$Font$bold,
+							$mdgriffith$elm_ui$Element$paddingEach(
+							{bottom: 3, left: 3, right: 3, top: 0})
+						]),
+					day),
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$centerX,
+							A2($author$project$View$Style$relFontSize, ui, 0),
+							$mdgriffith$elm_ui$Element$paddingEach(
+							{bottom: 3, left: 3, right: 3, top: 0})
+						]),
+					month)
+				]));
 	});
-var $author$project$View$PostRenderer$renderEventPost = F2(
-	function (cache, post) {
+var $author$project$View$PostRenderer$renderEventPost = F3(
+	function (ui, cache, post) {
 		var _v0 = post.content;
 		if (_v0.$ === 'EventPost') {
 			var id = _v0.a;
@@ -27456,8 +27822,8 @@ var $author$project$View$PostRenderer$renderEventPost = F2(
 						]),
 					_List_fromArray(
 						[
-							$author$project$View$PostRenderer$renderNextDate(event.schedule),
-							A2($author$project$View$Style$verticalSeparator, 1, $author$project$View$Theme$background),
+							A2($author$project$View$PostRenderer$renderNextDate, ui, event.schedule),
+							A2($author$project$View$Style$verticalSeparator, 1, ui.theme.background),
 							A2(
 							$mdgriffith$elm_ui$Element$column,
 							_List_fromArray(
@@ -27476,8 +27842,10 @@ var $author$project$View$PostRenderer$renderEventPost = F2(
 											$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 											$mdgriffith$elm_ui$Element$alignTop
 										]),
-									$author$project$View$Style$postBodyStyle(
-										$author$project$View$Style$multiLineQuotedText(event.description))),
+									A2(
+										$author$project$View$Style$postBodyStyle,
+										ui,
+										A2($author$project$View$Style$multiLineQuotedText, ui, event.description))),
 									A2(
 									$mdgriffith$elm_ui$Element$row,
 									_List_fromArray(
@@ -27487,13 +27855,15 @@ var $author$project$View$PostRenderer$renderEventPost = F2(
 										]),
 									_List_fromArray(
 										[
-											A2(
-											$author$project$View$Style$size,
-											10,
+											A3(
+											$author$project$View$Style$relSize,
+											ui,
+											0,
 											$author$project$View$Style$bold('When:')),
-											A2(
-											$author$project$View$Style$size,
-											10,
+											A3(
+											$author$project$View$Style$relSize,
+											ui,
+											0,
 											$mdgriffith$elm_ui$Element$text(
 												$author$project$Utils$DateUtils$formatDate(
 													$author$project$Data$Schedule$start(event.schedule))))
@@ -27507,11 +27877,12 @@ var $author$project$View$PostRenderer$renderEventPost = F2(
 										]),
 									_List_fromArray(
 										[
-											A2(
-											$author$project$View$Style$size,
-											10,
+											A3(
+											$author$project$View$Style$relSize,
+											ui,
+											0,
 											$author$project$View$Style$bold('Where:')),
-											$author$project$View$PostRenderer$renderLocation(event.location)
+											A2($author$project$View$PostRenderer$renderLocation, ui, event.location)
 										])),
 									A2(
 									$mdgriffith$elm_ui$Element$row,
@@ -27522,13 +27893,15 @@ var $author$project$View$PostRenderer$renderEventPost = F2(
 										]),
 									_List_fromArray(
 										[
-											A2(
-											$author$project$View$Style$size,
-											10,
+											A3(
+											$author$project$View$Style$relSize,
+											ui,
+											0,
 											$author$project$View$Style$bold('Max participants:')),
-											A2(
-											$author$project$View$Style$size,
-											10,
+											A3(
+											$author$project$View$Style$relSize,
+											ui,
+											0,
 											$mdgriffith$elm_ui$Element$text(
 												$elm$core$String$fromInt(event.maxParticipants)))
 										])),
@@ -27541,13 +27914,15 @@ var $author$project$View$PostRenderer$renderEventPost = F2(
 										]),
 									_List_fromArray(
 										[
-											A2(
-											$author$project$View$Style$size,
-											10,
+											A3(
+											$author$project$View$Style$relSize,
+											ui,
+											0,
 											$author$project$View$Style$bold('Remaining slots:')),
-											A2(
-											$author$project$View$Style$size,
-											10,
+											A3(
+											$author$project$View$Style$relSize,
+											ui,
+											0,
 											$mdgriffith$elm_ui$Element$text(
 												A2(
 													$elm$core$Maybe$withDefault,
@@ -27557,7 +27932,9 @@ var $author$project$View$PostRenderer$renderEventPost = F2(
 								]))
 						]));
 			} else {
-				return $author$project$View$Style$postBodyStyle(
+				return A2(
+					$author$project$View$Style$postBodyStyle,
+					ui,
 					$mdgriffith$elm_ui$Element$text(
 						$author$project$Data$Event$toString(id)));
 			}
@@ -27592,21 +27969,22 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$messageFilled = $lemol$ant_design_
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$messageFilled = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$messageFilled);
 };
-var $author$project$View$Icons$closeConversation = $lemol$ant_design_icons_elm_ui$Ant$Icons$messageFilled;
-var $author$project$View$Style$closeConversationButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(10),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
-			]),
-		{
-			label: $author$project$View$Icons$closeConversation($author$project$View$Icons$tiny),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$ClosePostConversation(id))
-		});
-};
+var $author$project$View$Icons$closeConversation = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$messageFilled);
+var $author$project$View$Style$closeConversationButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 0),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
+				]),
+			{
+				label: $author$project$View$Icons$closeConversation(ui.tiny),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$ClosePostConversation(id))
+			});
+	});
 var $author$project$State$Cache$containsLike = F2(
 	function (cache, postId) {
 		return A2(
@@ -27646,12 +28024,14 @@ var $author$project$State$Cache$getLikeCount = F2(
 				$author$project$Data$Post$toString(postId),
 				cache.likeCount));
 	});
-var $author$project$View$Style$invert = $mdgriffith$elm_ui$Element$el(
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$foreground),
-			$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
-		]));
+var $author$project$View$Style$invert = function (ui) {
+	return $mdgriffith$elm_ui$Element$el(
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Background$color(ui.theme.foreground),
+				$mdgriffith$elm_ui$Element$Font$color(ui.theme.background)
+			]));
+};
 var $author$project$Update$Msg$LikePost = function (a) {
 	return {$: 'LikePost', a: a};
 };
@@ -27679,21 +28059,22 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$heartOutlined = $lemol$ant_design_
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$heartOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$heartOutlined);
 };
-var $author$project$View$Icons$unlike = $lemol$ant_design_icons_elm_ui$Ant$Icons$heartOutlined;
-var $author$project$View$Style$likeButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(10),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
-			]),
-		{
-			label: $author$project$View$Icons$unlike($author$project$View$Icons$tiny),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$LikePost(id))
-		});
-};
+var $author$project$View$Icons$unlike = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$heartOutlined);
+var $author$project$View$Style$likeButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 0),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
+				]),
+			{
+				label: $author$project$View$Icons$unlike(ui.tiny),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$LikePost(id))
+			});
+	});
 var $author$project$Update$Msg$OpenPostConversation = function (a) {
 	return {$: 'OpenPostConversation', a: a};
 };
@@ -27721,21 +28102,22 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$messageOutlined = $lemol$ant_desig
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$messageOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$messageOutlined);
 };
-var $author$project$View$Icons$openConversation = $lemol$ant_design_icons_elm_ui$Ant$Icons$messageOutlined;
-var $author$project$View$Style$openConversationButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(10),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
-			]),
-		{
-			label: $author$project$View$Icons$openConversation($author$project$View$Icons$tiny),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$OpenPostConversation(id))
-		});
-};
+var $author$project$View$Icons$openConversation = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$messageOutlined);
+var $author$project$View$Style$openConversationButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 0),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
+				]),
+			{
+				label: $author$project$View$Icons$openConversation(ui.tiny),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$OpenPostConversation(id))
+			});
+	});
 var $author$project$Update$Msg$PinPost = function (a) {
 	return {$: 'PinPost', a: a};
 };
@@ -27763,21 +28145,22 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$pushpinOutlined = $lemol$ant_desig
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$pushpinOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$pushpinOutlined);
 };
-var $author$project$View$Icons$unpinned = $lemol$ant_design_icons_elm_ui$Ant$Icons$pushpinOutlined;
-var $author$project$View$Style$pinButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(10),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
-			]),
-		{
-			label: $author$project$View$Icons$unpinned($author$project$View$Icons$tiny),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$PinPost(id))
-		});
-};
+var $author$project$View$Icons$unpinned = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$pushpinOutlined);
+var $author$project$View$Style$pinButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 0),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
+				]),
+			{
+				label: $author$project$View$Icons$unpinned(ui.tiny),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$PinPost(id))
+			});
+	});
 var $author$project$Update$Msg$Repost = function (a) {
 	return {$: 'Repost', a: a};
 };
@@ -27805,21 +28188,22 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$shareAltOutlined = $lemol$ant_desi
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$shareAltOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$shareAltOutlined);
 };
-var $author$project$View$Icons$repost = $lemol$ant_design_icons_elm_ui$Ant$Icons$shareAltOutlined;
-var $author$project$View$Style$repostButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(10),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
-			]),
-		{
-			label: $author$project$View$Icons$repost($author$project$View$Icons$tiny),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$Repost(id))
-		});
-};
+var $author$project$View$Icons$repost = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$shareAltOutlined);
+var $author$project$View$Style$repostButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 0),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
+				]),
+			{
+				label: $author$project$View$Icons$repost(ui.tiny),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$Repost(id))
+			});
+	});
 var $author$project$Update$Msg$UnlikePost = function (a) {
 	return {$: 'UnlikePost', a: a};
 };
@@ -27847,21 +28231,22 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$heartFilled = $lemol$ant_design_ic
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$heartFilled = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$heartFilled);
 };
-var $author$project$View$Icons$like = $lemol$ant_design_icons_elm_ui$Ant$Icons$heartFilled;
-var $author$project$View$Style$unlikeButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(10),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
-			]),
-		{
-			label: $author$project$View$Icons$like($author$project$View$Icons$tiny),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$UnlikePost(id))
-		});
-};
+var $author$project$View$Icons$like = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$heartFilled);
+var $author$project$View$Style$unlikeButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 0),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
+				]),
+			{
+				label: $author$project$View$Icons$like(ui.tiny),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$UnlikePost(id))
+			});
+	});
 var $author$project$Update$Msg$UnpinPost = function (a) {
 	return {$: 'UnpinPost', a: a};
 };
@@ -27889,29 +28274,32 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$pushpinFilled = $lemol$ant_design_
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$pushpinFilled = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$pushpinFilled);
 };
-var $author$project$View$Icons$pinned = $lemol$ant_design_icons_elm_ui$Ant$Icons$pushpinFilled;
-var $author$project$View$Style$unpinButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(10),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
-			]),
-		{
-			label: $author$project$View$Icons$pinned($author$project$View$Icons$tiny),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$UnpinPost(id))
-		});
-};
-var $author$project$View$PostRenderer$renderFooter = F2(
-	function (cache, post) {
+var $author$project$View$Icons$pinned = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$pushpinFilled);
+var $author$project$View$Style$unpinButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 0),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 1, 1)
+				]),
+			{
+				label: $author$project$View$Icons$pinned(ui.tiny),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$UnpinPost(id))
+			});
+	});
+var $author$project$View$PostRenderer$renderFooter = F3(
+	function (ui, cache, post) {
 		var openedConversation = A2($author$project$State$Cache$isConversationOpened, cache, post.id);
 		var likes = A2($author$project$State$Cache$getLikeCount, cache, post.id);
 		var isPinned = A2($author$project$State$Cache$containsPinned, cache, post.id);
 		var hasLiked = A2($author$project$State$Cache$containsLike, cache, post.id);
 		var comments = A2($author$project$State$Cache$getConversationSize, cache, post.id);
-		return $author$project$View$Style$postFooterStyle(
+		return A2(
+			$author$project$View$Style$postFooterStyle,
+			ui,
 			A2(
 				$mdgriffith$elm_ui$Element$el,
 				_List_fromArray(
@@ -27931,55 +28319,65 @@ var $author$project$View$PostRenderer$renderFooter = F2(
 							A2(
 							$mdgriffith$elm_ui$Element$el,
 							_List_Nil,
-							$author$project$View$Style$invert(
-								(isPinned ? $author$project$View$Style$unpinButtonStyle : $author$project$View$Style$pinButtonStyle)(post.id))),
+							A2(
+								$author$project$View$Style$invert,
+								ui,
+								(isPinned ? $author$project$View$Style$unpinButtonStyle(ui) : $author$project$View$Style$pinButtonStyle(ui))(post.id))),
 							A2(
 							$mdgriffith$elm_ui$Element$el,
 							_List_fromArray(
 								[
 									$mdgriffith$elm_ui$Element$Font$italic,
-									$mdgriffith$elm_ui$Element$Font$size(8)
+									A2($author$project$View$Style$relFontSize, ui, -2)
 								]),
-							$author$project$View$Style$invert(
-								$author$project$View$Style$repostButtonStyle(post.id))),
+							A2(
+								$author$project$View$Style$invert,
+								ui,
+								A2($author$project$View$Style$repostButtonStyle, ui, post.id))),
 							A2(
 							$mdgriffith$elm_ui$Element$el,
 							_List_Nil,
-							$author$project$View$Style$invert(
-								(hasLiked ? $author$project$View$Style$unlikeButtonStyle : $author$project$View$Style$likeButtonStyle)(post.id))),
+							A2(
+								$author$project$View$Style$invert,
+								ui,
+								(hasLiked ? $author$project$View$Style$unlikeButtonStyle(ui) : $author$project$View$Style$likeButtonStyle(ui))(post.id))),
 							A2(
 							$mdgriffith$elm_ui$Element$el,
 							_List_fromArray(
 								[
 									$mdgriffith$elm_ui$Element$Font$italic,
-									$mdgriffith$elm_ui$Element$Font$size(8)
+									A2($author$project$View$Style$relFontSize, ui, -2)
 								]),
 							$mdgriffith$elm_ui$Element$text(
 								'x' + $elm$core$String$fromInt(likes))),
 							A2(
 							$mdgriffith$elm_ui$Element$el,
 							_List_Nil,
-							$author$project$View$Style$invert(
-								(openedConversation ? $author$project$View$Style$closeConversationButtonStyle : $author$project$View$Style$openConversationButtonStyle)(post.id))),
+							A2(
+								$author$project$View$Style$invert,
+								ui,
+								(openedConversation ? $author$project$View$Style$closeConversationButtonStyle(ui) : $author$project$View$Style$openConversationButtonStyle(ui))(post.id))),
 							A2(
 							$mdgriffith$elm_ui$Element$el,
 							_List_fromArray(
 								[
 									$mdgriffith$elm_ui$Element$Font$italic,
-									$mdgriffith$elm_ui$Element$Font$size(8)
+									A2($author$project$View$Style$relFontSize, ui, -2)
 								]),
 							$mdgriffith$elm_ui$Element$text(
 								'x ' + $elm$core$String$fromInt(comments)))
 						]))));
 	});
-var $author$project$View$PostRenderer$renderFreeTextPost = F2(
-	function (cache, post) {
+var $author$project$View$PostRenderer$renderFreeTextPost = F3(
+	function (ui, cache, post) {
 		var _v0 = post.content;
 		if (_v0.$ === 'FreeTextPost') {
 			var content = _v0.a;
 			var sources = _v0.b;
-			return $author$project$View$Style$postBodyStyle(
-				$author$project$View$Style$multiLineQuotedText(content));
+			return A2(
+				$author$project$View$Style$postBodyStyle,
+				ui,
+				A2($author$project$View$Style$multiLineQuotedText, ui, content));
 		} else {
 			return $author$project$View$ScreenUtils$neverElement;
 		}
@@ -27994,22 +28392,23 @@ var $author$project$State$Cache$containsFollowingUser = F2(
 var $author$project$Update$Msg$FollowUser = function (a) {
 	return {$: 'FollowUser', a: a};
 };
-var $author$project$View$Style$followButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(10),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$rounded(4)
-			]),
-		{
-			label: $mdgriffith$elm_ui$Element$text('Follow'),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$FollowUser(id))
-		});
-};
+var $author$project$View$Style$followButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 0),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+					$mdgriffith$elm_ui$Element$Border$width(1),
+					$mdgriffith$elm_ui$Element$Border$rounded(4)
+				]),
+			{
+				label: $mdgriffith$elm_ui$Element$text('Follow'),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$FollowUser(id))
+			});
+	});
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$RiseOutlined$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -28034,7 +28433,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$riseOutlined = $lemol$ant_design_i
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$riseOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$riseOutlined);
 };
-var $author$project$View$Icons$challenge = $lemol$ant_design_icons_elm_ui$Ant$Icons$riseOutlined;
+var $author$project$View$Icons$challenge = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$riseOutlined);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$CalendarOutlined$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -28059,7 +28458,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$calendarOutlined = $lemol$ant_desi
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$calendarOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$calendarOutlined);
 };
-var $author$project$View$Icons$event = $lemol$ant_design_icons_elm_ui$Ant$Icons$calendarOutlined;
+var $author$project$View$Icons$event = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$calendarOutlined);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$PieChartOutlined$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -28084,7 +28483,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$pieChartOutlined = $lemol$ant_desi
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$pieChartOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$pieChartOutlined);
 };
-var $author$project$View$Icons$poll = $lemol$ant_design_icons_elm_ui$Ant$Icons$pieChartOutlined;
+var $author$project$View$Icons$poll = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$pieChartOutlined);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$UserOutlined$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -28109,7 +28508,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$userOutlined = $lemol$ant_design_i
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$userOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$userOutlined);
 };
-var $author$project$View$Icons$post = $lemol$ant_design_icons_elm_ui$Ant$Icons$userOutlined;
+var $author$project$View$Icons$post = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$userOutlined);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$BulbFilled$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -28134,55 +28533,60 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$bulbFilled = $lemol$ant_design_ico
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$bulbFilled = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$bulbFilled);
 };
-var $author$project$View$Icons$tip = $lemol$ant_design_icons_elm_ui$Ant$Icons$bulbFilled;
-var $author$project$View$PostRenderer$postLogo = function (post) {
-	var render = $mdgriffith$elm_ui$Element$el(
+var $author$project$View$Icons$tip = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$bulbFilled);
+var $author$project$View$PostRenderer$postLogo = F2(
+	function (ui, post) {
+		var render = $mdgriffith$elm_ui$Element$el(
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$width(
+					$mdgriffith$elm_ui$Element$px(20)),
+					$mdgriffith$elm_ui$Element$height(
+					$mdgriffith$elm_ui$Element$px(20)),
+					$mdgriffith$elm_ui$Element$Border$width(2),
+					$mdgriffith$elm_ui$Element$centerX,
+					$mdgriffith$elm_ui$Element$centerY
+				]));
+		var center = A2(
+			$elm$core$Basics$composeR,
+			$mdgriffith$elm_ui$Element$el(
+				_List_fromArray(
+					[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY])),
+			render);
+		var _v0 = post.content;
+		switch (_v0.$) {
+			case 'RePost':
+				return center(
+					$author$project$View$Icons$repost(ui.tiny));
+			case 'EventPost':
+				return center(
+					$author$project$View$Icons$event(ui.tiny));
+			case 'ChallengePost':
+				return center(
+					$author$project$View$Icons$challenge(ui.tiny));
+			case 'TipPost':
+				return center(
+					$author$project$View$Icons$tip(ui.tiny));
+			case 'PollPost':
+				return center(
+					$author$project$View$Icons$poll(ui.tiny));
+			default:
+				return center(
+					$author$project$View$Icons$post(ui.tiny));
+		}
+	});
+var $author$project$View$Style$headerDateStyle = function (ui) {
+	return $mdgriffith$elm_ui$Element$el(
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$width(
-				$mdgriffith$elm_ui$Element$px(20)),
-				$mdgriffith$elm_ui$Element$height(
-				$mdgriffith$elm_ui$Element$px(20)),
-				$mdgriffith$elm_ui$Element$Border$width(2),
-				$mdgriffith$elm_ui$Element$centerX,
-				$mdgriffith$elm_ui$Element$centerY
+				A2($author$project$View$Style$relFontSize, ui, -2)
 			]));
-	var center = A2(
-		$elm$core$Basics$composeR,
-		$mdgriffith$elm_ui$Element$el(
-			_List_fromArray(
-				[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY])),
-		render);
-	var _v0 = post.content;
-	switch (_v0.$) {
-		case 'RePost':
-			return center(
-				$author$project$View$Icons$repost($author$project$View$Icons$tiny));
-		case 'EventPost':
-			return center(
-				$author$project$View$Icons$event($author$project$View$Icons$tiny));
-		case 'ChallengePost':
-			return center(
-				$author$project$View$Icons$challenge($author$project$View$Icons$tiny));
-		case 'TipPost':
-			return center(
-				$author$project$View$Icons$tip($author$project$View$Icons$tiny));
-		case 'PollPost':
-			return center(
-				$author$project$View$Icons$poll($author$project$View$Icons$tiny));
-		default:
-			return center(
-				$author$project$View$Icons$post($author$project$View$Icons$tiny));
-	}
 };
-var $author$project$View$Style$headerDateStyle = $mdgriffith$elm_ui$Element$el(
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$Font$size(8)
-		]));
-var $author$project$View$PostRenderer$renderDate = F2(
-	function (reftime, timestamp) {
-		return $author$project$View$Style$headerDateStyle(
+var $author$project$View$PostRenderer$renderDate = F3(
+	function (ui, reftime, timestamp) {
+		return A2(
+			$author$project$View$Style$headerDateStyle,
+			ui,
 			$mdgriffith$elm_ui$Element$text(
 				A2($author$project$Utils$DateUtils$formatRelativeTo, reftime, timestamp)));
 	});
@@ -28313,21 +28717,22 @@ var $author$project$State$Cache$getPartner = F2(
 			$author$project$Data$Partner$toString(id),
 			cache.partners);
 	});
-var $author$project$View$Style$postButtonBarStyle = function (_v0) {
-	var txt = _v0.a;
-	var action = _v0.b;
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(9),
-				$mdgriffith$elm_ui$Element$Font$semiBold
-			]),
-		{
-			label: $mdgriffith$elm_ui$Element$text(txt),
-			onPress: $elm$core$Maybe$Just(action)
-		});
-};
+var $author$project$View$Style$postButtonBarStyle = F2(
+	function (ui, _v0) {
+		var txt = _v0.a;
+		var action = _v0.b;
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, -1),
+					$mdgriffith$elm_ui$Element$Font$semiBold
+				]),
+			{
+				label: $mdgriffith$elm_ui$Element$text(txt),
+				onPress: $elm$core$Maybe$Just(action)
+			});
+	});
 var $author$project$View$PostRenderer$withVerticalSeparator = F3(
 	function (w, col, xs) {
 		return A2(
@@ -28340,8 +28745,8 @@ var $author$project$View$PostRenderer$withVerticalSeparator = F3(
 				},
 				xs));
 	});
-var $author$project$View$PostRenderer$specialPostActions = F2(
-	function (cache, post) {
+var $author$project$View$PostRenderer$specialPostActions = F3(
+	function (ui, cache, post) {
 		var partnerUserId = A2(
 			$elm$core$Maybe$map,
 			function ($) {
@@ -28361,7 +28766,7 @@ var $author$project$View$PostRenderer$specialPostActions = F2(
 						$author$project$View$Style$buttonBarStyle,
 						_List_fromArray(
 							[
-								$mdgriffith$elm_ui$Element$Font$size(9),
+								A2($author$project$View$Style$relFontSize, ui, -1),
 								$mdgriffith$elm_ui$Element$Font$semiBold
 							]),
 						_List_fromArray(
@@ -28403,7 +28808,7 @@ var $author$project$View$PostRenderer$specialPostActions = F2(
 				}();
 				var actionButtons = A2(
 					$elm$core$List$map,
-					$author$project$View$Style$postButtonBarStyle,
+					$author$project$View$Style$postButtonBarStyle(ui),
 					_List_fromArray(
 						[
 							_Utils_Tuple2(
@@ -28421,7 +28826,7 @@ var $author$project$View$PostRenderer$specialPostActions = F2(
 					A3(
 						$author$project$View$PostRenderer$withVerticalSeparator,
 						1,
-						$author$project$View$Theme$background,
+						ui.theme.background,
 						_Utils_ap(
 							actionButtons,
 							_List_fromArray(
@@ -28524,9 +28929,12 @@ var $author$project$View$PostRenderer$specialPostActions = F2(
 							_Utils_Tuple2('Event has been cancelled', $author$project$Update$Msg$NoOp)
 						]);
 				}();
-				var actionButtons = A2($elm$core$List$map, $author$project$View$Style$postButtonBarStyle, actions);
+				var actionButtons = A2(
+					$elm$core$List$map,
+					$author$project$View$Style$postButtonBarStyle(ui),
+					actions);
 				return A2(
-					$mdgriffith$elm_ui$Element$row,
+					$mdgriffith$elm_ui$Element$wrappedRow,
 					_List_fromArray(
 						[
 							$mdgriffith$elm_ui$Element$alignRight,
@@ -28535,7 +28943,7 @@ var $author$project$View$PostRenderer$specialPostActions = F2(
 					A3(
 						$author$project$View$PostRenderer$withVerticalSeparator,
 						1,
-						$author$project$View$Theme$background,
+						ui.theme.background,
 						_Utils_ap(
 							actionButtons,
 							_List_fromArray(
@@ -28544,33 +28952,36 @@ var $author$project$View$PostRenderer$specialPostActions = F2(
 				return partnerAction;
 		}
 	});
-var $author$project$View$Style$standard = $mdgriffith$elm_ui$Element$el(
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
-			$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground)
-		]));
+var $author$project$View$Style$standard = function (ui) {
+	return $mdgriffith$elm_ui$Element$el(
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
+				$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground)
+			]));
+};
 var $author$project$Update$Msg$UnfollowUser = function (a) {
 	return {$: 'UnfollowUser', a: a};
 };
-var $author$project$View$Style$unfollowButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(10),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$rounded(4)
-			]),
-		{
-			label: $mdgriffith$elm_ui$Element$text('Unfollow'),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$UnfollowUser(id))
-		});
-};
-var $author$project$View$PostRenderer$renderHeader = F3(
-	function (tmstp, cache, post) {
+var $author$project$View$Style$unfollowButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 0),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+					$mdgriffith$elm_ui$Element$Border$width(1),
+					$mdgriffith$elm_ui$Element$Border$rounded(4)
+				]),
+			{
+				label: $mdgriffith$elm_ui$Element$text('Unfollow'),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$UnfollowUser(id))
+			});
+	});
+var $author$project$View$PostRenderer$renderHeader = F4(
+	function (ui, tmstp, cache, post) {
 		var isFollowing = A2($author$project$State$Cache$containsFollowingUser, cache, post.author);
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
@@ -28582,7 +28993,7 @@ var $author$project$View$PostRenderer$renderHeader = F3(
 					{bottom: 2, left: 0, right: 0, top: 0}),
 					$mdgriffith$elm_ui$Element$Border$widthEach(
 					{bottom: 2, left: 0, right: 0, top: 0}),
-					$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background)
+					$mdgriffith$elm_ui$Element$Border$color(ui.theme.background)
 				]),
 			_List_fromArray(
 				[
@@ -28590,26 +29001,29 @@ var $author$project$View$PostRenderer$renderHeader = F3(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[$mdgriffith$elm_ui$Element$alignLeft]),
-					$author$project$View$Style$standard(
-						$author$project$View$PostRenderer$postLogo(post))),
+					A2(
+						$author$project$View$Style$standard,
+						ui,
+						A2($author$project$View$PostRenderer$postLogo, ui, post))),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[$mdgriffith$elm_ui$Element$alignLeft]),
-					A2(
-						$author$project$View$Style$size,
-						10,
+					A3(
+						$author$project$View$Style$relSize,
+						ui,
+						0,
 						A2($author$project$View$PostRenderer$renderUser, cache, post.author))),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[$mdgriffith$elm_ui$Element$alignLeft]),
-					(isFollowing ? $author$project$View$Style$unfollowButtonStyle : $author$project$View$Style$followButtonStyle)(post.author)),
+					(isFollowing ? $author$project$View$Style$unfollowButtonStyle(ui) : $author$project$View$Style$followButtonStyle(ui))(post.author)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[$mdgriffith$elm_ui$Element$alignLeft]),
-					A2($author$project$View$PostRenderer$renderDate, tmstp, post.created)),
+					A3($author$project$View$PostRenderer$renderDate, ui, tmstp, post.created)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
@@ -28618,7 +29032,7 @@ var $author$project$View$PostRenderer$renderHeader = F3(
 							$mdgriffith$elm_ui$Element$paddingEach(
 							{bottom: 0, left: 10, right: 0, top: 0})
 						]),
-					A2($author$project$View$PostRenderer$specialPostActions, cache, post))
+					A3($author$project$View$PostRenderer$specialPostActions, ui, cache, post))
 				]));
 	});
 var $author$project$State$Cache$getPollAnswered = F2(
@@ -28692,9 +29106,9 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$checkSquareFilled = $lemol$ant_des
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$checkSquareFilled = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$checkSquareFilled);
 };
-var $author$project$View$Icons$square = $lemol$ant_design_icons_elm_ui$Ant$Icons$checkSquareFilled;
-var $author$project$View$Chart$ChartUtils$legendEntry = F2(
-	function (attrs, _v0) {
+var $author$project$View$Icons$square = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$checkSquareFilled);
+var $author$project$View$Chart$ChartUtils$legendEntry = F3(
+	function (ui, attrs, _v0) {
 		var label = _v0.a;
 		var color = _v0.b;
 		return A2(
@@ -28712,15 +29126,15 @@ var $author$project$View$Chart$ChartUtils$legendEntry = F2(
 							$mdgriffith$elm_ui$Element$Font$color(color),
 							$mdgriffith$elm_ui$Element$padding(1)
 						]),
-					$author$project$View$Icons$square($author$project$View$Icons$tiny)),
+					$author$project$View$Icons$square(ui.tiny)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					attrs,
 					$mdgriffith$elm_ui$Element$text(label))
 				]));
 	});
-var $author$project$View$Chart$ChartUtils$legend = F2(
-	function (attrs, entries) {
+var $author$project$View$Chart$ChartUtils$legend = F3(
+	function (ui, attrs, entries) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -28730,7 +29144,7 @@ var $author$project$View$Chart$ChartUtils$legend = F2(
 				]),
 			A2(
 				$elm$core$List$map,
-				$author$project$View$Chart$ChartUtils$legendEntry(attrs),
+				A2($author$project$View$Chart$ChartUtils$legendEntry, ui, attrs),
 				entries));
 	});
 var $author$project$Data$Poll$normalizePollStats = F2(
@@ -28783,8 +29197,8 @@ var $author$project$Data$Poll$respondents = function (_v0) {
 		0,
 		stats);
 };
-var $author$project$View$Chart$Donut$drawChart = F2(
-	function (config, model) {
+var $author$project$View$Chart$Donut$drawChart = F3(
+	function (ui, config, model) {
 		var radius = config.outerRadius;
 		var pieData = A2(
 			$gampleman$elm_visualization$Shape$pie,
@@ -28813,7 +29227,7 @@ var $author$project$View$Chart$Donut$drawChart = F2(
 						$elm_community$typed_svg$TypedSvg$Types$Paint(color)),
 						$elm_community$typed_svg$TypedSvg$Attributes$stroke(
 						$elm_community$typed_svg$TypedSvg$Types$Paint(
-							$author$project$View$Chart$Donut$convertColor($author$project$View$Theme$background)))
+							$author$project$View$Chart$Donut$convertColor(ui.theme.background)))
 					]));
 		};
 		var colorData = A2(
@@ -28849,19 +29263,20 @@ var $author$project$View$Chart$Donut$drawChart = F2(
 						]))
 				]));
 	});
-var $author$project$View$Chart$Donut$donutWithConfig = F2(
-	function (config, data) {
+var $author$project$View$Chart$Donut$donutWithConfig = F3(
+	function (ui, config, data) {
 		return $mdgriffith$elm_ui$Element$html(
-			A2($author$project$View$Chart$Donut$drawChart, config, data));
+			A3($author$project$View$Chart$Donut$drawChart, ui, config, data));
 	});
-var $author$project$View$Chart$Donut$smallPieChart = function (data) {
-	var config = _Utils_update(
-		$author$project$View$Chart$Donut$defaultConfig,
-		{innerRadius: 5.0, outerRadius: 32.0});
-	return A2($author$project$View$Chart$Donut$donutWithConfig, config, data);
-};
-var $author$project$View$PostRenderer$renderAnsweredPoll = F2(
-	function (cache, poll) {
+var $author$project$View$Chart$Donut$smallPieChart = F2(
+	function (ui, data) {
+		var config = _Utils_update(
+			$author$project$View$Chart$Donut$defaultConfig,
+			{innerRadius: 5.0, outerRadius: 32.0});
+		return A3($author$project$View$Chart$Donut$donutWithConfig, ui, config, data);
+	});
+var $author$project$View$PostRenderer$renderAnsweredPoll = F3(
+	function (ui, cache, poll) {
 		var pollScheme = $author$project$View$Chart$ColorScheme$pollPieChartScheme;
 		var _v0 = A2(
 			$author$project$Data$Poll$normalizePollStats,
@@ -28900,12 +29315,14 @@ var $author$project$View$PostRenderer$renderAnsweredPoll = F2(
 				]),
 			_List_fromArray(
 				[
-					$author$project$View$Style$postBodyStyle(
+					A2(
+					$author$project$View$Style$postBodyStyle,
+					ui,
 					A2(
 						$mdgriffith$elm_ui$Element$el,
 						_List_fromArray(
 							[$mdgriffith$elm_ui$Element$Font$bold]),
-						$author$project$View$Style$multiLineQuotedText(poll.title))),
+						A2($author$project$View$Style$multiLineQuotedText, ui, poll.title))),
 					A2(
 					$mdgriffith$elm_ui$Element$row,
 					_List_fromArray(
@@ -28924,7 +29341,7 @@ var $author$project$View$PostRenderer$renderAnsweredPoll = F2(
 									$mdgriffith$elm_ui$Element$paddingEach(
 									{bottom: 0, left: 0, right: 5, top: 0}),
 									$mdgriffith$elm_ui$Element$spacing(5),
-									$mdgriffith$elm_ui$Element$Font$size(8)
+									A2($author$project$View$Style$relFontSize, ui, -2)
 								]),
 							_List_fromArray(
 								[
@@ -28932,7 +29349,7 @@ var $author$project$View$PostRenderer$renderAnsweredPoll = F2(
 									$mdgriffith$elm_ui$Element$el,
 									_List_fromArray(
 										[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-									$author$project$View$Chart$Donut$smallPieChart(donutData)),
+									A2($author$project$View$Chart$Donut$smallPieChart, ui, donutData)),
 									A2(
 									$mdgriffith$elm_ui$Element$el,
 									_List_fromArray(
@@ -28940,12 +29357,13 @@ var $author$project$View$PostRenderer$renderAnsweredPoll = F2(
 									$author$project$View$Style$bold(
 										$elm$core$String$fromInt(respondentCount) + ' respondent(s)'))
 								])),
-							A2($author$project$View$Style$verticalSeparator, 1, $author$project$View$Theme$background),
-							A2(
+							A2($author$project$View$Style$verticalSeparator, 1, ui.theme.background),
+							A3(
 							$author$project$View$Chart$ChartUtils$legend,
+							ui,
 							_List_fromArray(
 								[
-									$mdgriffith$elm_ui$Element$Font$size(11)
+									A2($author$project$View$Style$relFontSize, ui, 1)
 								]),
 							legendData)
 						]))
@@ -29343,8 +29761,8 @@ var $mdgriffith$elm_ui$Element$Input$radioHelper = F3(
 			optionArea);
 	});
 var $mdgriffith$elm_ui$Element$Input$radio = $mdgriffith$elm_ui$Element$Input$radioHelper($mdgriffith$elm_ui$Element$Input$Column);
-var $author$project$View$PostRenderer$renderUnansweredPoll = F2(
-	function (cache, poll) {
+var $author$project$View$PostRenderer$renderUnansweredPoll = F3(
+	function (ui, cache, poll) {
 		return A2(
 			$mdgriffith$elm_ui$Element$Input$radio,
 			_List_fromArray(
@@ -29356,12 +29774,14 @@ var $author$project$View$PostRenderer$renderUnansweredPoll = F2(
 				label: A2(
 					$mdgriffith$elm_ui$Element$Input$labelAbove,
 					_List_Nil,
-					$author$project$View$Style$postBodyStyle(
+					A2(
+						$author$project$View$Style$postBodyStyle,
+						ui,
 						A2(
 							$mdgriffith$elm_ui$Element$el,
 							_List_fromArray(
 								[$mdgriffith$elm_ui$Element$Font$bold]),
-							$author$project$View$Style$multiLineQuotedText(poll.title)))),
+							A2($author$project$View$Style$multiLineQuotedText, ui, poll.title)))),
 				onChange: $author$project$Update$Msg$AnswerPoll(poll.id),
 				options: A2(
 					$elm$core$List$map,
@@ -29370,15 +29790,17 @@ var $author$project$View$PostRenderer$renderUnansweredPoll = F2(
 						return A2(
 							$mdgriffith$elm_ui$Element$Input$option,
 							$author$project$Data$Poll$PollOption(opt),
-							$author$project$View$Style$postBodyStyle(
-								$author$project$View$Style$multiLineQuotedText(opt)));
+							A2(
+								$author$project$View$Style$postBodyStyle,
+								ui,
+								A2($author$project$View$Style$multiLineQuotedText, ui, opt)));
 					},
 					poll.options),
 				selected: $elm$core$Maybe$Nothing
 			});
 	});
-var $author$project$View$PostRenderer$renderPollPost = F2(
-	function (cache, post) {
+var $author$project$View$PostRenderer$renderPollPost = F3(
+	function (ui, cache, post) {
 		var _v0 = post.content;
 		if (_v0.$ === 'PollPost') {
 			var id = _v0.a;
@@ -29388,14 +29810,16 @@ var $author$project$View$PostRenderer$renderPollPost = F2(
 			if (_v1.a.$ === 'Just') {
 				if ((_v1.b.$ === 'Just') && _v1.b.a) {
 					var poll = _v1.a.a;
-					return A2($author$project$View$PostRenderer$renderAnsweredPoll, cache, poll);
+					return A3($author$project$View$PostRenderer$renderAnsweredPoll, ui, cache, poll);
 				} else {
 					var poll = _v1.a.a;
-					return A2($author$project$View$PostRenderer$renderUnansweredPoll, cache, poll);
+					return A3($author$project$View$PostRenderer$renderUnansweredPoll, ui, cache, poll);
 				}
 			} else {
 				var _v2 = _v1.a;
-				return $author$project$View$Style$postBodyStyle(
+				return A2(
+					$author$project$View$Style$postBodyStyle,
+					ui,
 					$mdgriffith$elm_ui$Element$text(
 						$author$project$Data$Poll$toString(id)));
 			}
@@ -29410,18 +29834,22 @@ var $author$project$State$Cache$getTip = F2(
 			$author$project$Data$Tip$toString(id),
 			cache.tips);
 	});
-var $author$project$View$PostRenderer$renderTipPost = F2(
-	function (cache, post) {
+var $author$project$View$PostRenderer$renderTipPost = F3(
+	function (ui, cache, post) {
 		var _v0 = post.content;
 		if (_v0.$ === 'TipPost') {
 			var id = _v0.a;
 			var _v1 = A2($author$project$State$Cache$getTip, cache, id);
 			if (_v1.$ === 'Just') {
 				var tip = _v1.a;
-				return $author$project$View$Style$postBodyStyle(
-					$author$project$View$Style$multiLineQuotedText(tip.content));
+				return A2(
+					$author$project$View$Style$postBodyStyle,
+					ui,
+					A2($author$project$View$Style$multiLineQuotedText, ui, tip.content));
 			} else {
-				return $author$project$View$Style$postBodyStyle(
+				return A2(
+					$author$project$View$Style$postBodyStyle,
+					ui,
 					$mdgriffith$elm_ui$Element$text(
 						$author$project$Data$Tip$toString(id)));
 			}
@@ -29429,11 +29857,12 @@ var $author$project$View$PostRenderer$renderTipPost = F2(
 			return $author$project$View$ScreenUtils$neverElement;
 		}
 	});
-var $author$project$View$PostRenderer$renderPost = F3(
-	function (tmstp, cache, post) {
+var $author$project$View$PostRenderer$renderPost = F4(
+	function (ui, tmstp, cache, post) {
 		var reposted = $author$project$View$PostRenderer$isRepost(post);
-		return A3(
+		return A4(
 			$author$project$View$PartnershipStyle$postDecoration,
+			ui,
 			cache,
 			post.id,
 			A2(
@@ -29447,43 +29876,43 @@ var $author$project$View$PostRenderer$renderPost = F3(
 					]),
 				_List_fromArray(
 					[
-						A3($author$project$View$PostRenderer$renderHeader, tmstp, cache, post),
-						A3($author$project$View$PostRenderer$renderPostContent, tmstp, cache, post),
-						(!reposted) ? A2($author$project$View$PostRenderer$renderFooter, cache, post) : $mdgriffith$elm_ui$Element$none,
-						A3($author$project$View$PostRenderer$renderConversation, tmstp, cache, post.id)
+						A4($author$project$View$PostRenderer$renderHeader, ui, tmstp, cache, post),
+						A4($author$project$View$PostRenderer$renderPostContent, ui, tmstp, cache, post),
+						(!reposted) ? A3($author$project$View$PostRenderer$renderFooter, ui, cache, post) : $mdgriffith$elm_ui$Element$none,
+						A4($author$project$View$PostRenderer$renderConversation, ui, tmstp, cache, post.id)
 					])));
 	});
-var $author$project$View$PostRenderer$renderPostContent = F3(
-	function (tmstp, cache, post) {
+var $author$project$View$PostRenderer$renderPostContent = F4(
+	function (ui, tmstp, cache, post) {
 		var _v1 = post.content;
 		switch (_v1.$) {
 			case 'RePost':
-				return A3($author$project$View$PostRenderer$renderRepostPost, tmstp, cache, post);
+				return A4($author$project$View$PostRenderer$renderRepostPost, ui, tmstp, cache, post);
 			case 'EventPost':
-				return A2($author$project$View$PostRenderer$renderEventPost, cache, post);
+				return A3($author$project$View$PostRenderer$renderEventPost, ui, cache, post);
 			case 'ChallengePost':
-				return A2($author$project$View$PostRenderer$renderChallengePost, cache, post);
+				return A3($author$project$View$PostRenderer$renderChallengePost, ui, cache, post);
 			case 'TipPost':
-				return A2($author$project$View$PostRenderer$renderTipPost, cache, post);
+				return A3($author$project$View$PostRenderer$renderTipPost, ui, cache, post);
 			case 'PollPost':
-				return A2($author$project$View$PostRenderer$renderPollPost, cache, post);
+				return A3($author$project$View$PostRenderer$renderPollPost, ui, cache, post);
 			default:
-				return A2($author$project$View$PostRenderer$renderFreeTextPost, cache, post);
+				return A3($author$project$View$PostRenderer$renderFreeTextPost, ui, cache, post);
 		}
 	});
-var $author$project$View$PostRenderer$renderPostId = F3(
-	function (tmstp, cache, postId) {
+var $author$project$View$PostRenderer$renderPostId = F4(
+	function (ui, tmstp, cache, postId) {
 		return A2(
 			$elm$core$Maybe$withDefault,
 			$mdgriffith$elm_ui$Element$text(
 				'<Unable to render post ' + ($author$project$Data$Post$toString(postId) + '>')),
 			A2(
 				$elm$core$Maybe$map,
-				A2($author$project$View$PostRenderer$renderPost, tmstp, cache),
+				A3($author$project$View$PostRenderer$renderPost, ui, tmstp, cache),
 				A2($author$project$State$Cache$getPost, cache, postId)));
 	});
-var $author$project$View$PostRenderer$renderRepostPost = F3(
-	function (tmstp, cache, post) {
+var $author$project$View$PostRenderer$renderRepostPost = F4(
+	function (ui, tmstp, cache, post) {
 		var _v0 = post.content;
 		if (_v0.$ === 'RePost') {
 			var id = _v0.a;
@@ -29496,14 +29925,14 @@ var $author$project$View$PostRenderer$renderRepostPost = F3(
 						$mdgriffith$elm_ui$Element$paddingEach(
 						{bottom: 5, left: 20, right: 0, top: 5})
 					]),
-				A3($author$project$View$PostRenderer$renderPostId, tmstp, cache, id));
+				A4($author$project$View$PostRenderer$renderPostId, ui, tmstp, cache, id));
 		} else {
 			return $author$project$View$ScreenUtils$neverElement;
 		}
 	});
 var $author$project$View$ChallengeScreen$renderSinglePost = $author$project$View$PostRenderer$renderPostId;
-var $author$project$View$ChallengeScreen$renderPostPage = F3(
-	function (tmstp, cache, page) {
+var $author$project$View$ChallengeScreen$renderPostPage = F2(
+	function (state, page) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -29516,21 +29945,23 @@ var $author$project$View$ChallengeScreen$renderPostPage = F3(
 				]),
 			A2(
 				$elm$core$List$map,
-				A2($author$project$View$ChallengeScreen$renderSinglePost, tmstp, cache),
+				A3($author$project$View$ChallengeScreen$renderSinglePost, state.uiStyle, state.timestamp, state.cache),
 				page.items));
 	});
 var $author$project$View$ChallengeScreen$renderChallengeTabContent = function (state) {
 	var _v0 = $author$project$State$ChallengeState$allUpToCurrentPage(state.challenge);
 	if (_v0.$ === 'Nothing') {
-		return $author$project$View$ChallengeScreen$renderLoadingPosts;
+		return $author$project$View$ChallengeScreen$renderLoadingPosts(state.uiStyle);
 	} else {
 		var posts = _v0.a;
-		return ($author$project$State$GenericPage$isEmpty(posts) && $author$project$Data$Page$isFirst(posts.number)) ? $author$project$View$ChallengeScreen$renderNoPostPage : A3(
-			$author$project$View$InfiniteScroll$infiniteScroll,
+		return ($author$project$State$GenericPage$isEmpty(posts) && $author$project$Data$Page$isFirst(posts.number)) ? $author$project$View$ChallengeScreen$renderNoPostPage(state.uiStyle) : A5(
+			$author$project$View$InfiniteScroll$infiniteScrollWithMoreButton,
+			state.uiStyle,
+			$author$project$View$UIStyle$isMobile(state.device),
 			'challenge',
 			$author$project$Update$Msg$ChangeChallengePage(
 				$author$project$Data$Page$next(state.challenge.currentPage)),
-			A3($author$project$View$ChallengeScreen$renderPostPage, state.timestamp, state.cache, posts));
+			A2($author$project$View$ChallengeScreen$renderPostPage, state, posts));
 	}
 };
 var $author$project$View$ChallengeScreen$challengeScreen = function (state) {
@@ -29546,7 +29977,7 @@ var $author$project$View$ChallengeScreen$challengeScreen = function (state) {
 			]),
 		_List_fromArray(
 			[
-				$author$project$View$ChallengeScreen$challengeTabs(state.challenge),
+				$author$project$View$ChallengeScreen$challengeTabs(state),
 				$author$project$View$ChallengeScreen$renderChallengeTabContent(state)
 			]));
 };
@@ -29563,11 +29994,6 @@ var $author$project$View$ChallengeDetailsView$isChallengeAccepted = F2(
 				},
 				A2($author$project$State$Cache$getChallengeOutcomeStatus, cache, id)));
 	});
-var $author$project$View$Icons$large = _List_fromArray(
-	[
-		$lemol$ant_design_icons_elm_ui$Ant$Icon$width(48),
-		$lemol$ant_design_icons_elm_ui$Ant$Icon$height(48)
-	]);
 var $author$project$View$Style$italic = function (txt) {
 	return A2(
 		$mdgriffith$elm_ui$Element$el,
@@ -29576,38 +30002,42 @@ var $author$project$View$Style$italic = function (txt) {
 		$mdgriffith$elm_ui$Element$text(txt));
 };
 var $author$project$View$Theme$lightGrey = A3($mdgriffith$elm_ui$Element$rgb255, 238, 238, 236);
-var $author$project$View$Chart$Donut$smallDonut = function (data) {
-	var config = _Utils_update(
-		$author$project$View$Chart$Donut$defaultConfig,
-		{innerRadius: 24.0, outerRadius: 32.0});
-	return A2($author$project$View$Chart$Donut$donutWithConfig, config, data);
-};
-var $author$project$View$ChallengeDetailsView$renderChallengeStatisticsDonut = function (stats) {
-	var contestants = stats.acceptedCount;
-	var total = stats.elapsedPeriodCount * contestants;
-	var failure = stats.failureCount / total;
-	var partial = stats.partialSuccessCount / total;
-	var skipped = stats.skippedCount / total;
-	var success = stats.successCount / total;
-	return A2(
-		$mdgriffith$elm_ui$Element$el,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$centerX,
-				$mdgriffith$elm_ui$Element$centerY,
-				$mdgriffith$elm_ui$Element$padding(5)
-			]),
-		$author$project$View$Chart$Donut$smallDonut(
+var $author$project$View$Chart$Donut$smallDonut = F2(
+	function (ui, data) {
+		var config = _Utils_update(
+			$author$project$View$Chart$Donut$defaultConfig,
+			{innerRadius: 24.0, outerRadius: 32.0});
+		return A3($author$project$View$Chart$Donut$donutWithConfig, ui, config, data);
+	});
+var $author$project$View$ChallengeDetailsView$renderChallengeStatisticsDonut = F2(
+	function (ui, stats) {
+		var contestants = stats.acceptedCount;
+		var total = stats.elapsedPeriodCount * contestants;
+		var failure = stats.failureCount / total;
+		var partial = stats.partialSuccessCount / total;
+		var skipped = stats.skippedCount / total;
+		var success = stats.successCount / total;
+		return A2(
+			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					_Utils_Tuple2(skipped, $author$project$View$Theme$lightGrey),
-					_Utils_Tuple2(failure, $author$project$View$Theme$darkRed),
-					_Utils_Tuple2(partial, $author$project$View$Theme$darkOrange),
-					_Utils_Tuple2(success, $author$project$View$Theme$lightGreen)
-				])));
-};
-var $author$project$View$Chart$ChartUtils$rightLegendPanel = F3(
-	function (attrs, entries, comp) {
+					$mdgriffith$elm_ui$Element$centerX,
+					$mdgriffith$elm_ui$Element$centerY,
+					$mdgriffith$elm_ui$Element$padding(5)
+				]),
+			A2(
+				$author$project$View$Chart$Donut$smallDonut,
+				ui,
+				_List_fromArray(
+					[
+						_Utils_Tuple2(skipped, $author$project$View$Theme$lightGrey),
+						_Utils_Tuple2(failure, $author$project$View$Theme$darkRed),
+						_Utils_Tuple2(partial, $author$project$View$Theme$darkOrange),
+						_Utils_Tuple2(success, $author$project$View$Theme$lightGreen)
+					])));
+	});
+var $author$project$View$Chart$ChartUtils$rightLegendPanel = F4(
+	function (ui, attrs, entries, comp) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -29617,11 +30047,11 @@ var $author$project$View$Chart$ChartUtils$rightLegendPanel = F3(
 			_List_fromArray(
 				[
 					comp,
-					A2($author$project$View$Chart$ChartUtils$legend, attrs, entries)
+					A3($author$project$View$Chart$ChartUtils$legend, ui, attrs, entries)
 				]));
 	});
-var $author$project$View$ChallengeDetailsView$renderChallengeStatistics = F2(
-	function (measure, maybeStats) {
+var $author$project$View$ChallengeDetailsView$renderChallengeStatistics = F3(
+	function (ui, measure, maybeStats) {
 		if (maybeStats.$ === 'Nothing') {
 			return $author$project$View$Style$italic('Not available');
 		} else {
@@ -29636,11 +30066,12 @@ var $author$project$View$ChallengeDetailsView$renderChallengeStatistics = F2(
 					]),
 				_List_fromArray(
 					[
-						A3(
+						A4(
 						$author$project$View$Chart$ChartUtils$rightLegendPanel,
+						ui,
 						_List_fromArray(
 							[
-								$mdgriffith$elm_ui$Element$Font$size(10)
+								A2($author$project$View$Style$relFontSize, ui, 0)
 							]),
 						_List_fromArray(
 							[
@@ -29657,12 +30088,12 @@ var $author$project$View$ChallengeDetailsView$renderChallengeStatistics = F2(
 								'Success: ' + $elm$core$String$fromInt(stats.successCount),
 								$author$project$View$Theme$lightGreen)
 							]),
-						$author$project$View$ChallengeDetailsView$renderChallengeStatisticsDonut(stats)),
+						A2($author$project$View$ChallengeDetailsView$renderChallengeStatisticsDonut, ui, stats)),
 						A2(
 						$mdgriffith$elm_ui$Element$column,
 						_List_fromArray(
 							[
-								$mdgriffith$elm_ui$Element$Font$size(10),
+								A2($author$project$View$Style$relFontSize, ui, 0),
 								$mdgriffith$elm_ui$Element$centerY,
 								$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
 							]),
@@ -29722,17 +30153,15 @@ var $author$project$Update$Msg$ReportChallengeStepStatus = F3(
 	function (a, b, c) {
 		return {$: 'ReportChallengeStepStatus', a: a, b: b, c: c};
 	});
-var $author$project$View$Theme$disabledButton = $author$project$View$Theme$grey;
-var $author$project$View$Theme$enabledButton = $author$project$View$Theme$darkOrange;
-var $author$project$View$ChallengeDetailsView$reportButton = F3(
-	function (label, msg, currentStatus) {
+var $author$project$View$ChallengeDetailsView$reportButton = F4(
+	function (ui, label, msg, currentStatus) {
 		return A2(
 			$mdgriffith$elm_ui$Element$Input$button,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(10),
+					A2($author$project$View$Style$relFontSize, ui, 0),
 					$mdgriffith$elm_ui$Element$Font$color(
-					currentStatus ? $author$project$View$Theme$enabledButton : $author$project$View$Theme$disabledButton),
+					currentStatus ? ui.theme.enabledButton : ui.theme.disabledButton),
 					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2)
 				]),
 			{
@@ -29740,48 +30169,52 @@ var $author$project$View$ChallengeDetailsView$reportButton = F3(
 				onPress: $elm$core$Maybe$Just(msg)
 			});
 	});
-var $author$project$View$ChallengeDetailsView$failureButton = F3(
-	function (id, index, maybeStatus) {
-		return A3(
+var $author$project$View$ChallengeDetailsView$failureButton = F4(
+	function (ui, id, index, maybeStatus) {
+		return A4(
 			$author$project$View$ChallengeDetailsView$reportButton,
+			ui,
 			'Failure',
 			A3($author$project$Update$Msg$ReportChallengeStepStatus, id, index, $author$project$Data$Challenge$Failure),
 			_Utils_eq(
 				maybeStatus,
 				$elm$core$Maybe$Just($author$project$Data$Challenge$Failure)));
 	});
-var $author$project$View$ChallengeDetailsView$partialSuccessButton = F3(
-	function (id, index, maybeStatus) {
-		return A3(
+var $author$project$View$ChallengeDetailsView$partialSuccessButton = F4(
+	function (ui, id, index, maybeStatus) {
+		return A4(
 			$author$project$View$ChallengeDetailsView$reportButton,
+			ui,
 			'Partial success  |',
 			A3($author$project$Update$Msg$ReportChallengeStepStatus, id, index, $author$project$Data$Challenge$PartialSuccess),
 			_Utils_eq(
 				maybeStatus,
 				$elm$core$Maybe$Just($author$project$Data$Challenge$PartialSuccess)));
 	});
-var $author$project$View$ChallengeDetailsView$skipButton = F3(
-	function (id, index, maybeStatus) {
-		return A3(
+var $author$project$View$ChallengeDetailsView$skipButton = F4(
+	function (ui, id, index, maybeStatus) {
+		return A4(
 			$author$project$View$ChallengeDetailsView$reportButton,
+			ui,
 			'Skip  |',
 			A3($author$project$Update$Msg$ReportChallengeStepStatus, id, index, $author$project$Data$Challenge$Skipped),
 			_Utils_eq(
 				maybeStatus,
 				$elm$core$Maybe$Just($author$project$Data$Challenge$Skipped)));
 	});
-var $author$project$View$ChallengeDetailsView$successButton = F3(
-	function (id, index, maybeStatus) {
-		return A3(
+var $author$project$View$ChallengeDetailsView$successButton = F4(
+	function (ui, id, index, maybeStatus) {
+		return A4(
 			$author$project$View$ChallengeDetailsView$reportButton,
+			ui,
 			'Success  |',
 			A3($author$project$Update$Msg$ReportChallengeStepStatus, id, index, $author$project$Data$Challenge$Success),
 			_Utils_eq(
 				maybeStatus,
 				$elm$core$Maybe$Just($author$project$Data$Challenge$Success)));
 	});
-var $author$project$View$ChallengeDetailsView$renderStepReportButtons = F3(
-	function (challenge, index, maybeReported) {
+var $author$project$View$ChallengeDetailsView$renderStepReportButtons = F4(
+	function (ui, challenge, index, maybeReported) {
 		var measure = challenge.measure;
 		var challengeId = challenge.id;
 		return A2(
@@ -29792,10 +30225,10 @@ var $author$project$View$ChallengeDetailsView$renderStepReportButtons = F3(
 				]),
 			_List_fromArray(
 				[
-					A3($author$project$View$ChallengeDetailsView$successButton, challengeId, index, maybeReported),
-					(measure.maxPartial > 0) ? A3($author$project$View$ChallengeDetailsView$partialSuccessButton, challengeId, index, maybeReported) : $author$project$View$Style$empty,
-					(measure.maxSkip > 0) ? A3($author$project$View$ChallengeDetailsView$skipButton, challengeId, index, maybeReported) : $author$project$View$Style$empty,
-					A3($author$project$View$ChallengeDetailsView$failureButton, challengeId, index, maybeReported)
+					A4($author$project$View$ChallengeDetailsView$successButton, ui, challengeId, index, maybeReported),
+					(measure.maxPartial > 0) ? A4($author$project$View$ChallengeDetailsView$partialSuccessButton, ui, challengeId, index, maybeReported) : $author$project$View$Style$empty,
+					(measure.maxSkip > 0) ? A4($author$project$View$ChallengeDetailsView$skipButton, ui, challengeId, index, maybeReported) : $author$project$View$Style$empty,
+					A4($author$project$View$ChallengeDetailsView$failureButton, ui, challengeId, index, maybeReported)
 				]));
 	});
 var $author$project$Utils$ListUtils$find = F2(
@@ -29828,8 +30261,8 @@ var $author$project$Data$Challenge$stepReport = F2(
 			},
 			stepReports);
 	});
-var $author$project$View$ChallengeDetailsView$renderReportDates = F4(
-	function (now, challenge, dates, reported) {
+var $author$project$View$ChallengeDetailsView$renderReportDates = F5(
+	function (ui, now, challenge, dates, reported) {
 		var cutoff = A2($author$project$View$ChallengeDetailsView$cutoffReportDate, now, dates);
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
@@ -29855,8 +30288,9 @@ var $author$project$View$ChallengeDetailsView$renderReportDates = F4(
 								[
 									(A2($author$project$Data$Schedule$before, date, cutoff) ? $author$project$View$Style$bold : $author$project$View$Style$italic)(
 									$author$project$Utils$DateUtils$formatDate(date)),
-									A2($author$project$Data$Schedule$before, date, cutoff) ? A3(
+									A2($author$project$Data$Schedule$before, date, cutoff) ? A4(
 									$author$project$View$ChallengeDetailsView$renderStepReportButtons,
+									ui,
 									challenge,
 									index + 1,
 									A2(
@@ -29929,7 +30363,7 @@ var $author$project$View$ChallengeDetailsView$reportedSteps = F2(
 			A2($author$project$State$Cache$getChallengeStepReports, cache, id));
 	});
 var $author$project$View$Style$titledElementStyle = F3(
-	function (title, content, fontSize) {
+	function (ui, title, content) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -29945,21 +30379,21 @@ var $author$project$View$Style$titledElementStyle = F3(
 					_List_fromArray(
 						[
 							$mdgriffith$elm_ui$Element$Font$semiBold,
-							$mdgriffith$elm_ui$Element$Font$size(fontSize + 2)
+							A2($author$project$View$Style$relFontSize, ui, 2)
 						]),
 					$mdgriffith$elm_ui$Element$text(title)),
 					A2(
 					$mdgriffith$elm_ui$Element$row,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(fontSize)
+							A2($author$project$View$Style$relFontSize, ui, 0)
 						]),
 					_List_fromArray(
 						[content]))
 				]));
 	});
 var $author$project$View$Style$titledTextStyle = F3(
-	function (title, content, fontSize) {
+	function (ui, title, content) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -29975,21 +30409,21 @@ var $author$project$View$Style$titledTextStyle = F3(
 					_List_fromArray(
 						[
 							$mdgriffith$elm_ui$Element$Font$semiBold,
-							$mdgriffith$elm_ui$Element$Font$size(fontSize + 2)
+							A2($author$project$View$Style$relFontSize, ui, 2)
 						]),
-					$author$project$View$Style$quotedText(title)),
+					A2($author$project$View$Style$quotedText, ui, title)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(fontSize)
+							A2($author$project$View$Style$relFontSize, ui, 0)
 						]),
-					$author$project$View$Style$multiLineQuotedText(content))
+					A2($author$project$View$Style$multiLineQuotedText, ui, content))
 				]));
 	});
-var $author$project$View$ChallengeDetailsView$renderChallenge = F3(
-	function (cache, now, challenge) {
-		var isAccepted = A2($author$project$View$ChallengeDetailsView$isChallengeAccepted, cache, challenge.id);
+var $author$project$View$ChallengeDetailsView$renderChallenge = F2(
+	function (state, challenge) {
+		var isAccepted = A2($author$project$View$ChallengeDetailsView$isChallengeAccepted, state.cache, challenge.id);
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -30004,11 +30438,11 @@ var $author$project$View$ChallengeDetailsView$renderChallenge = F3(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background),
 							$mdgriffith$elm_ui$Element$alignTop,
 							$mdgriffith$elm_ui$Element$alignLeft
 						]),
-					$author$project$View$Icons$challenge($author$project$View$Icons$large)),
+					$author$project$View$Icons$challenge(state.uiStyle.large)),
 					A2(
 					$mdgriffith$elm_ui$Element$column,
 					_List_fromArray(
@@ -30019,39 +30453,43 @@ var $author$project$View$ChallengeDetailsView$renderChallenge = F3(
 						]),
 					_List_fromArray(
 						[
-							A3($author$project$View$Style$titledTextStyle, challenge.title, challenge.content, 10),
+							A3($author$project$View$Style$titledTextStyle, state.uiStyle, challenge.title, challenge.content),
 							A3(
 							$author$project$View$Style$titledElementStyle,
+							state.uiStyle,
 							'How your success will be evaluated ?',
-							$author$project$View$ChallengeDetailsView$renderSuccessMeasure(challenge.measure),
-							10),
+							$author$project$View$ChallengeDetailsView$renderSuccessMeasure(challenge.measure)),
 							A3(
 							$author$project$View$Style$titledElementStyle,
+							state.uiStyle,
 							'When do you need to report ?',
-							A2($author$project$View$ChallengeDetailsView$renderReportSchedule, now, challenge.schedule),
-							10),
+							A2($author$project$View$ChallengeDetailsView$renderReportSchedule, state.timestamp, challenge.schedule)),
 							A3(
 							$author$project$View$Style$titledElementStyle,
+							state.uiStyle,
 							'How people are doing ?',
-							A2(
+							A3(
 								$author$project$View$ChallengeDetailsView$renderChallengeStatistics,
+								state.uiStyle,
 								challenge.measure,
-								A2($author$project$State$Cache$getChallengeStatistics, cache, challenge.id)),
-							10),
+								A2($author$project$State$Cache$getChallengeStatistics, state.cache, challenge.id))),
 							isAccepted ? A3(
 							$author$project$View$Style$titledElementStyle,
+							state.uiStyle,
 							'Report',
-							A4(
+							A5(
 								$author$project$View$ChallengeDetailsView$renderReportDates,
-								now,
+								state.uiStyle,
+								state.timestamp,
 								challenge,
-								A2($author$project$View$ChallengeDetailsView$reportDates, cache, challenge.id),
-								A2($author$project$View$ChallengeDetailsView$reportedSteps, cache, challenge.id)),
-							10) : $author$project$View$Style$empty
+								A2($author$project$View$ChallengeDetailsView$reportDates, state.cache, challenge.id),
+								A2($author$project$View$ChallengeDetailsView$reportedSteps, state.cache, challenge.id))) : $author$project$View$Style$empty
 						]))
 				]));
 	});
-var $author$project$View$ChallengeDetailsView$renderChallengeNotFoundPage = $author$project$View$ScreenUtils$emptyScreen('Challenge cannot be found');
+var $author$project$View$ChallengeDetailsView$renderChallengeNotFoundPage = function (ui) {
+	return A2($author$project$View$ScreenUtils$emptyScreen, ui, 'Challenge cannot be found');
+};
 var $author$project$Data$Challenge$isChallengeActive = F2(
 	function (_v0, challenge) {
 		var now = _v0.a;
@@ -30088,48 +30526,49 @@ var $author$project$Update$Msg$AcceptChallenge = function (a) {
 var $author$project$Update$Msg$RejectChallenge = function (a) {
 	return {$: 'RejectChallenge', a: a};
 };
-var $author$project$View$ChallengeDetailsView$renderChallengeButtons = function (challenge) {
-	return A2(
-		$mdgriffith$elm_ui$Element$row,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$spacing(10)
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$mdgriffith$elm_ui$Element$Input$button,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$size(11),
-						A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-						$mdgriffith$elm_ui$Element$Border$width(1),
-						$mdgriffith$elm_ui$Element$Border$rounded(5)
-					]),
-				{
-					label: $mdgriffith$elm_ui$Element$text('Accept'),
-					onPress: $elm$core$Maybe$Just(
-						$author$project$Update$Msg$AcceptChallenge(challenge.id))
-				}),
-				A2(
-				$mdgriffith$elm_ui$Element$Input$button,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$size(11),
-						A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-						$mdgriffith$elm_ui$Element$Border$width(1),
-						$mdgriffith$elm_ui$Element$Border$rounded(5)
-					]),
-				{
-					label: $mdgriffith$elm_ui$Element$text('Reject'),
-					onPress: $elm$core$Maybe$Just(
-						$author$project$Update$Msg$RejectChallenge(challenge.id))
-				})
-			]));
-};
-var $author$project$View$ChallengeDetailsView$renderNewChallengerHeader = F2(
-	function (cache, userId) {
+var $author$project$View$ChallengeDetailsView$renderChallengeButtons = F2(
+	function (ui, challenge) {
+		return A2(
+			$mdgriffith$elm_ui$Element$row,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$spacing(10)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$Input$button,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, ui, 1),
+							A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+							$mdgriffith$elm_ui$Element$Border$width(1),
+							$mdgriffith$elm_ui$Element$Border$rounded(5)
+						]),
+					{
+						label: $mdgriffith$elm_ui$Element$text('Accept'),
+						onPress: $elm$core$Maybe$Just(
+							$author$project$Update$Msg$AcceptChallenge(challenge.id))
+					}),
+					A2(
+					$mdgriffith$elm_ui$Element$Input$button,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, ui, 1),
+							A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+							$mdgriffith$elm_ui$Element$Border$width(1),
+							$mdgriffith$elm_ui$Element$Border$rounded(5)
+						]),
+					{
+						label: $mdgriffith$elm_ui$Element$text('Reject'),
+						onPress: $elm$core$Maybe$Just(
+							$author$project$Update$Msg$RejectChallenge(challenge.id))
+					})
+				]));
+	});
+var $author$project$View$ChallengeDetailsView$renderNewChallengerHeader = F3(
+	function (ui, cache, userId) {
 		var maybeUser = A2($author$project$State$Cache$getUser, cache, userId);
 		var pseudo = A2(
 			$elm$core$Maybe$withDefault,
@@ -30144,58 +30583,59 @@ var $author$project$View$ChallengeDetailsView$renderNewChallengerHeader = F2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, ui, 5),
 					$mdgriffith$elm_ui$Element$Font$bold
 				]),
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$text('Will you accept the challenge from  '),
-					A2(
+					A3(
 					$author$project$View$Style$userStyle,
+					ui,
 					pseudo,
 					$elm$core$Maybe$Just(userId)),
 					$mdgriffith$elm_ui$Element$text(' ?')
 				]));
 	});
-var $author$project$View$ChallengeDetailsView$renderChallengerHeader = F4(
-	function (cache, now, userId, challenge) {
-		return A2($author$project$Data$Challenge$isChallengeClosed, now, challenge) ? A2(
+var $author$project$View$ChallengeDetailsView$renderChallengerHeader = F3(
+	function (state, userId, challenge) {
+		return A2($author$project$Data$Challenge$isChallengeClosed, state.timestamp, challenge) ? A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 5),
 					$mdgriffith$elm_ui$Element$Font$italic
 				]),
-			$mdgriffith$elm_ui$Element$text('This challenge is now closed.')) : (A2($author$project$View$ChallengeDetailsView$isChallengeAccepted, cache, challenge.id) ? A2(
+			$mdgriffith$elm_ui$Element$text('This challenge is now closed.')) : (A2($author$project$View$ChallengeDetailsView$isChallengeAccepted, state.cache, challenge.id) ? A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 5),
 					$mdgriffith$elm_ui$Element$Font$bold
 				]),
-			$mdgriffith$elm_ui$Element$text('You have accepted this challenge !')) : (A2($author$project$View$ChallengeDetailsView$isChallengeFailed, cache, challenge.id) ? A2(
+			$mdgriffith$elm_ui$Element$text('You have accepted this challenge !')) : (A2($author$project$View$ChallengeDetailsView$isChallengeFailed, state.cache, challenge.id) ? A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 5),
 					$mdgriffith$elm_ui$Element$Font$bold
 				]),
 			$mdgriffith$elm_ui$Element$text('You have FAILED this challenge.')) : (_Utils_eq(
-			A2($author$project$State$Cache$getChallengeOutcomeStatus, cache, challenge.id),
+			A2($author$project$State$Cache$getChallengeOutcomeStatus, state.cache, challenge.id),
 			$elm$core$Maybe$Just($author$project$Data$Challenge$Rejected)) ? A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 5),
 					$mdgriffith$elm_ui$Element$Font$bold
 				]),
 			$mdgriffith$elm_ui$Element$text('You have rejected this challenge !')) : (_Utils_eq(
-			A2($author$project$State$Cache$getChallengeOutcomeStatus, cache, challenge.id),
+			A2($author$project$State$Cache$getChallengeOutcomeStatus, state.cache, challenge.id),
 			$elm$core$Maybe$Just($author$project$Data$Challenge$Completed)) ? A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 5),
 					$mdgriffith$elm_ui$Element$Font$bold
 				]),
 			$mdgriffith$elm_ui$Element$text('You have completed this challenge !')) : A2(
@@ -30206,9 +30646,9 @@ var $author$project$View$ChallengeDetailsView$renderChallengerHeader = F4(
 				]),
 			_List_fromArray(
 				[
-					A2($author$project$View$ChallengeDetailsView$renderNewChallengerHeader, cache, userId),
+					A3($author$project$View$ChallengeDetailsView$renderNewChallengerHeader, state.uiStyle, state.cache, userId),
 					$mdgriffith$elm_ui$Element$text('  '),
-					$author$project$View$ChallengeDetailsView$renderChallengeButtons(challenge)
+					A2($author$project$View$ChallengeDetailsView$renderChallengeButtons, state.uiStyle, challenge)
 				]))))));
 	});
 var $author$project$View$ChallengeDetailsView$challengeDetailsScreen = F2(
@@ -30236,12 +30676,14 @@ var $author$project$View$ChallengeDetailsView$challengeDetailsScreen = F2(
 					var userId = _v0.b.a;
 					return _List_fromArray(
 						[
-							A4($author$project$View$ChallengeDetailsView$renderChallengerHeader, state.cache, state.timestamp, userId, challenge),
-							A3($author$project$View$ChallengeDetailsView$renderChallenge, state.cache, state.timestamp, challenge)
+							A3($author$project$View$ChallengeDetailsView$renderChallengerHeader, state, userId, challenge),
+							A2($author$project$View$ChallengeDetailsView$renderChallenge, state, challenge)
 						]);
 				} else {
 					return _List_fromArray(
-						[$author$project$View$ChallengeDetailsView$renderChallengeNotFoundPage]);
+						[
+							$author$project$View$ChallengeDetailsView$renderChallengeNotFoundPage(state.uiStyle)
+						]);
 				}
 			}());
 	});
@@ -30249,62 +30691,73 @@ var $author$project$View$AppView$displayChallengeDetails = $author$project$View$
 var $author$project$Update$Msg$ChangeEventTab = function (a) {
 	return {$: 'ChangeEventTab', a: a};
 };
-var $author$project$View$EventScreen$eventTabButton = F3(
-	function (label, msg, selected) {
-		return A3($author$project$View$Style$tabButton, label, msg, selected);
+var $author$project$View$EventScreen$eventTabButton = F4(
+	function (ui, label, msg, selected) {
+		return A4($author$project$View$Style$tabButton, ui, label, msg, selected);
 	});
-var $author$project$View$EventScreen$eventTabs = function (state) {
-	return A2(
-		$mdgriffith$elm_ui$Element$row,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$spacing(5)
-			]),
-		_List_fromArray(
-			[
-				A3(
-				$author$project$View$EventScreen$eventTabButton,
-				'Incoming',
-				$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$IncomingEventTab),
-				_Utils_eq(state.currentTab, $author$project$State$EventState$IncomingEventTab)),
-				A3(
-				$author$project$View$EventScreen$eventTabButton,
-				'Accepted',
-				$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$ParticipationAcceptedEventTab),
-				_Utils_eq(state.currentTab, $author$project$State$EventState$ParticipationAcceptedEventTab)),
-				A3(
-				$author$project$View$EventScreen$eventTabButton,
-				'Requested',
-				$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$RequestedEventTab),
-				_Utils_eq(state.currentTab, $author$project$State$EventState$RequestedEventTab)),
-				A3(
-				$author$project$View$EventScreen$eventTabButton,
-				'Cancelled',
-				$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$CancelledEventTab),
-				_Utils_eq(state.currentTab, $author$project$State$EventState$CancelledEventTab)),
-				A3(
-				$author$project$View$EventScreen$eventTabButton,
-				'Participated',
-				$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$ParticipatedEventTab),
-				_Utils_eq(state.currentTab, $author$project$State$EventState$ParticipatedEventTab)),
-				A3(
-				$author$project$View$EventScreen$eventTabButton,
-				'Organized',
-				$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$OrganizedEventTab),
-				_Utils_eq(state.currentTab, $author$project$State$EventState$OrganizedEventTab))
-			]));
-};
+var $author$project$View$EventScreen$eventTabs = F2(
+	function (ui, state) {
+		return A2(
+			$mdgriffith$elm_ui$Element$wrappedRow,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(5)
+				]),
+			_List_fromArray(
+				[
+					A4(
+					$author$project$View$EventScreen$eventTabButton,
+					ui,
+					'Incoming',
+					$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$IncomingEventTab),
+					_Utils_eq(state.currentTab, $author$project$State$EventState$IncomingEventTab)),
+					A4(
+					$author$project$View$EventScreen$eventTabButton,
+					ui,
+					'Accepted',
+					$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$ParticipationAcceptedEventTab),
+					_Utils_eq(state.currentTab, $author$project$State$EventState$ParticipationAcceptedEventTab)),
+					A4(
+					$author$project$View$EventScreen$eventTabButton,
+					ui,
+					'Requested',
+					$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$RequestedEventTab),
+					_Utils_eq(state.currentTab, $author$project$State$EventState$RequestedEventTab)),
+					A4(
+					$author$project$View$EventScreen$eventTabButton,
+					ui,
+					'Cancelled',
+					$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$CancelledEventTab),
+					_Utils_eq(state.currentTab, $author$project$State$EventState$CancelledEventTab)),
+					A4(
+					$author$project$View$EventScreen$eventTabButton,
+					ui,
+					'Participated',
+					$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$ParticipatedEventTab),
+					_Utils_eq(state.currentTab, $author$project$State$EventState$ParticipatedEventTab)),
+					A4(
+					$author$project$View$EventScreen$eventTabButton,
+					ui,
+					'Organized',
+					$author$project$Update$Msg$ChangeEventTab($author$project$State$EventState$OrganizedEventTab),
+					_Utils_eq(state.currentTab, $author$project$State$EventState$OrganizedEventTab))
+				]));
+	});
 var $author$project$Update$Msg$ChangeEventPage = function (a) {
 	return {$: 'ChangeEventPage', a: a};
 };
 var $author$project$State$EventState$allUpToCurrentPage = function (state) {
 	return A2($author$project$State$PostPageCache$getAllUpTo, state.currentPage, state.postCache);
 };
-var $author$project$View$EventScreen$renderLoadingPosts = $author$project$View$PostRenderer$renderLoadingPostPage(2);
-var $author$project$View$EventScreen$renderNoPostPage = $author$project$View$ScreenUtils$emptyScreen('No events');
+var $author$project$View$EventScreen$renderLoadingPosts = function (ui) {
+	return A2($author$project$View$PostRenderer$renderLoadingPostPage, ui, 2);
+};
+var $author$project$View$EventScreen$renderNoPostPage = function (ui) {
+	return A2($author$project$View$ScreenUtils$emptyScreen, ui, 'No events');
+};
 var $author$project$View$EventScreen$renderSinglePost = $author$project$View$PostRenderer$renderPostId;
-var $author$project$View$EventScreen$renderPostPage = F3(
-	function (tmstp, cache, page) {
+var $author$project$View$EventScreen$renderPostPage = F2(
+	function (state, page) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -30317,21 +30770,23 @@ var $author$project$View$EventScreen$renderPostPage = F3(
 				]),
 			A2(
 				$elm$core$List$map,
-				A2($author$project$View$EventScreen$renderSinglePost, tmstp, cache),
+				A3($author$project$View$EventScreen$renderSinglePost, state.uiStyle, state.timestamp, state.cache),
 				page.items));
 	});
 var $author$project$View$EventScreen$renderEventTabContent = function (state) {
 	var _v0 = $author$project$State$EventState$allUpToCurrentPage(state.event);
 	if (_v0.$ === 'Nothing') {
-		return $author$project$View$EventScreen$renderLoadingPosts;
+		return $author$project$View$EventScreen$renderLoadingPosts(state.uiStyle);
 	} else {
 		var posts = _v0.a;
-		return ($author$project$State$GenericPage$isEmpty(posts) && $author$project$Data$Page$isFirst(posts.number)) ? $author$project$View$EventScreen$renderNoPostPage : A3(
-			$author$project$View$InfiniteScroll$infiniteScroll,
+		return ($author$project$State$GenericPage$isEmpty(posts) && $author$project$Data$Page$isFirst(posts.number)) ? $author$project$View$EventScreen$renderNoPostPage(state.uiStyle) : A5(
+			$author$project$View$InfiniteScroll$infiniteScrollWithMoreButton,
+			state.uiStyle,
+			$author$project$View$UIStyle$isMobile(state.device),
 			'event',
 			$author$project$Update$Msg$ChangeEventPage(
 				$author$project$Data$Page$next(state.event.currentPage)),
-			A3($author$project$View$EventScreen$renderPostPage, state.timestamp, state.cache, posts));
+			A2($author$project$View$EventScreen$renderPostPage, state, posts));
 	}
 };
 var $author$project$View$EventScreen$eventScreen = function (state) {
@@ -30347,7 +30802,7 @@ var $author$project$View$EventScreen$eventScreen = function (state) {
 			]),
 		_List_fromArray(
 			[
-				$author$project$View$EventScreen$eventTabs(state.event),
+				A2($author$project$View$EventScreen$eventTabs, state.uiStyle, state.event),
 				$author$project$View$EventScreen$renderEventTabContent(state)
 			]));
 };
@@ -30365,9 +30820,9 @@ var $author$project$Update$Msg$ChangeEventDetailsTab = F2(
 		return {$: 'ChangeEventDetailsTab', a: a, b: b};
 	});
 var $author$project$State$EventDetailsState$EventDiscussionTab = {$: 'EventDiscussionTab'};
-var $author$project$View$EventDetailsView$eventDetailsTabButton = F3(
-	function (label, msg, selected) {
-		return A3($author$project$View$Style$tabButton, label, msg, selected);
+var $author$project$View$EventDetailsView$eventDetailsTabButton = F4(
+	function (ui, label, msg, selected) {
+		return A4($author$project$View$Style$tabButton, ui, label, msg, selected);
 	});
 var $author$project$View$EventDetailsView$renderEventDetailsTabs = F3(
 	function (state, event, isOwner) {
@@ -30379,26 +30834,30 @@ var $author$project$View$EventDetailsView$renderEventDetailsTabs = F3(
 				]),
 			_List_fromArray(
 				[
-					A3(
+					A4(
 					$author$project$View$EventDetailsView$eventDetailsTabButton,
+					state.uiStyle,
 					'Details',
 					A2($author$project$Update$Msg$ChangeEventDetailsTab, event.id, $author$project$State$EventDetailsState$EventDetailsTab),
-					_Utils_eq(state.currentTab, $author$project$State$EventDetailsState$EventDetailsTab)),
-					A3(
+					_Utils_eq(state.eventDetails.currentTab, $author$project$State$EventDetailsState$EventDetailsTab)),
+					A4(
 					$author$project$View$EventDetailsView$eventDetailsTabButton,
+					state.uiStyle,
 					'Pending Requests',
 					A2($author$project$Update$Msg$ChangeEventDetailsTab, event.id, $author$project$State$EventDetailsState$PendingRequestsTab),
-					_Utils_eq(state.currentTab, $author$project$State$EventDetailsState$PendingRequestsTab)),
-					A3(
+					_Utils_eq(state.eventDetails.currentTab, $author$project$State$EventDetailsState$PendingRequestsTab)),
+					A4(
 					$author$project$View$EventDetailsView$eventDetailsTabButton,
+					state.uiStyle,
 					'Participants',
 					A2($author$project$Update$Msg$ChangeEventDetailsTab, event.id, $author$project$State$EventDetailsState$ParticipantsTab),
-					_Utils_eq(state.currentTab, $author$project$State$EventDetailsState$ParticipantsTab)),
-					A3(
+					_Utils_eq(state.eventDetails.currentTab, $author$project$State$EventDetailsState$ParticipantsTab)),
+					A4(
 					$author$project$View$EventDetailsView$eventDetailsTabButton,
+					state.uiStyle,
 					'Discussion',
 					A2($author$project$Update$Msg$ChangeEventDetailsTab, event.id, $author$project$State$EventDetailsState$EventDiscussionTab),
-					_Utils_eq(state.currentTab, $author$project$State$EventDetailsState$EventDiscussionTab))
+					_Utils_eq(state.eventDetails.currentTab, $author$project$State$EventDetailsState$EventDiscussionTab))
 				]));
 	});
 var $author$project$View$EventDetailsView$hasEventParticipationBeenAccepted = F2(
@@ -30436,101 +30895,104 @@ var $author$project$View$EventDetailsView$isEventClosed = F2(
 var $author$project$Update$Msg$CancelEvent = function (a) {
 	return {$: 'CancelEvent', a: a};
 };
-var $author$project$View$EventDetailsView$renderCancelButton = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(11),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$rounded(5)
-			]),
-		{
-			label: $mdgriffith$elm_ui$Element$text('Cancel Event'),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$CancelEvent(id))
-		});
-};
-var $author$project$View$EventDetailsView$renderCancelParticipationButton = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(11),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$rounded(5)
-			]),
-		{
-			label: $mdgriffith$elm_ui$Element$text('Cancel participation'),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$CancelEventParticipation(id))
-		});
-};
-var $author$project$View$EventDetailsView$renderRequestParticipationButton = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(11),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$rounded(5)
-			]),
-		{
-			label: $mdgriffith$elm_ui$Element$text('Request participation'),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$RequestEventParticipation(id))
-		});
-};
-var $author$project$View$EventDetailsView$renderEventButtons = F3(
-	function (cache, eventId, isOwner) {
-		var cancelled = A2($author$project$View$EventDetailsView$isEventIdCancelled, cache, eventId);
-		return cancelled ? $mdgriffith$elm_ui$Element$none : (isOwner ? $author$project$View$EventDetailsView$renderCancelButton(eventId) : ((A2($author$project$View$EventDetailsView$hasEventParticipationBeenRequested, cache, eventId) || A2($author$project$View$EventDetailsView$hasEventParticipationBeenAccepted, cache, eventId)) ? $author$project$View$EventDetailsView$renderCancelParticipationButton(eventId) : $author$project$View$EventDetailsView$renderRequestParticipationButton(eventId)));
+var $author$project$View$EventDetailsView$renderCancelButton = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 1),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+					$mdgriffith$elm_ui$Element$Border$width(1),
+					$mdgriffith$elm_ui$Element$Border$rounded(5)
+				]),
+			{
+				label: $mdgriffith$elm_ui$Element$text('Cancel Event'),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$CancelEvent(id))
+			});
 	});
-var $author$project$View$EventDetailsView$renderEventHeader = F4(
-	function (cache, now, isEventOwner, event) {
-		var status = A2($author$project$View$EventDetailsView$isEventClosed, now, event) ? A2(
+var $author$project$View$EventDetailsView$renderCancelParticipationButton = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 1),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+					$mdgriffith$elm_ui$Element$Border$width(1),
+					$mdgriffith$elm_ui$Element$Border$rounded(5)
+				]),
+			{
+				label: $mdgriffith$elm_ui$Element$text('Cancel participation'),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$CancelEventParticipation(id))
+			});
+	});
+var $author$project$View$EventDetailsView$renderRequestParticipationButton = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 1),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+					$mdgriffith$elm_ui$Element$Border$width(1),
+					$mdgriffith$elm_ui$Element$Border$rounded(5)
+				]),
+			{
+				label: $mdgriffith$elm_ui$Element$text('Request participation'),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$RequestEventParticipation(id))
+			});
+	});
+var $author$project$View$EventDetailsView$renderEventButtons = F3(
+	function (state, eventId, isOwner) {
+		var cancelled = A2($author$project$View$EventDetailsView$isEventIdCancelled, state.cache, eventId);
+		return cancelled ? $mdgriffith$elm_ui$Element$none : (isOwner ? A2($author$project$View$EventDetailsView$renderCancelButton, state.uiStyle, eventId) : ((A2($author$project$View$EventDetailsView$hasEventParticipationBeenRequested, state.cache, eventId) || A2($author$project$View$EventDetailsView$hasEventParticipationBeenAccepted, state.cache, eventId)) ? A2($author$project$View$EventDetailsView$renderCancelParticipationButton, state.uiStyle, eventId) : A2($author$project$View$EventDetailsView$renderRequestParticipationButton, state.uiStyle, eventId)));
+	});
+var $author$project$View$EventDetailsView$renderEventHeader = F3(
+	function (state, isEventOwner, event) {
+		var status = A2($author$project$View$EventDetailsView$isEventClosed, state.timestamp, event) ? A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 5),
 					$mdgriffith$elm_ui$Element$Font$italic
 				]),
-			$mdgriffith$elm_ui$Element$text('This event is now CLOSED.')) : (A2($author$project$View$EventDetailsView$isEventCancelled, cache, event) ? A2(
+			$mdgriffith$elm_ui$Element$text('This event is now CLOSED.')) : (A2($author$project$View$EventDetailsView$isEventCancelled, state.cache, event) ? A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 5),
 					$mdgriffith$elm_ui$Element$Font$bold
 				]),
 			$mdgriffith$elm_ui$Element$text('This event is ** CANCELLED **')) : (isEventOwner ? A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 5),
 					$mdgriffith$elm_ui$Element$Font$bold
 				]),
-			$mdgriffith$elm_ui$Element$text('You are the organizer of this event.')) : (A2($author$project$View$EventDetailsView$hasEventParticipationBeenAccepted, cache, event.id) ? A2(
+			$mdgriffith$elm_ui$Element$text('You are the organizer of this event.')) : (A2($author$project$View$EventDetailsView$hasEventParticipationBeenAccepted, state.cache, event.id) ? A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 5),
 					$mdgriffith$elm_ui$Element$Font$bold
 				]),
-			$mdgriffith$elm_ui$Element$text('You are PARTICIPATING to this event.')) : (A2($author$project$View$EventDetailsView$hasEventParticipationBeenRequested, cache, event.id) ? A2(
+			$mdgriffith$elm_ui$Element$text('You are PARTICIPATING to this event.')) : (A2($author$project$View$EventDetailsView$hasEventParticipationBeenRequested, state.cache, event.id) ? A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 5),
 					$mdgriffith$elm_ui$Element$Font$bold
 				]),
 			$mdgriffith$elm_ui$Element$text('You have a PENDING request for this event.')) : A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(15),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 5),
 					$mdgriffith$elm_ui$Element$Font$italic
 				]),
 			$mdgriffith$elm_ui$Element$text('This event is opened.'))))));
@@ -30544,10 +31006,12 @@ var $author$project$View$EventDetailsView$renderEventHeader = F4(
 				[
 					status,
 					$mdgriffith$elm_ui$Element$text('  '),
-					A3($author$project$View$EventDetailsView$renderEventButtons, cache, event.id, isEventOwner)
+					A3($author$project$View$EventDetailsView$renderEventButtons, state, event.id, isEventOwner)
 				]));
 	});
-var $author$project$View$EventDetailsView$renderEventNotFoundPage = $author$project$View$ScreenUtils$emptyScreen('Event cannot be found');
+var $author$project$View$EventDetailsView$renderEventNotFoundPage = function (ui) {
+	return A2($author$project$View$ScreenUtils$emptyScreen, ui, 'Event cannot be found');
+};
 var $author$project$State$Cache$getPostIdForEvent = F2(
 	function (cache, id) {
 		return A2(
@@ -30565,18 +31029,18 @@ var $author$project$View$EventDetailsView$renderDiscussion = F2(
 		var _v0 = A2($author$project$State$Cache$getPostIdForEvent, state.cache, event.id);
 		if (_v0.$ === 'Just') {
 			var postId = _v0.a;
-			return A3($author$project$View$PostRenderer$renderOpenedConversation, state.timestamp, state.cache, postId);
+			return A4($author$project$View$PostRenderer$renderOpenedConversation, state.uiStyle, state.timestamp, state.cache, postId);
 		} else {
-			return $author$project$View$ScreenUtils$emptyScreen('Couldn\'t find conversation');
+			return A2($author$project$View$ScreenUtils$emptyScreen, state.uiStyle, 'Couldn\'t find conversation');
 		}
 	});
 var $author$project$View$EventDetailsView$renderEventCapacity = F2(
-	function (cache, event) {
+	function (state, event) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(10),
+					A2($author$project$View$Style$relFontSize, state.uiStyle, 0),
 					$mdgriffith$elm_ui$Element$centerY,
 					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
 				]),
@@ -30589,7 +31053,7 @@ var $author$project$View$EventDetailsView$renderEventCapacity = F2(
 						A2(
 							$elm$core$Maybe$withDefault,
 							0,
-							A2($author$project$State$Cache$getEventParticipantCount, cache, event.id))) + ' is/are participating.')),
+							A2($author$project$State$Cache$getEventParticipantCount, state.cache, event.id))) + ' is/are participating.')),
 					$mdgriffith$elm_ui$Element$text(
 					'- ' + ($elm$core$String$fromInt(
 						A2(
@@ -30600,109 +31064,112 @@ var $author$project$View$EventDetailsView$renderEventCapacity = F2(
 								function (n) {
 									return event.maxParticipants - n;
 								},
-								A2($author$project$State$Cache$getEventParticipantCount, cache, event.id)))) + ' slots are still opened'))
+								A2($author$project$State$Cache$getEventParticipantCount, state.cache, event.id)))) + ' slots are still opened'))
 				]));
 	});
-var $author$project$View$EventDetailsView$renderLocation = function (loc) {
-	switch (loc.$) {
-		case 'Online':
-			var url = loc.a.a;
-			return A2(
-				$mdgriffith$elm_ui$Element$column,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(3)
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$author$project$View$Style$size,
-						10,
-						$mdgriffith$elm_ui$Element$text('The event is located online.')),
-						A2(
-						$mdgriffith$elm_ui$Element$newTabLink,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$Font$size(10)
-							]),
-						{
-							label: A2(
-								$mdgriffith$elm_ui$Element$paragraph,
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$blue)
-									]),
-								$elm$core$List$singleton(
-									$mdgriffith$elm_ui$Element$text(url))),
-							url: url
-						})
-					]));
-		case 'MapUrl':
-			var url = loc.a.a;
-			return A2(
-				$mdgriffith$elm_ui$Element$newTabLink,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$size(10)
-					]),
-				{
-					label: A2(
-						$mdgriffith$elm_ui$Element$el,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$blue)
-							]),
-						$mdgriffith$elm_ui$Element$text('See on maps')),
-					url: url
-				});
-		case 'GeoLocation':
-			var geo = loc;
-			var _v1 = A2($author$project$Data$Location$toMapUrl, 17, geo);
-			var url = _v1.a;
-			return A2(
-				$mdgriffith$elm_ui$Element$newTabLink,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$size(10)
-					]),
-				{
-					label: A2(
-						$mdgriffith$elm_ui$Element$el,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$blue)
-							]),
-						$mdgriffith$elm_ui$Element$text('See on maps')),
-					url: url
-				});
-		default:
-			var address = loc;
-			return A2(
-				$mdgriffith$elm_ui$Element$column,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(3)
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$author$project$View$Style$size,
-						10,
-						$mdgriffith$elm_ui$Element$text('The event is located at the following address')),
-						A2(
-						$mdgriffith$elm_ui$Element$el,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$blue),
-								$mdgriffith$elm_ui$Element$Font$size(10)
-							]),
-						$mdgriffith$elm_ui$Element$text(
-							$author$project$Data$Location$formatAddress(address)))
-					]));
-	}
-};
-var $author$project$View$Icons$user = $lemol$ant_design_icons_elm_ui$Ant$Icons$userOutlined;
-var $author$project$View$UserListRenderer$userLogo = function () {
+var $author$project$View$EventDetailsView$renderLocation = F2(
+	function (ui, loc) {
+		switch (loc.$) {
+			case 'Online':
+				var url = loc.a.a;
+				return A2(
+					$mdgriffith$elm_ui$Element$column,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$spacing(3)
+						]),
+					_List_fromArray(
+						[
+							A3(
+							$author$project$View$Style$relSize,
+							ui,
+							0,
+							$mdgriffith$elm_ui$Element$text('The event is located online.')),
+							A2(
+							$mdgriffith$elm_ui$Element$newTabLink,
+							_List_fromArray(
+								[
+									A2($author$project$View$Style$relFontSize, ui, 0)
+								]),
+							{
+								label: A2(
+									$mdgriffith$elm_ui$Element$paragraph,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$blue)
+										]),
+									$elm$core$List$singleton(
+										$mdgriffith$elm_ui$Element$text(url))),
+								url: url
+							})
+						]));
+			case 'MapUrl':
+				var url = loc.a.a;
+				return A2(
+					$mdgriffith$elm_ui$Element$newTabLink,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, ui, 0)
+						]),
+					{
+						label: A2(
+							$mdgriffith$elm_ui$Element$el,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$blue)
+								]),
+							$mdgriffith$elm_ui$Element$text('See on maps')),
+						url: url
+					});
+			case 'GeoLocation':
+				var geo = loc;
+				var _v1 = A2($author$project$Data$Location$toMapUrl, 17, geo);
+				var url = _v1.a;
+				return A2(
+					$mdgriffith$elm_ui$Element$newTabLink,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, ui, 0)
+						]),
+					{
+						label: A2(
+							$mdgriffith$elm_ui$Element$el,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$blue)
+								]),
+							$mdgriffith$elm_ui$Element$text('See on maps')),
+						url: url
+					});
+			default:
+				var address = loc;
+				return A2(
+					$mdgriffith$elm_ui$Element$column,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$spacing(3)
+						]),
+					_List_fromArray(
+						[
+							A3(
+							$author$project$View$Style$relSize,
+							ui,
+							0,
+							$mdgriffith$elm_ui$Element$text('The event is located at the following address')),
+							A2(
+							$mdgriffith$elm_ui$Element$el,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$blue),
+									A2($author$project$View$Style$relFontSize, ui, 0)
+								]),
+							$mdgriffith$elm_ui$Element$text(
+								$author$project$Data$Location$formatAddress(address)))
+						]));
+		}
+	});
+var $author$project$View$Icons$user = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$userOutlined);
+var $author$project$View$UserListRenderer$userLogo = function (ui) {
 	var render = $mdgriffith$elm_ui$Element$el(
 		_List_fromArray(
 			[
@@ -30721,45 +31188,54 @@ var $author$project$View$UserListRenderer$userLogo = function () {
 				[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY])),
 		render);
 	return center(
-		$author$project$View$Icons$user($author$project$View$Icons$tiny));
-}();
-var $author$project$View$UserListRenderer$renderHeader = function (user) {
-	return A2(
-		$mdgriffith$elm_ui$Element$row,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$alignLeft,
-				$mdgriffith$elm_ui$Element$spacing(5)
-			]),
-		_List_fromArray(
-			[
-				$author$project$View$Style$standard($author$project$View$UserListRenderer$userLogo),
-				A2(
-				$author$project$View$Style$size,
-				10,
-				A2(
-					$author$project$View$Style$userStyle,
-					user.pseudo,
-					$elm$core$Maybe$Just(user.id))),
-				$author$project$View$Style$headerDateStyle(
-				$author$project$View$Style$italic(
-					'since ' + $author$project$Utils$DateUtils$formatDate(user.since)))
-			]));
+		$author$project$View$Icons$user(ui.tiny));
 };
-var $author$project$View$UserListRenderer$renderUserDesc = function (user) {
-	return A2(
-		$mdgriffith$elm_ui$Element$el,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$italic,
-				$mdgriffith$elm_ui$Element$Font$size(10),
-				$mdgriffith$elm_ui$Element$paddingEach(
-				{bottom: 0, left: 40, right: 0, top: 0})
-			]),
-		$author$project$View$Style$multiLineQuotedText(user.introduction));
-};
-var $author$project$View$UserListRenderer$renderUser = F2(
-	function (_v0, user) {
+var $author$project$View$UserListRenderer$renderHeader = F2(
+	function (ui, user) {
+		return A2(
+			$mdgriffith$elm_ui$Element$row,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$alignLeft,
+					$mdgriffith$elm_ui$Element$spacing(5)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$author$project$View$Style$standard,
+					ui,
+					$author$project$View$UserListRenderer$userLogo(ui)),
+					A3(
+					$author$project$View$Style$relSize,
+					ui,
+					0,
+					A3(
+						$author$project$View$Style$userStyle,
+						ui,
+						user.pseudo,
+						$elm$core$Maybe$Just(user.id))),
+					A2(
+					$author$project$View$Style$headerDateStyle,
+					ui,
+					$author$project$View$Style$italic(
+						'since ' + $author$project$Utils$DateUtils$formatDate(user.since)))
+				]));
+	});
+var $author$project$View$UserListRenderer$renderUserDesc = F2(
+	function (ui, user) {
+		return A2(
+			$mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$Font$italic,
+					A2($author$project$View$Style$relFontSize, ui, 0),
+					$mdgriffith$elm_ui$Element$paddingEach(
+					{bottom: 0, left: 40, right: 0, top: 0})
+				]),
+			A2($author$project$View$Style$multiLineQuotedText, ui, user.introduction));
+	});
+var $author$project$View$UserListRenderer$renderUser = F3(
+	function (ui, _v0, user) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -30771,23 +31247,23 @@ var $author$project$View$UserListRenderer$renderUser = F2(
 				]),
 			_List_fromArray(
 				[
-					$author$project$View$UserListRenderer$renderHeader(user),
-					A2($author$project$View$Style$horizontalSeparator, 1, $author$project$View$Theme$background),
-					$author$project$View$UserListRenderer$renderUserDesc(user)
+					A2($author$project$View$UserListRenderer$renderHeader, ui, user),
+					A2($author$project$View$Style$horizontalSeparator, 1, ui.theme.background),
+					A2($author$project$View$UserListRenderer$renderUserDesc, ui, user)
 				]));
 	});
-var $author$project$View$UserListRenderer$renderUserId = F2(
-	function (cache, userId) {
+var $author$project$View$UserListRenderer$renderUserId = F3(
+	function (ui, cache, userId) {
 		return A2(
 			$elm$core$Maybe$withDefault,
 			$mdgriffith$elm_ui$Element$text('<Unable to render user info>'),
 			A2(
 				$elm$core$Maybe$map,
-				$author$project$View$UserListRenderer$renderUser(cache),
+				A2($author$project$View$UserListRenderer$renderUser, ui, cache),
 				A2($author$project$State$Cache$getUser, cache, userId)));
 	});
-var $author$project$View$EventDetailsView$renderEvent = F3(
-	function (cache, now, event) {
+var $author$project$View$EventDetailsView$renderEvent = F2(
+	function (state, event) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -30802,11 +31278,11 @@ var $author$project$View$EventDetailsView$renderEvent = F3(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$enabledButton),
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.enabledButton),
 							$mdgriffith$elm_ui$Element$alignTop,
 							$mdgriffith$elm_ui$Element$alignLeft
 						]),
-					$author$project$View$Icons$event($author$project$View$Icons$large)),
+					$author$project$View$Icons$event(state.uiStyle.large)),
 					A2(
 					$mdgriffith$elm_ui$Element$column,
 					_List_fromArray(
@@ -30817,29 +31293,29 @@ var $author$project$View$EventDetailsView$renderEvent = F3(
 						]),
 					_List_fromArray(
 						[
-							A3($author$project$View$Style$titledTextStyle, 'Event description', event.description, 10),
+							A3($author$project$View$Style$titledTextStyle, state.uiStyle, 'Event description', event.description),
 							A3(
 							$author$project$View$Style$titledElementStyle,
+							state.uiStyle,
 							'Organized by',
-							A2($author$project$View$UserListRenderer$renderUserId, cache, event.owner),
-							10),
+							A3($author$project$View$UserListRenderer$renderUserId, state.uiStyle, state.cache, event.owner)),
 							A3(
 							$author$project$View$Style$titledElementStyle,
+							state.uiStyle,
 							'When ?',
 							$mdgriffith$elm_ui$Element$text(
 								$author$project$Utils$DateUtils$formatDate(
-									$author$project$Data$Schedule$start(event.schedule))),
-							10),
+									$author$project$Data$Schedule$start(event.schedule)))),
 							A3(
 							$author$project$View$Style$titledElementStyle,
+							state.uiStyle,
 							'Where ?',
-							$author$project$View$EventDetailsView$renderLocation(event.location),
-							10),
+							A2($author$project$View$EventDetailsView$renderLocation, state.uiStyle, event.location)),
 							A3(
 							$author$project$View$Style$titledElementStyle,
+							state.uiStyle,
 							'How many people are going ?',
-							A2($author$project$View$EventDetailsView$renderEventCapacity, cache, event),
-							10)
+							A2($author$project$View$EventDetailsView$renderEventCapacity, state, event))
 						]))
 				]));
 	});
@@ -30881,63 +31357,70 @@ var $author$project$State$UserPageCache$getAllUpTo = F2(
 var $author$project$State$EventDetailsState$allUpToCurrentPage = function (state) {
 	return A2($author$project$State$UserPageCache$getAllUpTo, state.currentPage, state.userCache);
 };
-var $author$project$View$UserListRenderer$renderLoadingSingleUser = A2(
-	$mdgriffith$elm_ui$Element$column,
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$alignLeft,
-			$mdgriffith$elm_ui$Element$spacing(5),
-			$mdgriffith$elm_ui$Element$padding(10)
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$mdgriffith$elm_ui$Element$el,
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$spacing(5),
-					$mdgriffith$elm_ui$Element$paddingEach(
-					{bottom: 2, left: 0, right: 0, top: 0}),
-					$mdgriffith$elm_ui$Element$Border$widthEach(
-					{bottom: 2, left: 0, right: 0, top: 0}),
-					$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background)
-				]),
-			A2(
-				$mdgriffith$elm_ui$Element$row,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$alignLeft]),
-				_List_fromArray(
-					[
-						A2($author$project$View$Style$loadingFixedTextLine, 12, 16),
-						A2($author$project$View$Style$loadingFixedTextLine, 12, 100)
-					]))),
-			A2($author$project$View$Style$loadingTextBlock, 12, 3)
-		]));
-var $author$project$View$UserListRenderer$renderLoadingUserPage = function (count) {
+var $author$project$View$UserListRenderer$renderLoadingSingleUser = function (ui) {
 	return A2(
 		$mdgriffith$elm_ui$Element$column,
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$centerX,
+				$mdgriffith$elm_ui$Element$alignLeft,
 				$mdgriffith$elm_ui$Element$spacing(5),
 				$mdgriffith$elm_ui$Element$padding(10)
 			]),
-		A2(
-			$elm$core$List$map,
-			function (_v0) {
-				return $author$project$View$UserListRenderer$renderLoadingSingleUser;
-			},
-			A2($elm$core$List$range, 1, count)));
+		_List_fromArray(
+			[
+				A2(
+				$mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+						$mdgriffith$elm_ui$Element$spacing(5),
+						$mdgriffith$elm_ui$Element$paddingEach(
+						{bottom: 2, left: 0, right: 0, top: 0}),
+						$mdgriffith$elm_ui$Element$Border$widthEach(
+						{bottom: 2, left: 0, right: 0, top: 0}),
+						$mdgriffith$elm_ui$Element$Border$color(ui.theme.background)
+					]),
+				A2(
+					$mdgriffith$elm_ui$Element$row,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$alignLeft]),
+					_List_fromArray(
+						[
+							A3($author$project$View$Style$loadingFixedTextLine, ui, 12, 16),
+							A3($author$project$View$Style$loadingFixedTextLine, ui, 12, 100)
+						]))),
+				A3($author$project$View$Style$loadingTextBlock, ui, 12, 3)
+			]));
 };
-var $author$project$View$EventDetailsView$renderLoadingUsers = $author$project$View$UserListRenderer$renderLoadingUserPage(2);
-var $author$project$View$EventDetailsView$renderNoUserPage = $author$project$View$ScreenUtils$emptyScreen('No users');
-var $author$project$View$EventDetailsView$renderSingleParticipant = F4(
-	function (cache, eventId, isOwner, userId) {
-		return A2($author$project$View$UserListRenderer$renderUserId, cache, userId);
+var $author$project$View$UserListRenderer$renderLoadingUserPage = F2(
+	function (ui, count) {
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$centerX,
+					$mdgriffith$elm_ui$Element$spacing(5),
+					$mdgriffith$elm_ui$Element$padding(10)
+				]),
+			A2(
+				$elm$core$List$map,
+				function (_v0) {
+					return $author$project$View$UserListRenderer$renderLoadingSingleUser(ui);
+				},
+				A2($elm$core$List$range, 1, count)));
+	});
+var $author$project$View$EventDetailsView$renderLoadingUsers = function (ui) {
+	return A2($author$project$View$UserListRenderer$renderLoadingUserPage, ui, 2);
+};
+var $author$project$View$EventDetailsView$renderNoUserPage = function (ui) {
+	return A2($author$project$View$ScreenUtils$emptyScreen, ui, 'No users');
+};
+var $author$project$View$EventDetailsView$renderSingleParticipant = F5(
+	function (ui, cache, eventId, isOwner, userId) {
+		return A3($author$project$View$UserListRenderer$renderUserId, ui, cache, userId);
 	});
 var $author$project$View$EventDetailsView$renderUserPage = F2(
 	function (page, f) {
@@ -30957,11 +31440,13 @@ var $author$project$View$EventDetailsView$renderParticipantListTabContent = F3(
 	function (state, event, isOwner) {
 		var _v0 = $author$project$State$EventDetailsState$allUpToCurrentPage(state.eventDetails);
 		if (_v0.$ === 'Nothing') {
-			return $author$project$View$EventDetailsView$renderLoadingUsers;
+			return $author$project$View$EventDetailsView$renderLoadingUsers(state.uiStyle);
 		} else {
 			var users = _v0.a;
-			return ($author$project$State$GenericPage$isEmpty(users) && $author$project$Data$Page$isFirst(users.number)) ? $author$project$View$EventDetailsView$renderNoUserPage : A3(
-				$author$project$View$InfiniteScroll$infiniteScroll,
+			return ($author$project$State$GenericPage$isEmpty(users) && $author$project$Data$Page$isFirst(users.number)) ? $author$project$View$EventDetailsView$renderNoUserPage(state.uiStyle) : A5(
+				$author$project$View$InfiniteScroll$infiniteScrollWithMoreButton,
+				state.uiStyle,
+				$author$project$View$UIStyle$isMobile(state.device),
 				'event-users',
 				A2(
 					$author$project$Update$Msg$ChangeEventDetailsPage,
@@ -30970,20 +31455,20 @@ var $author$project$View$EventDetailsView$renderParticipantListTabContent = F3(
 				A2(
 					$author$project$View$EventDetailsView$renderUserPage,
 					users,
-					A3($author$project$View$EventDetailsView$renderSingleParticipant, state.cache, event.id, isOwner)));
+					A4($author$project$View$EventDetailsView$renderSingleParticipant, state.uiStyle, state.cache, event.id, isOwner)));
 		}
 	});
 var $author$project$Update$Msg$AcceptUserEventParticipation = F2(
 	function (a, b) {
 		return {$: 'AcceptUserEventParticipation', a: a, b: b};
 	});
-var $author$project$View$EventDetailsView$renderAcceptPendingRequestButton = F2(
-	function (eventId, userId) {
+var $author$project$View$EventDetailsView$renderAcceptPendingRequestButton = F3(
+	function (ui, eventId, userId) {
 		return A2(
 			$mdgriffith$elm_ui$Element$Input$button,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(11),
+					A2($author$project$View$Style$relFontSize, ui, 1),
 					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
 					$mdgriffith$elm_ui$Element$Border$width(1),
 					$mdgriffith$elm_ui$Element$Border$rounded(5),
@@ -31004,13 +31489,13 @@ var $author$project$Update$Msg$RejectUserEventParticipation = F2(
 	function (a, b) {
 		return {$: 'RejectUserEventParticipation', a: a, b: b};
 	});
-var $author$project$View$EventDetailsView$renderRejectedPendingRequestButton = F2(
-	function (eventId, userId) {
+var $author$project$View$EventDetailsView$renderRejectedPendingRequestButton = F3(
+	function (ui, eventId, userId) {
 		return A2(
 			$mdgriffith$elm_ui$Element$Input$button,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$size(11),
+					A2($author$project$View$Style$relFontSize, ui, 1),
 					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
 					$mdgriffith$elm_ui$Element$Border$width(1),
 					$mdgriffith$elm_ui$Element$Border$rounded(5),
@@ -31028,7 +31513,7 @@ var $author$project$View$EventDetailsView$renderRejectedPendingRequestButton = F
 			});
 	});
 var $author$project$View$EventDetailsView$renderSingleUserPendingRequest = F4(
-	function (cache, eventId, isOwner, userId) {
+	function (state, eventId, isOwner, userId) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -31037,7 +31522,7 @@ var $author$project$View$EventDetailsView$renderSingleUserPendingRequest = F4(
 				]),
 			_List_fromArray(
 				[
-					A2($author$project$View$UserListRenderer$renderUserId, cache, userId),
+					A3($author$project$View$UserListRenderer$renderUserId, state.uiStyle, state.cache, userId),
 					isOwner ? A2(
 					$mdgriffith$elm_ui$Element$row,
 					_List_fromArray(
@@ -31047,8 +31532,8 @@ var $author$project$View$EventDetailsView$renderSingleUserPendingRequest = F4(
 						]),
 					_List_fromArray(
 						[
-							A2($author$project$View$EventDetailsView$renderAcceptPendingRequestButton, eventId, userId),
-							A2($author$project$View$EventDetailsView$renderRejectedPendingRequestButton, eventId, userId)
+							A3($author$project$View$EventDetailsView$renderAcceptPendingRequestButton, state.uiStyle, eventId, userId),
+							A3($author$project$View$EventDetailsView$renderRejectedPendingRequestButton, state.uiStyle, eventId, userId)
 						])) : $mdgriffith$elm_ui$Element$none
 				]));
 	});
@@ -31056,11 +31541,13 @@ var $author$project$View$EventDetailsView$renderPendingRequestUserListTabContent
 	function (state, event, isOwner) {
 		var _v0 = $author$project$State$EventDetailsState$allUpToCurrentPage(state.eventDetails);
 		if (_v0.$ === 'Nothing') {
-			return $author$project$View$EventDetailsView$renderLoadingUsers;
+			return $author$project$View$EventDetailsView$renderLoadingUsers(state.uiStyle);
 		} else {
 			var users = _v0.a;
-			return ($author$project$State$GenericPage$isEmpty(users) && $author$project$Data$Page$isFirst(users.number)) ? $author$project$View$EventDetailsView$renderNoUserPage : A3(
-				$author$project$View$InfiniteScroll$infiniteScroll,
+			return ($author$project$State$GenericPage$isEmpty(users) && $author$project$Data$Page$isFirst(users.number)) ? $author$project$View$EventDetailsView$renderNoUserPage(state.uiStyle) : A5(
+				$author$project$View$InfiniteScroll$infiniteScrollWithMoreButton,
+				state.uiStyle,
+				$author$project$View$UIStyle$isMobile(state.device),
 				'event-users',
 				A2(
 					$author$project$Update$Msg$ChangeEventDetailsPage,
@@ -31069,7 +31556,7 @@ var $author$project$View$EventDetailsView$renderPendingRequestUserListTabContent
 				A2(
 					$author$project$View$EventDetailsView$renderUserPage,
 					users,
-					A3($author$project$View$EventDetailsView$renderSingleUserPendingRequest, state.cache, event.id, isOwner)));
+					A3($author$project$View$EventDetailsView$renderSingleUserPendingRequest, state, event.id, isOwner)));
 		}
 	});
 var $author$project$View$EventDetailsView$renderSelectedTabContent = F3(
@@ -31077,7 +31564,7 @@ var $author$project$View$EventDetailsView$renderSelectedTabContent = F3(
 		var _v0 = state.eventDetails.currentTab;
 		switch (_v0.$) {
 			case 'EventDetailsTab':
-				return A3($author$project$View$EventDetailsView$renderEvent, state.cache, state.timestamp, event);
+				return A2($author$project$View$EventDetailsView$renderEvent, state, event);
 			case 'PendingRequestsTab':
 				return A3($author$project$View$EventDetailsView$renderPendingRequestUserListTabContent, state, event, isOwner);
 			case 'ParticipantsTab':
@@ -31120,13 +31607,15 @@ var $author$project$View$EventDetailsView$eventDetailsScreen = F2(
 					var event = _v0.a.a;
 					return _List_fromArray(
 						[
-							A4($author$project$View$EventDetailsView$renderEventHeader, state.cache, state.timestamp, isEventOwner, event),
-							A3($author$project$View$EventDetailsView$renderEventDetailsTabs, state.eventDetails, event, isEventOwner),
+							A3($author$project$View$EventDetailsView$renderEventHeader, state, isEventOwner, event),
+							A3($author$project$View$EventDetailsView$renderEventDetailsTabs, state, event, isEventOwner),
 							A3($author$project$View$EventDetailsView$renderSelectedTabContent, state, event, isEventOwner)
 						]);
 				} else {
 					return _List_fromArray(
-						[$author$project$View$EventDetailsView$renderEventNotFoundPage]);
+						[
+							$author$project$View$EventDetailsView$renderEventNotFoundPage(state.uiStyle)
+						]);
 				}
 			}());
 	});
@@ -31137,7 +31626,9 @@ var $author$project$Update$Msg$ChangeFeedPage = function (a) {
 var $author$project$State$FeedState$allUpToCurrentPage = function (state) {
 	return A2($author$project$State$PostPageCache$getAllUpTo, state.currentPage, state.postCache);
 };
-var $author$project$View$FeedScreen$renderLoadingPosts = $author$project$View$PostRenderer$renderLoadingPostPage(2);
+var $author$project$View$FeedScreen$renderLoadingPosts = function (ui) {
+	return A2($author$project$View$PostRenderer$renderLoadingPostPage, ui, 2);
+};
 var $elm$core$String$replace = F3(
 	function (before, after, string) {
 		return A2(
@@ -31147,7 +31638,7 @@ var $elm$core$String$replace = F3(
 	});
 var $author$project$Utils$TextUtils$oneline = A2($elm$core$String$replace, '\n', ' ');
 var $author$project$View$Style$titledParagraphStyle = F3(
-	function (title, content, fontSize) {
+	function (ui, title, content) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -31163,9 +31654,9 @@ var $author$project$View$Style$titledParagraphStyle = F3(
 					_List_fromArray(
 						[
 							$mdgriffith$elm_ui$Element$Font$semiBold,
-							$mdgriffith$elm_ui$Element$Font$size(fontSize + 2)
+							A2($author$project$View$Style$relFontSize, ui, 2)
 						]),
-					$author$project$View$Style$quotedText(title)),
+					A2($author$project$View$Style$quotedText, ui, title)),
 					A2(
 					$mdgriffith$elm_ui$Element$column,
 					_List_fromArray(
@@ -31173,69 +31664,82 @@ var $author$project$View$Style$titledParagraphStyle = F3(
 							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 							$mdgriffith$elm_ui$Element$spacing(10),
-							$mdgriffith$elm_ui$Element$Font$size(fontSize)
+							A2($author$project$View$Style$relFontSize, ui, 0)
 						]),
-					A2($elm$core$List$map, $author$project$View$Style$multiLineQuotedText, content))
+					A2(
+						$elm$core$List$map,
+						$author$project$View$Style$multiLineQuotedText(ui),
+						content))
 				]));
 	});
-var $author$project$View$WelcomeScreen$titledMultiText = F2(
-	function (title, content) {
+var $author$project$View$WelcomeScreen$titledMultiText = F3(
+	function (ui, title, content) {
 		return A3(
 			$author$project$View$Style$titledParagraphStyle,
+			ui,
 			title,
-			A2($elm$core$List$map, $author$project$Utils$TextUtils$oneline, content),
-			12);
+			A2($elm$core$List$map, $author$project$Utils$TextUtils$oneline, content));
 	});
-var $author$project$View$WelcomeScreen$dataPrivacy = A2(
-	$author$project$View$WelcomeScreen$titledMultiText,
-	'Data privacy and protection',
-	_List_fromArray(
-		['GreenGen\'s main goal is to help people to become more environment friendly.\r\n       We are not a social media to profile you activity - we actually don\'t care who you are.', 'We store on our servers only the data we need for security purpose and to get the website running. We try to make your identification more difficult -\r\n         so we are not an interesting purchase for any big social media companies or target for hackers.', 'You need an email to register, but we just use it to generate a deterministic id from it -\r\n         we don\'t even keep it after your registration is completed. This means we cannot even contact you by email !', 'We don\'t use tracking cookies. Actually, we don\'t use cookies at all.']));
+var $author$project$View$WelcomeScreen$dataPrivacy = function (ui) {
+	return A3(
+		$author$project$View$WelcomeScreen$titledMultiText,
+		ui,
+		'Data privacy and protection',
+		_List_fromArray(
+			['GreenGen\'s main goal is to help people to become more environment friendly.\r\n       We are not a social media to profile you activity - we actually don\'t care who you are.', 'We store on our servers only the data we need for security purpose and to get the website running. We try to make your identification more difficult -\r\n         so we are not an interesting purchase for any big social media companies or target for hackers.', 'You need an email to register, but we just use it to generate a deterministic id from it -\r\n         we don\'t even keep it after your registration is completed. This means we cannot even contact you by email !', 'We don\'t use tracking cookies. Actually, we don\'t use cookies at all.']));
+};
 var $author$project$Update$Msg$GenerateWelcomeFeed = {$: 'GenerateWelcomeFeed'};
-var $author$project$View$WelcomeScreen$generateFeedButton = A2(
-	$mdgriffith$elm_ui$Element$el,
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$centerX,
-			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-		]),
-	A2(
-		$mdgriffith$elm_ui$Element$Input$button,
+var $author$project$View$WelcomeScreen$generateFeedButton = function (ui) {
+	return A2(
+		$mdgriffith$elm_ui$Element$el,
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$padding(5),
-				$mdgriffith$elm_ui$Element$Font$size(24),
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-				$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
-				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background),
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$rounded(5)
+				$mdgriffith$elm_ui$Element$centerX,
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
 			]),
-		{
-			label: A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$centerX]),
-				$mdgriffith$elm_ui$Element$text('Let\'s get started !')),
-			onPress: $elm$core$Maybe$Just($author$project$Update$Msg$GenerateWelcomeFeed)
-		}));
-var $author$project$View$WelcomeScreen$howDoesItWork = A2(
-	$author$project$View$WelcomeScreen$titledMultiText,
-	'How does it work ?',
-	_List_fromArray(
-		['GreenGen provides you with a number of tools to help you changing your behaviour,\r\n       and with a community to support you with advices and keep you motivated.\r\n       We believe small, sustained, regular steps will work better than introducing big changes in one go.', 'Post tips, challenge yourself and your followers, organize events, poll opinions ... we have the tools for that.']));
-var $author$project$View$WelcomeScreen$titledText = F2(
-	function (title, content) {
+		A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$padding(5),
+					A2($author$project$View$Style$relFontSize, ui, 14),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+					$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
+					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$Border$color(ui.theme.background),
+					$mdgriffith$elm_ui$Element$Border$width(1),
+					$mdgriffith$elm_ui$Element$Border$rounded(5)
+				]),
+			{
+				label: A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$centerX]),
+					$mdgriffith$elm_ui$Element$text('Let\'s get started !')),
+				onPress: $elm$core$Maybe$Just($author$project$Update$Msg$GenerateWelcomeFeed)
+			}));
+};
+var $author$project$View$WelcomeScreen$howDoesItWork = function (ui) {
+	return A3(
+		$author$project$View$WelcomeScreen$titledMultiText,
+		ui,
+		'How does it work ?',
+		_List_fromArray(
+			['GreenGen provides you with a number of tools to help you changing your behaviour,\r\n       and with a community to support you with advices and keep you motivated.\r\n       We believe small, sustained, regular steps will work better than introducing big changes in one go.', 'Post tips, challenge yourself and your followers, organize events, poll opinions ... we have the tools for that.']));
+};
+var $author$project$View$WelcomeScreen$titledText = F3(
+	function (ui, title, content) {
 		return A3(
 			$author$project$View$Style$titledTextStyle,
+			ui,
 			title,
-			$author$project$Utils$TextUtils$oneline(content),
-			12);
+			$author$project$Utils$TextUtils$oneline(content));
 	});
-var $author$project$View$WelcomeScreen$startNow = A2($author$project$View$WelcomeScreen$titledText, 'Let\'s start now !', 'Your feed is now empty. We will generate one randomly from recent posts from our users.\r\n       You can also go to the search screen and look for topics you are interested in, follow hashtags and users.\r\n       With time, your feed will improve.\r\n    ');
-var $author$project$View$WelcomeScreen$bullet = F2(
-	function (icon, txt) {
+var $author$project$View$WelcomeScreen$startNow = function (ui) {
+	return A3($author$project$View$WelcomeScreen$titledText, ui, 'Let\'s start now !', 'Your feed is now empty. We will generate one randomly from recent posts from our users.\r\n       You can also go to the search screen and look for topics you are interested in, follow hashtags and users.\r\n       With time, your feed will improve.\r\n    ');
+};
+var $author$project$View$WelcomeScreen$bullet = F3(
+	function (ui, icon, txt) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -31250,22 +31754,25 @@ var $author$project$View$WelcomeScreen$bullet = F2(
 					_List_fromArray(
 						[
 							$mdgriffith$elm_ui$Element$padding(2),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
 							$mdgriffith$elm_ui$Element$Border$rounded(2),
 							$mdgriffith$elm_ui$Element$alignLeft
 						]),
 					icon),
 					A2(
-					$mdgriffith$elm_ui$Element$el,
+					$mdgriffith$elm_ui$Element$paragraph,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12)
+							A2($author$project$View$Style$relFontSize, ui, 0)
 						]),
-					$mdgriffith$elm_ui$Element$text(txt))
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$text(txt)
+						]))
 				]));
 	});
-var $author$project$View$Icons$calendar = $lemol$ant_design_icons_elm_ui$Ant$Icons$calendarOutlined;
+var $author$project$View$Icons$calendar = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$calendarOutlined);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$GlobalOutlined$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -31290,7 +31797,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$globalOutlined = $lemol$ant_design
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$globalOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$globalOutlined);
 };
-var $author$project$View$Icons$feed = $lemol$ant_design_icons_elm_ui$Ant$Icons$globalOutlined;
+var $author$project$View$Icons$feed = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$globalOutlined);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$BellOutlined$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -31315,12 +31822,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$bellOutlined = $lemol$ant_design_i
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$bellOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$bellOutlined);
 };
-var $author$project$View$Icons$notifications = $lemol$ant_design_icons_elm_ui$Ant$Icons$bellOutlined;
-var $author$project$View$Icons$small = _List_fromArray(
-	[
-		$lemol$ant_design_icons_elm_ui$Ant$Icon$width(16),
-		$lemol$ant_design_icons_elm_ui$Ant$Icon$height(16)
-	]);
+var $author$project$View$Icons$notifications = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$bellOutlined);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$HomeOutlined$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -31345,119 +31847,138 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$homeOutlined = $lemol$ant_design_i
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$homeOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$homeOutlined);
 };
-var $author$project$View$Icons$wall = $lemol$ant_design_icons_elm_ui$Ant$Icons$homeOutlined;
-var $author$project$View$WelcomeScreen$userGuide = A3(
-	$author$project$View$Style$titledElementStyle,
-	'Quick user guide',
-	A2(
+var $author$project$View$Icons$wall = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$homeOutlined);
+var $author$project$View$WelcomeScreen$userGuide = function (ui) {
+	return A3(
+		$author$project$View$Style$titledElementStyle,
+		ui,
+		'Quick user guide',
+		A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(2)
+				]),
+			_List_fromArray(
+				[
+					A3(
+					$author$project$View$WelcomeScreen$bullet,
+					ui,
+					$author$project$View$Icons$wall(ui.small),
+					'Your home page. You can see all your posts here.'),
+					A3(
+					$author$project$View$WelcomeScreen$bullet,
+					ui,
+					$author$project$View$Icons$feed(ui.small),
+					'Your feed. All the new content of people or hashtags you are following should be there'),
+					A3(
+					$author$project$View$WelcomeScreen$bullet,
+					ui,
+					$author$project$View$Icons$challenge(ui.small),
+					'Challenge page. You can see all your current challenges, and statuses.'),
+					A3(
+					$author$project$View$WelcomeScreen$bullet,
+					ui,
+					$author$project$View$Icons$calendar(ui.small),
+					'Your event page. This is where you can see your incoming events, or manage events you are organizing.'),
+					A3(
+					$author$project$View$WelcomeScreen$bullet,
+					ui,
+					$author$project$View$Icons$notifications(ui.small),
+					'Notifications from GreenGen will be there'),
+					A3(
+					$author$project$View$WelcomeScreen$bullet,
+					ui,
+					A2(
+						$mdgriffith$elm_ui$Element$el,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$width(
+								$mdgriffith$elm_ui$Element$px(16)),
+								$mdgriffith$elm_ui$Element$height(
+								$mdgriffith$elm_ui$Element$px(16)),
+								$mdgriffith$elm_ui$Element$centerX,
+								$mdgriffith$elm_ui$Element$centerY
+							]),
+						$mdgriffith$elm_ui$Element$text('+')),
+					'And when you are ready ... go to our wizard page, and post something or even organize an event !')
+				])));
+};
+var $author$project$View$WelcomeScreen$whatIsGreenGen = function (ui) {
+	return A3(
+		$author$project$View$WelcomeScreen$titledMultiText,
+		ui,
+		'What is GreenGen ?',
+		_List_fromArray(
+			['GreenGen is a new social network which aims at helping people to do small efforts to improve environment.', 'This version of GreenGen is a still a proof of concept. Expect bugs and issues.']));
+};
+var $author$project$View$WelcomeScreen$renderWelcomePage = function (ui) {
+	return A2(
 		$mdgriffith$elm_ui$Element$column,
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$spacing(2)
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$spacing(15)
+			]),
+		_List_fromArray(
+			[
+				$author$project$View$WelcomeScreen$whatIsGreenGen(ui),
+				$author$project$View$WelcomeScreen$howDoesItWork(ui),
+				$author$project$View$WelcomeScreen$userGuide(ui),
+				$author$project$View$WelcomeScreen$dataPrivacy(ui),
+				$author$project$View$WelcomeScreen$startNow(ui),
+				A2(
+				$mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[$mdgriffith$elm_ui$Element$centerX]),
+				$author$project$View$WelcomeScreen$generateFeedButton(ui))
+			]));
+};
+var $author$project$View$WelcomeScreen$welcome = function (ui) {
+	return A2(
+		$mdgriffith$elm_ui$Element$column,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$padding(10),
+				$mdgriffith$elm_ui$Element$spacing(10)
 			]),
 		_List_fromArray(
 			[
 				A2(
-				$author$project$View$WelcomeScreen$bullet,
-				$author$project$View$Icons$wall($author$project$View$Icons$small),
-				'Your home page. You can see all your posts here.'),
-				A2(
-				$author$project$View$WelcomeScreen$bullet,
-				$author$project$View$Icons$feed($author$project$View$Icons$small),
-				'Your feed. All the new content of people or hashtags you are following should be there'),
-				A2(
-				$author$project$View$WelcomeScreen$bullet,
-				$author$project$View$Icons$challenge($author$project$View$Icons$small),
-				'Challenge page. You can see all your current challenges, and statuses.'),
-				A2(
-				$author$project$View$WelcomeScreen$bullet,
-				$author$project$View$Icons$calendar($author$project$View$Icons$small),
-				'Your event page. This is where you can see your incoming events, or manage events you are organizing.'),
-				A2(
-				$author$project$View$WelcomeScreen$bullet,
-				$author$project$View$Icons$notifications($author$project$View$Icons$small),
-				'Notifications from GreenGen will be there'),
-				A2(
-				$author$project$View$WelcomeScreen$bullet,
-				A2(
-					$mdgriffith$elm_ui$Element$el,
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$Font$semiBold,
-							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(16)),
-							$mdgriffith$elm_ui$Element$height(
-							$mdgriffith$elm_ui$Element$px(16)),
-							$mdgriffith$elm_ui$Element$centerX,
-							$mdgriffith$elm_ui$Element$centerY
-						]),
-					$mdgriffith$elm_ui$Element$text('+')),
-				'And when you are ready ... go to our wizard page, and post something or even organize an event !')
-			])),
-	12);
-var $author$project$View$WelcomeScreen$whatIsGreenGen = A2(
-	$author$project$View$WelcomeScreen$titledMultiText,
-	'What is GreenGen ?',
-	_List_fromArray(
-		['GreenGen is a new social network which aims at helping people to do small efforts to improve environment.', 'This version of GreenGen is a still a proof of concept. Expect bugs and issues.']));
-var $author$project$View$WelcomeScreen$renderWelcomePage = A2(
-	$mdgriffith$elm_ui$Element$column,
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$spacing(15)
-		]),
-	_List_fromArray(
-		[
-			$author$project$View$WelcomeScreen$whatIsGreenGen,
-			$author$project$View$WelcomeScreen$howDoesItWork,
-			$author$project$View$WelcomeScreen$userGuide,
-			$author$project$View$WelcomeScreen$dataPrivacy,
-			$author$project$View$WelcomeScreen$startNow,
-			A2(
-			$mdgriffith$elm_ui$Element$el,
-			_List_fromArray(
-				[$mdgriffith$elm_ui$Element$centerX]),
-			$author$project$View$WelcomeScreen$generateFeedButton)
-		]));
-var $author$project$View$WelcomeScreen$welcome = A2(
-	$mdgriffith$elm_ui$Element$column,
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$padding(10),
-			$mdgriffith$elm_ui$Element$spacing(10)
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$mdgriffith$elm_ui$Element$el,
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$Font$size(32),
-					$mdgriffith$elm_ui$Element$Font$semiBold,
-					$mdgriffith$elm_ui$Element$centerX,
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
-				]),
-			$mdgriffith$elm_ui$Element$text('Welcome to the GreenGen family !')),
-			A2($author$project$View$Style$horizontalSeparator, 1, $author$project$View$Theme$background)
-		]));
-var $author$project$View$WelcomeScreen$welcomeScreen = A2(
-	$mdgriffith$elm_ui$Element$column,
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$centerX,
-			$mdgriffith$elm_ui$Element$spacing(20),
-			$mdgriffith$elm_ui$Element$padding(5)
-		]),
-	_List_fromArray(
-		[$author$project$View$WelcomeScreen$welcome, $author$project$View$WelcomeScreen$renderWelcomePage]));
+				$mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[
+						A2($author$project$View$Style$relFontSize, ui, 22),
+						$mdgriffith$elm_ui$Element$Font$semiBold,
+						$mdgriffith$elm_ui$Element$centerX,
+						$mdgriffith$elm_ui$Element$Font$color(ui.theme.background)
+					]),
+				$mdgriffith$elm_ui$Element$text('Welcome !')),
+				A2($author$project$View$Style$horizontalSeparator, 1, ui.theme.background)
+			]));
+};
+var $author$project$View$WelcomeScreen$welcomeScreen = function (ui) {
+	return A2(
+		$mdgriffith$elm_ui$Element$column,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$centerX,
+				$mdgriffith$elm_ui$Element$spacing(20),
+				$mdgriffith$elm_ui$Element$padding(5)
+			]),
+		_List_fromArray(
+			[
+				$author$project$View$WelcomeScreen$welcome(ui),
+				$author$project$View$WelcomeScreen$renderWelcomePage(ui)
+			]));
+};
 var $author$project$View$FeedScreen$renderNoPostPage = $author$project$View$WelcomeScreen$welcomeScreen;
 var $author$project$View$FeedScreen$renderSinglePost = $author$project$View$PostRenderer$renderPostId;
-var $author$project$View$FeedScreen$renderPostPage = F3(
-	function (tmstp, cache, page) {
+var $author$project$View$FeedScreen$renderPostPage = F2(
+	function (state, page) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -31470,22 +31991,23 @@ var $author$project$View$FeedScreen$renderPostPage = F3(
 				]),
 			A2(
 				$elm$core$List$map,
-				A2($author$project$View$FeedScreen$renderSinglePost, tmstp, cache),
+				A3($author$project$View$FeedScreen$renderSinglePost, state.uiStyle, state.timestamp, state.cache),
 				page.items));
 	});
-var $author$project$View$FeedScreen$renderFeedState = F3(
-	function (tmstp, cache, state) {
-		var _v0 = $author$project$State$FeedState$allUpToCurrentPage(state);
-		if (_v0.$ === 'Just') {
-			var page = _v0.a;
-			return $author$project$State$GenericPage$isEmpty(page) ? $author$project$View$FeedScreen$renderNoPostPage : A3($author$project$View$FeedScreen$renderPostPage, tmstp, cache, page);
-		} else {
-			return $author$project$View$FeedScreen$renderLoadingPosts;
-		}
-	});
+var $author$project$View$FeedScreen$renderFeedState = function (state) {
+	var _v0 = $author$project$State$FeedState$allUpToCurrentPage(state.feed);
+	if (_v0.$ === 'Just') {
+		var page = _v0.a;
+		return $author$project$State$GenericPage$isEmpty(page) ? $author$project$View$FeedScreen$renderNoPostPage(state.uiStyle) : A2($author$project$View$FeedScreen$renderPostPage, state, page);
+	} else {
+		return $author$project$View$FeedScreen$renderLoadingPosts(state.uiStyle);
+	}
+};
 var $author$project$View$FeedScreen$feedScreen = function (state) {
-	return A3(
-		$author$project$View$InfiniteScroll$infiniteScroll,
+	return A5(
+		$author$project$View$InfiniteScroll$infiniteScrollWithMoreButton,
+		state.uiStyle,
+		$author$project$View$UIStyle$isMobile(state.device),
 		'feed',
 		$author$project$Update$Msg$ChangeFeedPage(
 			$author$project$Data$Page$next(state.feed.currentPage)),
@@ -31501,7 +32023,7 @@ var $author$project$View$FeedScreen$feedScreen = function (state) {
 				]),
 			_List_fromArray(
 				[
-					A3($author$project$View$FeedScreen$renderFeedState, state.timestamp, state.cache, state.feed)
+					$author$project$View$FeedScreen$renderFeedState(state)
 				])));
 };
 var $author$project$View$AppView$displayFeed = $author$project$View$FeedScreen$feedScreen;
@@ -31513,17 +32035,17 @@ var $author$project$View$LoginScreen$errorMessage = function (err) {
 		return 'Authentication failed';
 	}
 };
-var $author$project$View$Theme$errorForeground = A3($mdgriffith$elm_ui$Element$rgb255, 164, 25, 0);
-var $author$project$View$Style$errorTextStyle = function (txt) {
-	return A2(
-		$mdgriffith$elm_ui$Element$el,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$errorForeground),
-				$mdgriffith$elm_ui$Element$Font$italic
-			]),
-		$mdgriffith$elm_ui$Element$text(txt));
-};
+var $author$project$View$Style$errorTextStyle = F2(
+	function (ui, txt) {
+		return A2(
+			$mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.errorForeground),
+					$mdgriffith$elm_ui$Element$Font$italic
+				]),
+			$mdgriffith$elm_ui$Element$text(txt));
+	});
 var $author$project$Update$Msg$Logon = F2(
 	function (a, b) {
 		return {$: 'Logon', a: a, b: b};
@@ -31560,11 +32082,6 @@ var $mdgriffith$elm_ui$Element$Input$currentPassword = F2(
 	});
 var $mdgriffith$elm_ui$Element$Input$OnLeft = {$: 'OnLeft'};
 var $mdgriffith$elm_ui$Element$Input$labelLeft = $mdgriffith$elm_ui$Element$Input$Label($mdgriffith$elm_ui$Element$Input$OnLeft);
-var $author$project$View$Icons$normal = _List_fromArray(
-	[
-		$lemol$ant_design_icons_elm_ui$Ant$Icon$width(24),
-		$lemol$ant_design_icons_elm_ui$Ant$Icon$height(24)
-	]);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$LockOutlined$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -31589,7 +32106,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$lockOutlined = $lemol$ant_design_i
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$lockOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$lockOutlined);
 };
-var $author$project$View$Icons$password = $lemol$ant_design_icons_elm_ui$Ant$Icons$lockOutlined;
+var $author$project$View$Icons$password = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$lockOutlined);
 var $author$project$View$LoginScreen$readPassword = function (state) {
 	var _v0 = state.user;
 	if (_v0.$ === 'LoggingIn') {
@@ -31645,34 +32162,34 @@ var $author$project$View$LoginScreen$loginComponents = function (state) {
 			$mdgriffith$elm_ui$Element$Input$username,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground)
+					$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.textFieldBackground),
+					$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground)
 				]),
 			{
 				label: A2(
 					$mdgriffith$elm_ui$Element$Input$labelLeft,
 					_List_fromArray(
 						[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-					$author$project$View$Icons$user($author$project$View$Icons$normal)),
+					$author$project$View$Icons$user(state.uiStyle.normal)),
 				onChange: $author$project$View$LoginScreen$updateUsername(state),
-				placeholder: $author$project$View$Style$placeholderStyle('Username'),
+				placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Username'),
 				text: $author$project$View$LoginScreen$readUsername(state)
 			}),
 			A2(
 			$mdgriffith$elm_ui$Element$Input$currentPassword,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground)
+					$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.textFieldBackground),
+					$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground)
 				]),
 			{
 				label: A2(
 					$mdgriffith$elm_ui$Element$Input$labelLeft,
 					_List_fromArray(
 						[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-					$author$project$View$Icons$password($author$project$View$Icons$normal)),
+					$author$project$View$Icons$password(state.uiStyle.normal)),
 				onChange: $author$project$View$LoginScreen$updatePassword(state),
-				placeholder: $author$project$View$Style$placeholderStyle('Password'),
+				placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Password'),
 				show: false,
 				text: $author$project$View$LoginScreen$readPassword(state)
 			}),
@@ -31684,8 +32201,8 @@ var $author$project$View$LoginScreen$loginComponents = function (state) {
 					$mdgriffith$elm_ui$Element$Border$width(2),
 					$mdgriffith$elm_ui$Element$Border$rounded(5),
 					$mdgriffith$elm_ui$Element$padding(5),
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$appBackground),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$enabledButton)
+					$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.appBackground),
+					$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.enabledButton)
 				]),
 			{
 				label: $mdgriffith$elm_ui$Element$text('Login'),
@@ -31693,6 +32210,14 @@ var $author$project$View$LoginScreen$loginComponents = function (state) {
 			})
 		]);
 };
+var $mdgriffith$elm_ui$Internal$Model$Max = F2(
+	function (a, b) {
+		return {$: 'Max', a: a, b: b};
+	});
+var $mdgriffith$elm_ui$Element$maximum = F2(
+	function (i, l) {
+		return A2($mdgriffith$elm_ui$Internal$Model$Max, i, l);
+	});
 var $author$project$View$LoginScreen$loginFailedScreen = F2(
 	function (err, state) {
 		return A2(
@@ -31703,25 +32228,21 @@ var $author$project$View$LoginScreen$loginFailedScreen = F2(
 					$mdgriffith$elm_ui$Element$centerY,
 					$mdgriffith$elm_ui$Element$spacing(10),
 					$mdgriffith$elm_ui$Element$padding(10),
+					$mdgriffith$elm_ui$Element$width(
+					A2($mdgriffith$elm_ui$Element$maximum, 500, $mdgriffith$elm_ui$Element$fill)),
 					$mdgriffith$elm_ui$Element$Border$rounded(20),
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground)
+					$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.background),
+					$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.foreground)
 				]),
 			A2(
 				$elm$core$List$cons,
-				$author$project$View$Style$errorTextStyle(
+				A2(
+					$author$project$View$Style$errorTextStyle,
+					state.uiStyle,
 					$author$project$View$LoginScreen$errorMessage(err)),
 				$author$project$View$LoginScreen$loginComponents(state)));
 	});
 var $author$project$View$AppView$displayLoginFailedPage = $author$project$View$LoginScreen$loginFailedScreen;
-var $mdgriffith$elm_ui$Internal$Model$Max = F2(
-	function (a, b) {
-		return {$: 'Max', a: a, b: b};
-	});
-var $mdgriffith$elm_ui$Element$maximum = F2(
-	function (i, l) {
-		return A2($mdgriffith$elm_ui$Internal$Model$Max, i, l);
-	});
 var $author$project$View$Style$internalPageLinkStyle = F2(
 	function (page, txt) {
 		return A2(
@@ -31734,23 +32255,25 @@ var $author$project$View$Style$internalPageLinkStyle = F2(
 					$author$project$Update$Msg$DisplayPage(page))
 			});
 	});
-var $author$project$View$LoginScreen$signUpLink = A2(
-	$mdgriffith$elm_ui$Element$paragraph,
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$centerX,
-			$mdgriffith$elm_ui$Element$spacing(5),
-			$mdgriffith$elm_ui$Element$Font$size(13),
-			$mdgriffith$elm_ui$Element$Font$italic,
-			$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
-		]),
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$text('If you don\'t have yet an account, please use our '),
-			A2($author$project$View$Style$internalPageLinkStyle, $author$project$State$AppState$RegistrationPage, 'Sign-Up'),
-			$mdgriffith$elm_ui$Element$text(' page instead.')
-		]));
+var $author$project$View$LoginScreen$signUpLink = function (ui) {
+	return A2(
+		$mdgriffith$elm_ui$Element$paragraph,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$centerX,
+				$mdgriffith$elm_ui$Element$spacing(5),
+				A2($author$project$View$Style$relFontSize, ui, 3),
+				$mdgriffith$elm_ui$Element$Font$italic,
+				$mdgriffith$elm_ui$Element$Font$color(ui.theme.background)
+			]),
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$text('If you don\'t have yet an account, please use our '),
+				A2($author$project$View$Style$internalPageLinkStyle, $author$project$State$AppState$RegistrationPage, 'Sign-Up'),
+				$mdgriffith$elm_ui$Element$text(' page instead.')
+			]));
+};
 var $author$project$View$LoginScreen$loginScreen = function (state) {
 	return A2(
 		$mdgriffith$elm_ui$Element$column,
@@ -31758,7 +32281,8 @@ var $author$project$View$LoginScreen$loginScreen = function (state) {
 			[
 				$mdgriffith$elm_ui$Element$centerX,
 				$mdgriffith$elm_ui$Element$centerY,
-				$mdgriffith$elm_ui$Element$spacing(30)
+				$mdgriffith$elm_ui$Element$spacing(30),
+				$mdgriffith$elm_ui$Element$padding(20)
 			]),
 		_List_fromArray(
 			[
@@ -31773,20 +32297,20 @@ var $author$project$View$LoginScreen$loginScreen = function (state) {
 						$mdgriffith$elm_ui$Element$width(
 						A2($mdgriffith$elm_ui$Element$maximum, 500, $mdgriffith$elm_ui$Element$fill)),
 						$mdgriffith$elm_ui$Element$Border$rounded(20),
-						$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
-						$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground)
+						$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.background),
+						$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.foreground)
 					]),
 				$author$project$View$LoginScreen$loginComponents(state)),
-				$author$project$View$LoginScreen$signUpLink
+				$author$project$View$LoginScreen$signUpLink(state.uiStyle)
 			]));
 };
 var $author$project$View$AppView$displayLoginPage = $author$project$View$LoginScreen$loginScreen;
-var $author$project$View$LoggedOffScreen$logoffScreen = function (_v0) {
+var $author$project$View$LoggedOffScreen$logoffScreen = function (state) {
 	return A2(
 		$mdgriffith$elm_ui$Element$paragraph,
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$Font$size(48),
+				A2($author$project$View$Style$relFontSize, state.uiStyle, 38),
 				$mdgriffith$elm_ui$Element$Font$center
 			]),
 		_List_fromArray(
@@ -31801,16 +32325,16 @@ var $author$project$View$LoggedOffScreen$logoffScreen = function (_v0) {
 };
 var $author$project$View$AppView$displayLogoffPage = $author$project$View$LoggedOffScreen$logoffScreen;
 var $author$project$State$AppState$WizardNewChallengePage = {$: 'WizardNewChallengePage'};
-var $author$project$View$NewPostScreen$wizardButton = F3(
-	function (txt, icon, onClick) {
+var $author$project$View$NewPostScreen$wizardButton = F4(
+	function (ui, txt, icon, onClick) {
 		return A2(
 			$mdgriffith$elm_ui$Element$Input$button,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$padding(15),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+					$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
 					$mdgriffith$elm_ui$Element$Border$rounded(20)
 				]),
 			{
@@ -31820,7 +32344,7 @@ var $author$project$View$NewPostScreen$wizardButton = F3(
 						[
 							$mdgriffith$elm_ui$Element$padding(5),
 							$mdgriffith$elm_ui$Element$spacing(20),
-							$mdgriffith$elm_ui$Element$Font$size(20)
+							A2($author$project$View$Style$relFontSize, ui, 10)
 						]),
 					_List_fromArray(
 						[
@@ -31830,36 +32354,51 @@ var $author$project$View$NewPostScreen$wizardButton = F3(
 				onPress: $elm$core$Maybe$Just(onClick)
 			});
 	});
-var $author$project$View$NewPostScreen$newChallengeButton = A3(
-	$author$project$View$NewPostScreen$wizardButton,
-	'Create a new challenge',
-	$author$project$View$Icons$challenge($author$project$View$Icons$large),
-	$author$project$Update$Msg$DisplayPage($author$project$State$AppState$WizardNewChallengePage));
+var $author$project$View$NewPostScreen$newChallengeButton = function (ui) {
+	return A4(
+		$author$project$View$NewPostScreen$wizardButton,
+		ui,
+		'Create a new challenge',
+		$author$project$View$Icons$challenge(ui.large),
+		$author$project$Update$Msg$DisplayPage($author$project$State$AppState$WizardNewChallengePage));
+};
 var $author$project$State$AppState$WizardNewEventPage = {$: 'WizardNewEventPage'};
-var $author$project$View$NewPostScreen$newEventButton = A3(
-	$author$project$View$NewPostScreen$wizardButton,
-	'Create an event',
-	$author$project$View$Icons$event($author$project$View$Icons$large),
-	$author$project$Update$Msg$DisplayPage($author$project$State$AppState$WizardNewEventPage));
+var $author$project$View$NewPostScreen$newEventButton = function (ui) {
+	return A4(
+		$author$project$View$NewPostScreen$wizardButton,
+		ui,
+		'Create an event',
+		$author$project$View$Icons$event(ui.large),
+		$author$project$Update$Msg$DisplayPage($author$project$State$AppState$WizardNewEventPage));
+};
 var $author$project$State$AppState$WizardNewFreePostPage = {$: 'WizardNewFreePostPage'};
-var $author$project$View$NewPostScreen$newFreeTextButton = A3(
-	$author$project$View$NewPostScreen$wizardButton,
-	'Create a new free text post ',
-	$author$project$View$Icons$post($author$project$View$Icons$large),
-	$author$project$Update$Msg$DisplayPage($author$project$State$AppState$WizardNewFreePostPage));
+var $author$project$View$NewPostScreen$newFreeTextButton = function (ui) {
+	return A4(
+		$author$project$View$NewPostScreen$wizardButton,
+		ui,
+		'Create a new free text post ',
+		$author$project$View$Icons$post(ui.large),
+		$author$project$Update$Msg$DisplayPage($author$project$State$AppState$WizardNewFreePostPage));
+};
 var $author$project$State$AppState$WizardNewPollPage = {$: 'WizardNewPollPage'};
-var $author$project$View$NewPostScreen$newPollButton = A3(
-	$author$project$View$NewPostScreen$wizardButton,
-	'Create a new Poll',
-	$author$project$View$Icons$poll($author$project$View$Icons$large),
-	$author$project$Update$Msg$DisplayPage($author$project$State$AppState$WizardNewPollPage));
+var $author$project$View$NewPostScreen$newPollButton = function (ui) {
+	return A4(
+		$author$project$View$NewPostScreen$wizardButton,
+		ui,
+		'Create a new Poll',
+		$author$project$View$Icons$poll(ui.large),
+		$author$project$Update$Msg$DisplayPage($author$project$State$AppState$WizardNewPollPage));
+};
 var $author$project$State$AppState$WizardNewTipPage = {$: 'WizardNewTipPage'};
-var $author$project$View$NewPostScreen$newTipButton = A3(
-	$author$project$View$NewPostScreen$wizardButton,
-	'Create a new Tip',
-	$author$project$View$Icons$tip($author$project$View$Icons$large),
-	$author$project$Update$Msg$DisplayPage($author$project$State$AppState$WizardNewTipPage));
-var $author$project$View$NewPostScreen$newPostScreen = function (_v0) {
+var $author$project$View$NewPostScreen$newTipButton = function (ui) {
+	return A4(
+		$author$project$View$NewPostScreen$wizardButton,
+		ui,
+		'Create a new Tip',
+		$author$project$View$Icons$tip(ui.large),
+		$author$project$Update$Msg$DisplayPage($author$project$State$AppState$WizardNewTipPage));
+};
+var $author$project$View$NewPostScreen$newPostScreen = function (state) {
 	return A2(
 		$mdgriffith$elm_ui$Element$column,
 		_List_fromArray(
@@ -31871,7 +32410,13 @@ var $author$project$View$NewPostScreen$newPostScreen = function (_v0) {
 				$mdgriffith$elm_ui$Element$padding(20)
 			]),
 		_List_fromArray(
-			[$author$project$View$NewPostScreen$newTipButton, $author$project$View$NewPostScreen$newChallengeButton, $author$project$View$NewPostScreen$newEventButton, $author$project$View$NewPostScreen$newPollButton, $author$project$View$NewPostScreen$newFreeTextButton]));
+			[
+				$author$project$View$NewPostScreen$newTipButton(state.uiStyle),
+				$author$project$View$NewPostScreen$newChallengeButton(state.uiStyle),
+				$author$project$View$NewPostScreen$newEventButton(state.uiStyle),
+				$author$project$View$NewPostScreen$newPollButton(state.uiStyle),
+				$author$project$View$NewPostScreen$newFreeTextButton(state.uiStyle)
+			]));
 };
 var $author$project$View$AppView$displayNewPost = $author$project$View$NewPostScreen$newPostScreen;
 var $author$project$Update$Msg$ChangeNotificationPage = function (a) {
@@ -31896,9 +32441,9 @@ var $author$project$State$NotificationState$AllTab = {$: 'AllTab'};
 var $author$project$Update$Msg$ChangeNotificationTab = function (a) {
 	return {$: 'ChangeNotificationTab', a: a};
 };
-var $author$project$View$NotificationScreen$notifTabButton = F3(
-	function (label, msg, selected) {
-		return A3($author$project$View$Style$tabButton, label, msg, selected);
+var $author$project$View$NotificationScreen$notifTabButton = F4(
+	function (ui, label, msg, selected) {
+		return A4($author$project$View$Style$tabButton, ui, label, msg, selected);
 	});
 var $author$project$View$NotificationScreen$notificationTabs = function (state) {
 	return A2(
@@ -31909,19 +32454,23 @@ var $author$project$View$NotificationScreen$notificationTabs = function (state) 
 			]),
 		_List_fromArray(
 			[
-				A3(
+				A4(
 				$author$project$View$NotificationScreen$notifTabButton,
+				state.uiStyle,
 				'Unread',
 				$author$project$Update$Msg$ChangeNotificationTab($author$project$State$NotificationState$UnreadTab),
-				_Utils_eq(state.currentTab, $author$project$State$NotificationState$UnreadTab)),
-				A3(
+				_Utils_eq(state.notifications.currentTab, $author$project$State$NotificationState$UnreadTab)),
+				A4(
 				$author$project$View$NotificationScreen$notifTabButton,
+				state.uiStyle,
 				'All',
 				$author$project$Update$Msg$ChangeNotificationTab($author$project$State$NotificationState$AllTab),
-				_Utils_eq(state.currentTab, $author$project$State$NotificationState$AllTab))
+				_Utils_eq(state.notifications.currentTab, $author$project$State$NotificationState$AllTab))
 			]));
 };
-var $author$project$View$NotificationScreen$renderEmptyNotificationScreen = $author$project$View$ScreenUtils$emptyScreen('No new notification');
+var $author$project$View$NotificationScreen$renderEmptyNotificationScreen = function (ui) {
+	return A2($author$project$View$ScreenUtils$emptyScreen, ui, 'No new notification');
+};
 var $author$project$State$NotificationState$getAllUpTo = F2(
 	function (page, cache) {
 		var sortedKeys = A2(
@@ -31953,25 +32502,26 @@ var $author$project$State$NotificationState$getAllUpTo = F2(
 		return $elm$core$List$isEmpty(allNotifs) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
 			{notifications: allNotifs, number: page});
 	});
-var $author$project$View$Style$viewEventButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(11),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$rounded(5)
-			]),
-		{
-			label: $mdgriffith$elm_ui$Element$text('View event'),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$DisplayPage(
-					$author$project$State$AppState$EventDetailsPage(id)))
-		});
-};
+var $author$project$View$Style$viewEventButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 1),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+					$mdgriffith$elm_ui$Element$Border$width(1),
+					$mdgriffith$elm_ui$Element$Border$rounded(5)
+				]),
+			{
+				label: $mdgriffith$elm_ui$Element$text('View event'),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$DisplayPage(
+						$author$project$State$AppState$EventDetailsPage(id)))
+			});
+	});
 var $author$project$View$NotificationScreen$renderEventCancelledNotification = F2(
-	function (cache, eventId) {
+	function (ui, eventId) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -31981,11 +32531,11 @@ var $author$project$View$NotificationScreen$renderEventCancelledNotification = F
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$text('You were registered to an event, but it has been ** CANCELLED **'),
-					$author$project$View$Style$viewEventButtonStyle(eventId)
+					A2($author$project$View$Style$viewEventButtonStyle, ui, eventId)
 				]));
 	});
 var $author$project$View$NotificationScreen$renderEventParticipationAcceptedNotification = F2(
-	function (cache, eventId) {
+	function (ui, eventId) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -31995,11 +32545,11 @@ var $author$project$View$NotificationScreen$renderEventParticipationAcceptedNoti
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$text('You participation to an event has been accepted'),
-					$author$project$View$Style$viewEventButtonStyle(eventId)
+					A2($author$project$View$Style$viewEventButtonStyle, ui, eventId)
 				]));
 	});
 var $author$project$View$NotificationScreen$renderEventParticipationRejectedNotification = F2(
-	function (cache, eventId) {
+	function (ui, eventId) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -32009,11 +32559,11 @@ var $author$project$View$NotificationScreen$renderEventParticipationRejectedNoti
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$text('You participation to an event has been rejected'),
-					$author$project$View$Style$viewEventButtonStyle(eventId)
+					A2($author$project$View$Style$viewEventButtonStyle, ui, eventId)
 				]));
 	});
-var $author$project$View$NotificationScreen$renderUserString = F3(
-	function (cache, userId, txt) {
+var $author$project$View$NotificationScreen$renderUserString = F4(
+	function (ui, cache, userId, txt) {
 		var pseudo = A2(
 			$elm$core$Maybe$withDefault,
 			'<Unknown>',
@@ -32023,43 +32573,45 @@ var $author$project$View$NotificationScreen$renderUserString = F3(
 			_List_Nil,
 			_List_fromArray(
 				[
-					A2(
+					A3(
 					$author$project$View$Style$userStyle,
+					ui,
 					pseudo,
 					$elm$core$Maybe$Just(userId)),
 					$mdgriffith$elm_ui$Element$text(txt)
 				]));
 	});
-var $author$project$View$NotificationScreen$renderMaybeUserString = F3(
-	function (pseudo, userId, txt) {
+var $author$project$View$NotificationScreen$renderMaybeUserString = F4(
+	function (ui, pseudo, userId, txt) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_Nil,
 			_List_fromArray(
 				[
-					A2($author$project$View$Style$userStyle, pseudo, userId),
+					A3($author$project$View$Style$userStyle, ui, pseudo, userId),
 					$mdgriffith$elm_ui$Element$text(txt)
 				]));
 	});
-var $author$project$View$Style$viewChallengeButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(11),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$rounded(5)
-			]),
-		{
-			label: $mdgriffith$elm_ui$Element$text('View challenge'),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$DisplayPage(
-					$author$project$State$AppState$ChallengeDetailsPage(id)))
-		});
-};
-var $author$project$View$NotificationScreen$renderYouHaveBeenChallengedNotification = F2(
-	function (cache, challengeId) {
+var $author$project$View$Style$viewChallengeButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 1),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+					$mdgriffith$elm_ui$Element$Border$width(1),
+					$mdgriffith$elm_ui$Element$Border$rounded(5)
+				]),
+			{
+				label: $mdgriffith$elm_ui$Element$text('View challenge'),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$DisplayPage(
+						$author$project$State$AppState$ChallengeDetailsPage(id)))
+			});
+	});
+var $author$project$View$NotificationScreen$renderYouHaveBeenChallengedNotification = F3(
+	function (ui, cache, challengeId) {
 		var maybeUserId = A2(
 			$elm$core$Maybe$map,
 			function ($) {
@@ -32083,12 +32635,12 @@ var $author$project$View$NotificationScreen$renderYouHaveBeenChallengedNotificat
 				]),
 			_List_fromArray(
 				[
-					A3($author$project$View$NotificationScreen$renderMaybeUserString, pseudo, maybeUserId, ' has challenged you!'),
-					$author$project$View$Style$viewChallengeButtonStyle(challengeId)
+					A4($author$project$View$NotificationScreen$renderMaybeUserString, ui, pseudo, maybeUserId, ' has challenged you!'),
+					A2($author$project$View$Style$viewChallengeButtonStyle, ui, challengeId)
 				]));
 	});
-var $author$project$View$NotificationScreen$renderContent = F2(
-	function (cache, notif) {
+var $author$project$View$NotificationScreen$renderContent = F3(
+	function (ui, cache, notif) {
 		var read = _Utils_eq(notif.status, $author$project$Data$Notification$Read);
 		var elmt = $mdgriffith$elm_ui$Element$el(
 			_List_fromArray(
@@ -32096,7 +32648,7 @@ var $author$project$View$NotificationScreen$renderContent = F2(
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$alignLeft,
 					read ? $mdgriffith$elm_ui$Element$Font$italic : $mdgriffith$elm_ui$Element$Font$semiBold,
-					$mdgriffith$elm_ui$Element$Font$size(12)
+					A2($author$project$View$Style$relFontSize, ui, 2)
 				]));
 		var _v0 = notif.content;
 		switch (_v0.$) {
@@ -32111,55 +32663,56 @@ var $author$project$View$NotificationScreen$renderContent = F2(
 			case 'EventParticipationRequestAcceptedNotification':
 				var eventId = _v0.a;
 				return elmt(
-					A2($author$project$View$NotificationScreen$renderEventParticipationAcceptedNotification, cache, eventId));
+					A2($author$project$View$NotificationScreen$renderEventParticipationAcceptedNotification, ui, eventId));
 			case 'EventParticipationRequestRejectedNotification':
 				var eventId = _v0.a;
 				return elmt(
-					A2($author$project$View$NotificationScreen$renderEventParticipationRejectedNotification, cache, eventId));
+					A2($author$project$View$NotificationScreen$renderEventParticipationRejectedNotification, ui, eventId));
 			case 'EventCancelledNotification':
 				var eventId = _v0.a;
 				return elmt(
-					A2($author$project$View$NotificationScreen$renderEventCancelledNotification, cache, eventId));
+					A2($author$project$View$NotificationScreen$renderEventCancelledNotification, ui, eventId));
 			case 'NewFollowerNotification':
 				var userId = _v0.a;
 				return elmt(
-					A3($author$project$View$NotificationScreen$renderUserString, cache, userId, ' started to follow you'));
+					A4($author$project$View$NotificationScreen$renderUserString, ui, cache, userId, ' started to follow you'));
 			case 'PostLikedNotification':
 				var postId = _v0.a;
 				var userId = _v0.b;
 				return elmt(
-					A3($author$project$View$NotificationScreen$renderUserString, cache, userId, ' liked your post'));
+					A4($author$project$View$NotificationScreen$renderUserString, ui, cache, userId, ' liked your post'));
 			case 'YouHaveBeenChallengedNotification':
 				var challengeId = _v0.a;
 				return elmt(
-					A2($author$project$View$NotificationScreen$renderYouHaveBeenChallengedNotification, cache, challengeId));
+					A3($author$project$View$NotificationScreen$renderYouHaveBeenChallengedNotification, ui, cache, challengeId));
 			case 'ChallengeAcceptedNotification':
 				var challengeId = _v0.a;
 				var userId = _v0.b;
 				return elmt(
-					A3($author$project$View$NotificationScreen$renderUserString, cache, userId, ' has accepted your challenge !'));
+					A4($author$project$View$NotificationScreen$renderUserString, ui, cache, userId, ' has accepted your challenge !'));
 			case 'ChallengeRejectedNotification':
 				var challengeId = _v0.a;
 				var userId = _v0.b;
 				return elmt(
-					A3($author$project$View$NotificationScreen$renderUserString, cache, userId, ' has rejected your challenge !'));
+					A4($author$project$View$NotificationScreen$renderUserString, ui, cache, userId, ' has rejected your challenge !'));
 			default:
 				var pollId = _v0.a;
 				var userId = _v0.b;
 				return elmt(
-					A3($author$project$View$NotificationScreen$renderUserString, cache, userId, ' has answered your poll'));
+					A4($author$project$View$NotificationScreen$renderUserString, ui, cache, userId, ' has answered your poll'));
 		}
 	});
-var $author$project$View$Style$notifHeaderStyle = function (e) {
-	return A2(
-		$mdgriffith$elm_ui$Element$el,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
-				$mdgriffith$elm_ui$Element$Border$rounded(3)
-			]),
-		e);
-};
+var $author$project$View$Style$notifHeaderStyle = F2(
+	function (ui, e) {
+		return A2(
+			$mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.background),
+					$mdgriffith$elm_ui$Element$Border$rounded(3)
+				]),
+			e);
+	});
 var $author$project$Update$Msg$MarkNotificationRead = function (a) {
 	return {$: 'MarkNotificationRead', a: a};
 };
@@ -32192,7 +32745,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$usergroupAddOutlined = $lemol$ant_
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$usergroupAddOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$usergroupAddOutlined);
 };
-var $author$project$View$Icons$newFollowerNotification = $lemol$ant_design_icons_elm_ui$Ant$Icons$usergroupAddOutlined;
+var $author$project$View$Icons$newFollowerNotification = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$usergroupAddOutlined);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$NotificationFilled$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -32217,68 +32770,72 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$notificationFilled = $lemol$ant_de
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$notificationFilled = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$notificationFilled);
 };
-var $author$project$View$Icons$platformNotification = $lemol$ant_design_icons_elm_ui$Ant$Icons$notificationFilled;
+var $author$project$View$Icons$platformNotification = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$notificationFilled);
 var $author$project$View$Icons$pollNotification = $author$project$View$Icons$challenge;
 var $author$project$View$Icons$postNotification = $author$project$View$Icons$like;
-var $author$project$View$NotificationScreen$notifLogo = function (notif) {
-	var logo = function () {
-		var _v0 = notif.content;
-		switch (_v0.$) {
-			case 'PlatformMessageNotification':
-				return $author$project$View$Icons$platformNotification($author$project$View$Icons$small);
-			case 'EventModifiedNotification':
-				return $author$project$View$Icons$eventNotification($author$project$View$Icons$small);
-			case 'EventParticipationRequestAcceptedNotification':
-				return $author$project$View$Icons$eventNotification($author$project$View$Icons$small);
-			case 'EventParticipationRequestRejectedNotification':
-				return $author$project$View$Icons$eventNotification($author$project$View$Icons$small);
-			case 'EventCancelledNotification':
-				return $author$project$View$Icons$eventNotification($author$project$View$Icons$small);
-			case 'NewFollowerNotification':
-				return $author$project$View$Icons$newFollowerNotification($author$project$View$Icons$small);
-			case 'PostLikedNotification':
-				return $author$project$View$Icons$postNotification($author$project$View$Icons$small);
-			case 'YouHaveBeenChallengedNotification':
-				return $author$project$View$Icons$challengeNotification($author$project$View$Icons$small);
-			case 'ChallengeAcceptedNotification':
-				return $author$project$View$Icons$challengeNotification($author$project$View$Icons$small);
-			case 'ChallengeRejectedNotification':
-				return $author$project$View$Icons$challengeNotification($author$project$View$Icons$small);
-			default:
-				return $author$project$View$Icons$pollNotification($author$project$View$Icons$small);
-		}
-	}();
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_Nil,
-		{
-			label: logo,
-			onPress: $author$project$Data$Notification$isRead(notif) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
-				$author$project$Update$Msg$MarkNotificationRead(notif.id))
-		});
-};
-var $author$project$View$NotificationScreen$renderHeader = function (notif) {
-	return $author$project$View$Style$notifHeaderStyle(
-		A2(
-			$mdgriffith$elm_ui$Element$el,
-			_List_fromArray(
-				[$mdgriffith$elm_ui$Element$alignLeft]),
-			$author$project$View$NotificationScreen$notifLogo(notif)));
-};
-var $author$project$View$NotificationScreen$renderTimestamp = F2(
-	function (now, notif) {
+var $author$project$View$NotificationScreen$notifLogo = F2(
+	function (ui, notif) {
+		var logo = function () {
+			var _v0 = notif.content;
+			switch (_v0.$) {
+				case 'PlatformMessageNotification':
+					return $author$project$View$Icons$platformNotification(ui.small);
+				case 'EventModifiedNotification':
+					return $author$project$View$Icons$eventNotification(ui.small);
+				case 'EventParticipationRequestAcceptedNotification':
+					return $author$project$View$Icons$eventNotification(ui.small);
+				case 'EventParticipationRequestRejectedNotification':
+					return $author$project$View$Icons$eventNotification(ui.small);
+				case 'EventCancelledNotification':
+					return $author$project$View$Icons$eventNotification(ui.small);
+				case 'NewFollowerNotification':
+					return $author$project$View$Icons$newFollowerNotification(ui.small);
+				case 'PostLikedNotification':
+					return $author$project$View$Icons$postNotification(ui.small);
+				case 'YouHaveBeenChallengedNotification':
+					return $author$project$View$Icons$challengeNotification(ui.small);
+				case 'ChallengeAcceptedNotification':
+					return $author$project$View$Icons$challengeNotification(ui.small);
+				case 'ChallengeRejectedNotification':
+					return $author$project$View$Icons$challengeNotification(ui.small);
+				default:
+					return $author$project$View$Icons$pollNotification(ui.small);
+			}
+		}();
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_Nil,
+			{
+				label: logo,
+				onPress: $author$project$Data$Notification$isRead(notif) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
+					$author$project$Update$Msg$MarkNotificationRead(notif.id))
+			});
+	});
+var $author$project$View$NotificationScreen$renderHeader = F2(
+	function (state, notif) {
+		return A2(
+			$author$project$View$Style$notifHeaderStyle,
+			state.uiStyle,
+			A2(
+				$mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[$mdgriffith$elm_ui$Element$alignLeft]),
+				A2($author$project$View$NotificationScreen$notifLogo, state.uiStyle, notif)));
+	});
+var $author$project$View$NotificationScreen$renderTimestamp = F3(
+	function (ui, now, notif) {
 		return A2(
 			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$Font$italic,
-					$mdgriffith$elm_ui$Element$Font$size(8)
+					A2($author$project$View$Style$relFontSize, ui, -2)
 				]),
 			$mdgriffith$elm_ui$Element$text(
 				A2($author$project$Utils$DateUtils$formatRelativeTo, now, notif.created)));
 	});
-var $author$project$View$NotificationScreen$renderNotification = F3(
-	function (now, cache, notif) {
+var $author$project$View$NotificationScreen$renderNotification = F2(
+	function (state, notif) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -32288,39 +32845,40 @@ var $author$project$View$NotificationScreen$renderNotification = F3(
 				]),
 			_List_fromArray(
 				[
-					$author$project$View$NotificationScreen$renderHeader(notif),
-					A2($author$project$View$NotificationScreen$renderTimestamp, now, notif),
-					A2($author$project$View$NotificationScreen$renderContent, cache, notif)
+					A2($author$project$View$NotificationScreen$renderHeader, state, notif),
+					A3($author$project$View$NotificationScreen$renderTimestamp, state.uiStyle, state.timestamp, notif),
+					A3($author$project$View$NotificationScreen$renderContent, state.uiStyle, state.cache, notif)
 				]));
 	});
-var $author$project$View$NotificationScreen$renderNotifications = F3(
-	function (now, cache, state) {
-		return A2(
-			$mdgriffith$elm_ui$Element$column,
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$centerX,
-					$mdgriffith$elm_ui$Element$spacing(5),
-					$mdgriffith$elm_ui$Element$padding(10)
-				]),
+var $author$project$View$NotificationScreen$renderNotifications = function (state) {
+	return A2(
+		$mdgriffith$elm_ui$Element$column,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$centerX,
+				$mdgriffith$elm_ui$Element$spacing(5),
+				$mdgriffith$elm_ui$Element$padding(10)
+			]),
+		A2(
+			$elm$core$List$map,
+			$author$project$View$NotificationScreen$renderNotification(state),
 			A2(
-				$elm$core$List$map,
-				A2($author$project$View$NotificationScreen$renderNotification, now, cache),
+				$elm$core$Maybe$withDefault,
+				_List_Nil,
 				A2(
-					$elm$core$Maybe$withDefault,
-					_List_Nil,
-					A2(
-						$elm$core$Maybe$map,
-						function ($) {
-							return $.notifications;
-						},
-						A2($author$project$State$NotificationState$getAllUpTo, state.currentPage, state.latest)))));
-	});
+					$elm$core$Maybe$map,
+					function ($) {
+						return $.notifications;
+					},
+					A2($author$project$State$NotificationState$getAllUpTo, state.notifications.currentPage, state.notifications.latest)))));
+};
 var $author$project$View$NotificationScreen$notificationScreen = function (state) {
-	return A3(
-		$author$project$View$InfiniteScroll$infiniteScroll,
+	return A5(
+		$author$project$View$InfiniteScroll$infiniteScrollWithMoreButton,
+		state.uiStyle,
+		$author$project$View$UIStyle$isMobile(state.device),
 		'notifications',
 		$author$project$Update$Msg$ChangeNotificationPage(
 			$author$project$Data$Page$next(state.notifications.currentPage)),
@@ -32336,8 +32894,8 @@ var $author$project$View$NotificationScreen$notificationScreen = function (state
 				]),
 			_List_fromArray(
 				[
-					$author$project$View$NotificationScreen$notificationTabs(state.notifications),
-					$author$project$State$NotificationState$hasNotifications(state.notifications) ? A3($author$project$View$NotificationScreen$renderNotifications, state.timestamp, state.cache, state.notifications) : $author$project$View$NotificationScreen$renderEmptyNotificationScreen
+					$author$project$View$NotificationScreen$notificationTabs(state),
+					$author$project$State$NotificationState$hasNotifications(state.notifications) ? $author$project$View$NotificationScreen$renderNotifications(state) : $author$project$View$NotificationScreen$renderEmptyNotificationScreen(state.uiStyle)
 				])));
 };
 var $author$project$View$AppView$displayNotification = $author$project$View$NotificationScreen$notificationScreen;
@@ -32347,11 +32905,15 @@ var $author$project$Update$Msg$ChangePinnedPage = function (a) {
 var $author$project$State$PinnedState$allUpToCurrentPage = function (state) {
 	return A2($author$project$State$PostPageCache$getAllUpTo, state.currentPage, state.postCache);
 };
-var $author$project$View$PinnedScreen$renderLoadingPosts = $author$project$View$PostRenderer$renderLoadingPostPage(2);
-var $author$project$View$PinnedScreen$renderNoPinnedPostPage = $author$project$View$ScreenUtils$emptyScreen('No pinned post');
+var $author$project$View$PinnedScreen$renderLoadingPosts = function (ui) {
+	return A2($author$project$View$PostRenderer$renderLoadingPostPage, ui, 2);
+};
+var $author$project$View$PinnedScreen$renderNoPinnedPostPage = function (ui) {
+	return A2($author$project$View$ScreenUtils$emptyScreen, ui, 'No pinned post');
+};
 var $author$project$View$PinnedScreen$renderSinglePost = $author$project$View$PostRenderer$renderPostId;
-var $author$project$View$PinnedScreen$renderPostPage = F3(
-	function (tmstp, cache, page) {
+var $author$project$View$PinnedScreen$renderPostPage = F2(
+	function (state, page) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -32364,22 +32926,23 @@ var $author$project$View$PinnedScreen$renderPostPage = F3(
 				]),
 			A2(
 				$elm$core$List$map,
-				A2($author$project$View$PinnedScreen$renderSinglePost, tmstp, cache),
+				A3($author$project$View$PinnedScreen$renderSinglePost, state.uiStyle, state.timestamp, state.cache),
 				page.items));
 	});
-var $author$project$View$PinnedScreen$renderPinnedState = F3(
-	function (tmstp, cache, state) {
-		var _v0 = $author$project$State$PinnedState$allUpToCurrentPage(state);
-		if (_v0.$ === 'Just') {
-			var page = _v0.a;
-			return $author$project$State$GenericPage$isEmpty(page) ? $author$project$View$PinnedScreen$renderNoPinnedPostPage : A3($author$project$View$PinnedScreen$renderPostPage, tmstp, cache, page);
-		} else {
-			return $author$project$View$PinnedScreen$renderLoadingPosts;
-		}
-	});
+var $author$project$View$PinnedScreen$renderPinnedState = function (state) {
+	var _v0 = $author$project$State$PinnedState$allUpToCurrentPage(state.pinned);
+	if (_v0.$ === 'Just') {
+		var page = _v0.a;
+		return $author$project$State$GenericPage$isEmpty(page) ? $author$project$View$PinnedScreen$renderNoPinnedPostPage(state.uiStyle) : A2($author$project$View$PinnedScreen$renderPostPage, state, page);
+	} else {
+		return $author$project$View$PinnedScreen$renderLoadingPosts(state.uiStyle);
+	}
+};
 var $author$project$View$PinnedScreen$pinnedScreen = function (state) {
-	return A3(
-		$author$project$View$InfiniteScroll$infiniteScroll,
+	return A5(
+		$author$project$View$InfiniteScroll$infiniteScrollWithMoreButton,
+		state.uiStyle,
+		$author$project$View$UIStyle$isMobile(state.device),
 		'pinned',
 		$author$project$Update$Msg$ChangePinnedPage(
 			$author$project$Data$Page$next(state.pinned.currentPage)),
@@ -32395,10 +32958,15 @@ var $author$project$View$PinnedScreen$pinnedScreen = function (state) {
 				]),
 			_List_fromArray(
 				[
-					A3($author$project$View$PinnedScreen$renderPinnedState, state.timestamp, state.cache, state.pinned)
+					$author$project$View$PinnedScreen$renderPinnedState(state)
 				])));
 };
 var $author$project$View$AppView$displayPinnedPost = $author$project$View$PinnedScreen$pinnedScreen;
+var $author$project$View$RegistrationScreen$fontColor = F2(
+	function (ui, b) {
+		return $mdgriffith$elm_ui$Element$Font$color(
+			b ? ui.theme.enabledButton : ui.theme.disabledButton);
+	});
 var $author$project$View$RegistrationScreen$createdAccountComponents = function (state) {
 	return _List_fromArray(
 		[
@@ -32410,7 +32978,9 @@ var $author$project$View$RegistrationScreen$createdAccountComponents = function 
 					$mdgriffith$elm_ui$Element$alignRight,
 					$mdgriffith$elm_ui$Element$Border$width(2),
 					$mdgriffith$elm_ui$Element$Border$rounded(5),
-					$mdgriffith$elm_ui$Element$padding(5)
+					$mdgriffith$elm_ui$Element$padding(5),
+					$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground),
+					A2($author$project$View$RegistrationScreen$fontColor, state.uiStyle, true)
 				]),
 			{
 				label: $mdgriffith$elm_ui$Element$text('Go to Sign-in page'),
@@ -32516,7 +33086,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$mailOutlined = $lemol$ant_design_i
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$mailOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$mailOutlined);
 };
-var $author$project$View$Icons$email = $lemol$ant_design_icons_elm_ui$Ant$Icons$mailOutlined;
+var $author$project$View$Icons$email = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$mailOutlined);
 var $author$project$View$RegistrationScreen$isFailedRegistrationSubmission = function (state) {
 	var submissionState = state.forms.registrationForm.submissionState;
 	return _Utils_eq(submissionState, $author$project$State$FormState$RegistrationSubmissionFailed);
@@ -32627,7 +33197,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$closeCircleOutlined = $lemol$ant_d
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$closeCircleOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$closeCircleOutlined);
 };
-var $author$project$View$Icons$invalid = $lemol$ant_design_icons_elm_ui$Ant$Icons$closeCircleOutlined;
+var $author$project$View$Icons$invalid = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$closeCircleOutlined);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$CheckCircleOutlined$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -32659,30 +33229,31 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$checkCircleOutlined = $lemol$ant_d
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$checkCircleOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$checkCircleOutlined);
 };
-var $author$project$View$Icons$valid = $lemol$ant_design_icons_elm_ui$Ant$Icons$checkCircleOutlined;
-var $author$project$View$RegistrationScreen$validityIcon = function (flag) {
-	if (flag.$ === 'Just') {
-		if (flag.a) {
-			return A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground)
-					]),
-				$author$project$View$Icons$valid($author$project$View$Icons$normal));
+var $author$project$View$Icons$valid = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$checkCircleOutlined);
+var $author$project$View$RegistrationScreen$validityIcon = F2(
+	function (ui, flag) {
+		if (flag.$ === 'Just') {
+			if (flag.a) {
+				return A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground)
+						]),
+					$author$project$View$Icons$valid(ui.normal));
+			} else {
+				return A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground)
+						]),
+					$author$project$View$Icons$invalid(ui.normal));
+			}
 		} else {
-			return A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground)
-					]),
-				$author$project$View$Icons$invalid($author$project$View$Icons$normal));
+			return $mdgriffith$elm_ui$Element$none;
 		}
-	} else {
-		return $mdgriffith$elm_ui$Element$none;
-	}
-};
+	});
 var $author$project$View$RegistrationScreen$registrationComponents = function (state) {
 	return _List_fromArray(
 		[
@@ -32699,22 +33270,29 @@ var $author$project$View$RegistrationScreen$registrationComponents = function (s
 					$mdgriffith$elm_ui$Element$Input$username,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+							$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground),
 							$mdgriffith$elm_ui$Element$Border$width(1),
 							$mdgriffith$elm_ui$Element$Border$color(
-							$author$project$View$RegistrationScreen$checkEmail(state) ? $author$project$View$Theme$background : $author$project$View$Theme$darkRed)
+							$author$project$View$RegistrationScreen$checkEmail(state) ? state.uiStyle.theme.background : $author$project$View$Theme$darkRed)
 						]),
 					{
 						label: A2(
 							$mdgriffith$elm_ui$Element$Input$labelLeft,
 							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-							$author$project$View$Icons$email($author$project$View$Icons$normal)),
+								[
+									$mdgriffith$elm_ui$Element$centerX,
+									$mdgriffith$elm_ui$Element$centerY,
+									$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.foreground)
+								]),
+							$author$project$View$Icons$email(state.uiStyle.normal)),
 						onChange: $author$project$View$RegistrationScreen$updateEmail(state),
-						placeholder: $author$project$View$Style$placeholderStyle('Email'),
+						placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Email'),
 						text: $author$project$View$RegistrationScreen$readEmail(state)
 					}),
-					$author$project$View$RegistrationScreen$validityIcon(
+					A2(
+					$author$project$View$RegistrationScreen$validityIcon,
+					state.uiStyle,
 					A2(
 						$elm$core$Maybe$map,
 						function (_v0) {
@@ -32735,22 +33313,29 @@ var $author$project$View$RegistrationScreen$registrationComponents = function (s
 					$mdgriffith$elm_ui$Element$Input$text,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+							$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground),
 							$mdgriffith$elm_ui$Element$Border$width(1),
 							$mdgriffith$elm_ui$Element$Border$color(
-							$author$project$View$RegistrationScreen$checkPseudo(state) ? $author$project$View$Theme$background : $author$project$View$Theme$darkRed)
+							$author$project$View$RegistrationScreen$checkPseudo(state) ? state.uiStyle.theme.background : $author$project$View$Theme$darkRed)
 						]),
 					{
 						label: A2(
 							$mdgriffith$elm_ui$Element$Input$labelLeft,
 							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-							$author$project$View$Icons$user($author$project$View$Icons$normal)),
+								[
+									$mdgriffith$elm_ui$Element$centerX,
+									$mdgriffith$elm_ui$Element$centerY,
+									$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.foreground)
+								]),
+							$author$project$View$Icons$user(state.uiStyle.normal)),
 						onChange: $author$project$View$RegistrationScreen$updatePseudo(state),
-						placeholder: $author$project$View$Style$placeholderStyle('Pseudo'),
+						placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Pseudo'),
 						text: $author$project$View$RegistrationScreen$readPseudo(state)
 					}),
-					$author$project$View$RegistrationScreen$validityIcon(
+					A2(
+					$author$project$View$RegistrationScreen$validityIcon,
+					state.uiStyle,
 					$author$project$View$RegistrationScreen$serverSidePseudoCheck(state))
 				])),
 			A2(
@@ -32766,23 +33351,30 @@ var $author$project$View$RegistrationScreen$registrationComponents = function (s
 					$mdgriffith$elm_ui$Element$Input$currentPassword,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+							$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground),
 							$mdgriffith$elm_ui$Element$Border$width(1),
 							$mdgriffith$elm_ui$Element$Border$color(
-							$author$project$View$RegistrationScreen$checkPassword(state) ? $author$project$View$Theme$background : $author$project$View$Theme$darkRed)
+							$author$project$View$RegistrationScreen$checkPassword(state) ? state.uiStyle.theme.background : $author$project$View$Theme$darkRed)
 						]),
 					{
 						label: A2(
 							$mdgriffith$elm_ui$Element$Input$labelLeft,
 							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-							$author$project$View$Icons$password($author$project$View$Icons$normal)),
+								[
+									$mdgriffith$elm_ui$Element$centerX,
+									$mdgriffith$elm_ui$Element$centerY,
+									$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.foreground)
+								]),
+							$author$project$View$Icons$password(state.uiStyle.normal)),
 						onChange: $author$project$View$RegistrationScreen$updatePassword(state),
-						placeholder: $author$project$View$Style$placeholderStyle('Password'),
+						placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Password'),
 						show: false,
 						text: $author$project$View$RegistrationScreen$readPassword(state)
 					}),
-					$author$project$View$RegistrationScreen$validityIcon(
+					A2(
+					$author$project$View$RegistrationScreen$validityIcon,
+					state.uiStyle,
 					A2(
 						$elm$core$Maybe$map,
 						function (_v1) {
@@ -32803,23 +33395,30 @@ var $author$project$View$RegistrationScreen$registrationComponents = function (s
 					$mdgriffith$elm_ui$Element$Input$currentPassword,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+							$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground),
 							$mdgriffith$elm_ui$Element$Border$width(1),
 							$mdgriffith$elm_ui$Element$Border$color(
-							$author$project$View$RegistrationScreen$checkPasswordVerification(state) ? $author$project$View$Theme$background : $author$project$View$Theme$darkRed)
+							$author$project$View$RegistrationScreen$checkPasswordVerification(state) ? state.uiStyle.theme.background : $author$project$View$Theme$darkRed)
 						]),
 					{
 						label: A2(
 							$mdgriffith$elm_ui$Element$Input$labelLeft,
 							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-							$author$project$View$Icons$password($author$project$View$Icons$normal)),
+								[
+									$mdgriffith$elm_ui$Element$centerX,
+									$mdgriffith$elm_ui$Element$centerY,
+									$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.foreground)
+								]),
+							$author$project$View$Icons$password(state.uiStyle.normal)),
 						onChange: $author$project$View$RegistrationScreen$updatePasswordVerification(state),
-						placeholder: $author$project$View$Style$placeholderStyle('Retype your password'),
+						placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Retype your password'),
 						show: false,
 						text: $author$project$View$RegistrationScreen$readPasswordVerification(state)
 					}),
-					$author$project$View$RegistrationScreen$validityIcon(
+					A2(
+					$author$project$View$RegistrationScreen$validityIcon,
+					state.uiStyle,
 					A2(
 						$elm$core$Maybe$map,
 						function (_v2) {
@@ -32840,14 +33439,17 @@ var $author$project$View$RegistrationScreen$registrationComponents = function (s
 					_List_fromArray(
 						[
 							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$alignLeft
+							$mdgriffith$elm_ui$Element$alignLeft,
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.foreground)
 						]),
 					$mdgriffith$elm_ui$Element$text('Introduce yourself')),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[$mdgriffith$elm_ui$Element$alignRight]),
-					$author$project$View$RegistrationScreen$validityIcon(
+					A2(
+						$author$project$View$RegistrationScreen$validityIcon,
+						state.uiStyle,
 						A2(
 							$elm$core$Maybe$map,
 							function (_v3) {
@@ -32859,17 +33461,18 @@ var $author$project$View$RegistrationScreen$registrationComponents = function (s
 			$mdgriffith$elm_ui$Element$Input$multiline,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
+					$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
 					$mdgriffith$elm_ui$Element$height(
 					$mdgriffith$elm_ui$Element$px(150)),
+					$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground),
 					$mdgriffith$elm_ui$Element$Border$width(1),
 					$mdgriffith$elm_ui$Element$Border$color(
-					$author$project$View$RegistrationScreen$checkIntroduction(state) ? $author$project$View$Theme$background : $author$project$View$Theme$darkRed)
+					$author$project$View$RegistrationScreen$checkIntroduction(state) ? state.uiStyle.theme.background : $author$project$View$Theme$darkRed)
 				]),
 			{
 				label: $mdgriffith$elm_ui$Element$Input$labelHidden('Introduction'),
 				onChange: $author$project$View$RegistrationScreen$updateIntroduction(state),
-				placeholder: $author$project$View$Style$placeholderStyle('Tell others who you are ...'),
+				placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Tell others who you are ...'),
 				spellcheck: true,
 				text: $author$project$View$RegistrationScreen$readIntroduction(state)
 			}),
@@ -32896,7 +33499,12 @@ var $author$project$View$RegistrationScreen$registrationComponents = function (s
 							$mdgriffith$elm_ui$Element$alignRight,
 							$mdgriffith$elm_ui$Element$Border$width(2),
 							$mdgriffith$elm_ui$Element$Border$rounded(5),
-							$mdgriffith$elm_ui$Element$padding(5)
+							$mdgriffith$elm_ui$Element$padding(5),
+							A2(
+							$author$project$View$RegistrationScreen$fontColor,
+							state.uiStyle,
+							$author$project$View$RegistrationScreen$checkRegistrationForm(state)),
+							$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground)
 						]),
 					{
 						label: $mdgriffith$elm_ui$Element$text('Sign-up now !'),
@@ -32905,23 +33513,25 @@ var $author$project$View$RegistrationScreen$registrationComponents = function (s
 				]))
 		]);
 };
-var $author$project$View$RegistrationScreen$signIngLink = A2(
-	$mdgriffith$elm_ui$Element$paragraph,
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$centerX,
-			$mdgriffith$elm_ui$Element$spacing(5),
-			$mdgriffith$elm_ui$Element$Font$size(13),
-			$mdgriffith$elm_ui$Element$Font$italic,
-			$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
-		]),
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$text('If you already have an account with us, please use our '),
-			A2($author$project$View$Style$internalPageLinkStyle, $author$project$State$AppState$LoginPage, 'Sign-in'),
-			$mdgriffith$elm_ui$Element$text(' page instead.')
-		]));
+var $author$project$View$RegistrationScreen$signIngLink = function (ui) {
+	return A2(
+		$mdgriffith$elm_ui$Element$paragraph,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$centerX,
+				$mdgriffith$elm_ui$Element$spacing(5),
+				A2($author$project$View$Style$relFontSize, ui, 3),
+				$mdgriffith$elm_ui$Element$Font$italic,
+				$mdgriffith$elm_ui$Element$Font$color(ui.theme.background)
+			]),
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$text('If you already have an account with us, please use our '),
+				A2($author$project$View$Style$internalPageLinkStyle, $author$project$State$AppState$LoginPage, 'Sign-in'),
+				$mdgriffith$elm_ui$Element$text(' page instead.')
+			]));
+};
 var $author$project$Update$Msg$VerifyAccount = {$: 'VerifyAccount'};
 var $author$project$View$RegistrationScreen$checkVerificationCodeForm = function (state) {
 	var _v0 = state.forms.registrationForm.verification;
@@ -32994,9 +33604,18 @@ var $author$project$View$RegistrationScreen$updateVerificationCode = F3(
 var $author$project$View$RegistrationScreen$verificationComponents = function (state) {
 	return _List_fromArray(
 		[
-			$mdgriffith$elm_ui$Element$text('Please enter the verification code we just sent you'),
 			A2(
-			$mdgriffith$elm_ui$Element$row,
+			$mdgriffith$elm_ui$Element$paragraph,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.foreground)
+				]),
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$text('Please enter the verification code we just sent you')
+				])),
+			A2(
+			$mdgriffith$elm_ui$Element$wrappedRow,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
@@ -33009,42 +33628,45 @@ var $author$project$View$RegistrationScreen$verificationComponents = function (s
 					$mdgriffith$elm_ui$Element$Input$text,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+							$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground),
 							$mdgriffith$elm_ui$Element$width(
 							$mdgriffith$elm_ui$Element$px(100))
 						]),
 					{
 						label: $mdgriffith$elm_ui$Element$Input$labelHidden('Section1'),
 						onChange: A2($author$project$View$RegistrationScreen$updateVerificationCode, state, 1),
-						placeholder: $author$project$View$Style$placeholderStyle('0000'),
+						placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, '0000'),
 						text: A2($author$project$View$RegistrationScreen$readVerificationCodeSection, state, 1)
 					}),
 					A2(
 					$mdgriffith$elm_ui$Element$Input$text,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+							$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground),
 							$mdgriffith$elm_ui$Element$width(
 							$mdgriffith$elm_ui$Element$px(100))
 						]),
 					{
 						label: $mdgriffith$elm_ui$Element$Input$labelHidden('Section2'),
 						onChange: A2($author$project$View$RegistrationScreen$updateVerificationCode, state, 2),
-						placeholder: $author$project$View$Style$placeholderStyle('0000'),
+						placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, '0000'),
 						text: A2($author$project$View$RegistrationScreen$readVerificationCodeSection, state, 2)
 					}),
 					A2(
 					$mdgriffith$elm_ui$Element$Input$text,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+							$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground),
 							$mdgriffith$elm_ui$Element$width(
 							$mdgriffith$elm_ui$Element$px(100))
 						]),
 					{
 						label: $mdgriffith$elm_ui$Element$Input$labelHidden('Section3'),
 						onChange: A2($author$project$View$RegistrationScreen$updateVerificationCode, state, 3),
-						placeholder: $author$project$View$Style$placeholderStyle('0000'),
+						placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, '0000'),
 						text: A2($author$project$View$RegistrationScreen$readVerificationCodeSection, state, 3)
 					})
 				])),
@@ -33071,10 +33693,21 @@ var $author$project$View$RegistrationScreen$verificationComponents = function (s
 							$mdgriffith$elm_ui$Element$alignRight,
 							$mdgriffith$elm_ui$Element$Border$width(2),
 							$mdgriffith$elm_ui$Element$Border$rounded(5),
-							$mdgriffith$elm_ui$Element$padding(5)
+							$mdgriffith$elm_ui$Element$padding(5),
+							A2(
+							$author$project$View$RegistrationScreen$fontColor,
+							state.uiStyle,
+							$author$project$View$RegistrationScreen$checkVerificationCodeForm(state)),
+							$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground)
 						]),
 					{
-						label: $mdgriffith$elm_ui$Element$text('Finish verification'),
+						label: A2(
+							$mdgriffith$elm_ui$Element$el,
+							_List_fromArray(
+								[
+									A2($author$project$View$RegistrationScreen$fontColor, state.uiStyle, true)
+								]),
+							$mdgriffith$elm_ui$Element$text('Verify')),
 						onPress: $author$project$View$RegistrationScreen$checkVerificationCodeForm(state) ? $elm$core$Maybe$Just($author$project$Update$Msg$VerifyAccount) : $elm$core$Maybe$Nothing
 					})
 				]))
@@ -33087,7 +33720,8 @@ var $author$project$View$RegistrationScreen$registrationScreen = function (state
 			[
 				$mdgriffith$elm_ui$Element$centerX,
 				$mdgriffith$elm_ui$Element$centerY,
-				$mdgriffith$elm_ui$Element$spacing(30)
+				$mdgriffith$elm_ui$Element$spacing(30),
+				$mdgriffith$elm_ui$Element$padding(20)
 			]),
 		_List_fromArray(
 			[
@@ -33096,8 +33730,8 @@ var $author$project$View$RegistrationScreen$registrationScreen = function (state
 				_List_fromArray(
 					[
 						$mdgriffith$elm_ui$Element$centerX,
-						$mdgriffith$elm_ui$Element$Font$size(25),
-						$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background),
+						A2($author$project$View$Style$relFontSize, state.uiStyle, 15),
+						$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background),
 						$mdgriffith$elm_ui$Element$Font$semiBold
 					]),
 				$mdgriffith$elm_ui$Element$text('Create a new account')),
@@ -33112,11 +33746,11 @@ var $author$project$View$RegistrationScreen$registrationScreen = function (state
 						$mdgriffith$elm_ui$Element$Border$rounded(20),
 						$mdgriffith$elm_ui$Element$width(
 						A2($mdgriffith$elm_ui$Element$maximum, 500, $mdgriffith$elm_ui$Element$fill)),
-						$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
-						$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground)
+						$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.background),
+						$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.foreground)
 					]),
 				$author$project$View$RegistrationScreen$isSubmissionPhase(state) ? $author$project$View$RegistrationScreen$registrationComponents(state) : ($author$project$View$RegistrationScreen$isVerificationPhase(state) ? $author$project$View$RegistrationScreen$verificationComponents(state) : ($author$project$View$RegistrationScreen$isVerificationSuccessful(state) ? $author$project$View$RegistrationScreen$createdAccountComponents(state) : $author$project$View$RegistrationScreen$registrationComponents(state)))),
-				$author$project$View$RegistrationScreen$signIngLink
+				$author$project$View$RegistrationScreen$signIngLink(state.uiStyle)
 			]));
 };
 var $author$project$View$AppView$displayRegistrationPage = $author$project$View$RegistrationScreen$registrationScreen;
@@ -33141,32 +33775,33 @@ var $author$project$State$Cache$containsFollowingHashtag = F2(
 var $author$project$Update$Msg$FollowHashtag = function (a) {
 	return {$: 'FollowHashtag', a: a};
 };
-var $author$project$View$Style$followHashtagStyle = function (ht) {
-	return A2(
-		$mdgriffith$elm_ui$Element$row,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$spacing(5)
-			]),
-		_List_fromArray(
-			[
-				$author$project$View$Style$hashtagStyle(ht),
-				A2(
-				$mdgriffith$elm_ui$Element$Input$button,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$size(11),
-						A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-						$mdgriffith$elm_ui$Element$Border$width(1),
-						$mdgriffith$elm_ui$Element$Border$rounded(5)
-					]),
-				{
-					label: $mdgriffith$elm_ui$Element$text('Follow'),
-					onPress: $elm$core$Maybe$Just(
-						$author$project$Update$Msg$FollowHashtag(ht))
-				})
-			]));
-};
+var $author$project$View$Style$followHashtagStyle = F2(
+	function (ui, ht) {
+		return A2(
+			$mdgriffith$elm_ui$Element$row,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(5)
+				]),
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$hashtagStyle, ui, ht),
+					A2(
+					$mdgriffith$elm_ui$Element$Input$button,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, ui, 1),
+							A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+							$mdgriffith$elm_ui$Element$Border$width(1),
+							$mdgriffith$elm_ui$Element$Border$rounded(5)
+						]),
+					{
+						label: $mdgriffith$elm_ui$Element$text('Follow'),
+						onPress: $elm$core$Maybe$Just(
+							$author$project$Update$Msg$FollowHashtag(ht))
+					})
+				]));
+	});
 var $author$project$State$SearchState$ChallengePosts = {$: 'ChallengePosts'};
 var $author$project$State$SearchState$EventPosts = {$: 'EventPosts'};
 var $author$project$State$SearchState$FreeTextPosts = {$: 'FreeTextPosts'};
@@ -33177,11 +33812,12 @@ var $author$project$State$SearchState$allPostTypes = _List_fromArray(
 var $author$project$Update$Msg$ChangeSearchPostTypeFilter = function (a) {
 	return {$: 'ChangeSearchPostTypeFilter', a: a};
 };
-var $author$project$View$SearchScreen$renderPostTypeTab = F2(
-	function (pt, selected) {
+var $author$project$View$SearchScreen$renderPostTypeTab = F3(
+	function (ui, pt, selected) {
 		var renderTabButton = function (label) {
-			return A3(
+			return A4(
 				$author$project$View$Style$tabButton,
+				ui,
 				label,
 				$author$project$Update$Msg$ChangeSearchPostTypeFilter(pt),
 				selected);
@@ -33201,61 +33837,64 @@ var $author$project$View$SearchScreen$renderPostTypeTab = F2(
 				return renderTabButton('Free posts');
 		}
 	});
-var $author$project$View$SearchScreen$renderPostSearchFilterTabs = function (filter) {
-	var _v0 = $author$project$State$SearchState$postTypeFilter(filter);
-	if (_v0.$ === 'Nothing') {
-		return $mdgriffith$elm_ui$Element$none;
-	} else {
-		var pt = _v0.a;
+var $author$project$View$SearchScreen$renderPostSearchFilterTabs = F2(
+	function (ui, filter) {
+		var _v0 = $author$project$State$SearchState$postTypeFilter(filter);
+		if (_v0.$ === 'Nothing') {
+			return $mdgriffith$elm_ui$Element$none;
+		} else {
+			var pt = _v0.a;
+			return A2(
+				$mdgriffith$elm_ui$Element$wrappedRow,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$alignLeft,
+						$mdgriffith$elm_ui$Element$spacing(5)
+					]),
+				A2(
+					$elm$core$List$map,
+					function (x) {
+						return A3(
+							$author$project$View$SearchScreen$renderPostTypeTab,
+							ui,
+							x,
+							_Utils_eq(x, pt));
+					},
+					$author$project$State$SearchState$allPostTypes));
+		}
+	});
+var $author$project$Update$Msg$UnfollowHashtag = function (a) {
+	return {$: 'UnfollowHashtag', a: a};
+};
+var $author$project$View$Style$unfollowHashtagStyle = F2(
+	function (ui, ht) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$alignLeft,
 					$mdgriffith$elm_ui$Element$spacing(5)
 				]),
-			A2(
-				$elm$core$List$map,
-				function (x) {
-					return A2(
-						$author$project$View$SearchScreen$renderPostTypeTab,
-						x,
-						_Utils_eq(x, pt));
-				},
-				$author$project$State$SearchState$allPostTypes));
-	}
-};
-var $author$project$Update$Msg$UnfollowHashtag = function (a) {
-	return {$: 'UnfollowHashtag', a: a};
-};
-var $author$project$View$Style$unfollowHashtagStyle = function (ht) {
-	return A2(
-		$mdgriffith$elm_ui$Element$row,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$spacing(5)
-			]),
-		_List_fromArray(
-			[
-				$author$project$View$Style$hashtagStyle(ht),
-				A2(
-				$mdgriffith$elm_ui$Element$Input$button,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$size(11),
-						A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-						$mdgriffith$elm_ui$Element$Border$width(1),
-						$mdgriffith$elm_ui$Element$Border$rounded(5)
-					]),
-				{
-					label: $mdgriffith$elm_ui$Element$text('Unfollow'),
-					onPress: $elm$core$Maybe$Just(
-						$author$project$Update$Msg$UnfollowHashtag(ht))
-				})
-			]));
-};
-var $author$project$View$SearchScreen$renderSearchFilter = F2(
-	function (cache, filter) {
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$hashtagStyle, ui, ht),
+					A2(
+					$mdgriffith$elm_ui$Element$Input$button,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, ui, 1),
+							A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+							$mdgriffith$elm_ui$Element$Border$width(1),
+							$mdgriffith$elm_ui$Element$Border$rounded(5)
+						]),
+					{
+						label: $mdgriffith$elm_ui$Element$text('Unfollow'),
+						onPress: $elm$core$Maybe$Just(
+							$author$project$Update$Msg$UnfollowHashtag(ht))
+					})
+				]));
+	});
+var $author$project$View$SearchScreen$renderSearchFilter = F3(
+	function (ui, cache, filter) {
 		switch (filter.$) {
 			case 'EmptySearch':
 				return $author$project$View$Style$empty;
@@ -33268,7 +33907,7 @@ var $author$project$View$SearchScreen$renderSearchFilter = F2(
 					var hashtags = filter.a;
 					return A2(
 						$author$project$View$SearchScreen$above,
-						$author$project$View$SearchScreen$renderPostSearchFilterTabs(filter),
+						A2($author$project$View$SearchScreen$renderPostSearchFilterTabs, ui, filter),
 						A2(
 							$mdgriffith$elm_ui$Element$row,
 							_List_fromArray(
@@ -33279,7 +33918,7 @@ var $author$project$View$SearchScreen$renderSearchFilter = F2(
 							A2(
 								$elm$core$List$map,
 								function (ht) {
-									return A2($author$project$State$Cache$containsFollowingHashtag, cache, ht) ? $author$project$View$Style$unfollowHashtagStyle(ht) : $author$project$View$Style$followHashtagStyle(ht);
+									return A2($author$project$State$Cache$containsFollowingHashtag, cache, ht) ? A2($author$project$View$Style$unfollowHashtagStyle, ui, ht) : A2($author$project$View$Style$followHashtagStyle, ui, ht);
 								},
 								hashtags)));
 				}
@@ -33543,8 +34182,8 @@ var $author$project$View$Chart$WordCloud$hashtagCloud = F3(
 var $author$project$View$SearchScreen$renderHashtagCloud = function (state) {
 	var whiteScheme = {
 		colors: _List_fromArray(
-			[$author$project$View$Theme$foreground]),
-		_default: $author$project$View$Theme$foreground
+			[state.uiStyle.theme.foreground]),
+		_default: state.uiStyle.theme.foreground
 	};
 	var fontSize = $author$project$View$SearchScreen$computeFontFromWindowSize(state.windowSize);
 	return A2(
@@ -33570,7 +34209,7 @@ var $author$project$View$SearchScreen$renderHashtagCloud = function (state) {
 							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 							$mdgriffith$elm_ui$Element$centerX,
 							$mdgriffith$elm_ui$Element$centerY,
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.background),
 							$mdgriffith$elm_ui$Element$Border$rounded(20)
 						])),
 				A2(
@@ -33584,10 +34223,12 @@ var $author$project$View$SearchScreen$renderHashtagCloud = function (state) {
 					},
 					state.cache.hashtagTrend))));
 };
-var $author$project$View$SearchScreen$renderLoadingPosts = $author$project$View$PostRenderer$renderLoadingPostPage(2);
+var $author$project$View$SearchScreen$renderLoadingPosts = function (ui) {
+	return A2($author$project$View$PostRenderer$renderLoadingPostPage, ui, 2);
+};
 var $author$project$View$SearchScreen$renderSinglePost = $author$project$View$PostRenderer$renderPostId;
-var $author$project$View$SearchScreen$renderPostPage = F3(
-	function (tmstp, cache, page) {
+var $author$project$View$SearchScreen$renderPostPage = F2(
+	function (state, page) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -33600,15 +34241,17 @@ var $author$project$View$SearchScreen$renderPostPage = F3(
 				]),
 			A2(
 				$elm$core$List$map,
-				A2($author$project$View$SearchScreen$renderSinglePost, tmstp, cache),
+				A3($author$project$View$SearchScreen$renderSinglePost, state.uiStyle, state.timestamp, state.cache),
 				page.items));
 	});
 var $author$project$View$SearchScreen$renderPostSearchState = function (state) {
 	var _v0 = $author$project$State$SearchState$allUpToCurrentPostPage(state.search);
 	if (_v0.$ === 'Just') {
 		var page = _v0.a;
-		return $author$project$State$GenericPage$isEmpty(page) ? $author$project$View$SearchScreen$renderHashtagCloud(state) : A3(
-			$author$project$View$InfiniteScroll$infiniteScroll,
+		return $author$project$State$GenericPage$isEmpty(page) ? $author$project$View$SearchScreen$renderHashtagCloud(state) : A5(
+			$author$project$View$InfiniteScroll$infiniteScrollWithMoreButton,
+			state.uiStyle,
+			$author$project$View$UIStyle$isMobile(state.device),
 			'search-posts',
 			$author$project$Update$Msg$ChangeSearchPostPage(
 				$author$project$Data$Page$next(state.search.currentPage)),
@@ -33619,19 +34262,25 @@ var $author$project$View$SearchScreen$renderPostSearchState = function (state) {
 						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
 					]),
-				A3($author$project$View$SearchScreen$renderPostPage, state.timestamp, state.cache, page)));
+				A2($author$project$View$SearchScreen$renderPostPage, state, page)));
 	} else {
-		return $author$project$View$SearchScreen$renderLoadingPosts;
+		return $author$project$View$SearchScreen$renderLoadingPosts(state.uiStyle);
 	}
 };
 var $author$project$State$SearchState$allUpToCurrentUserPage = function (state) {
 	return A2($author$project$State$UserPageCache$getAllUpTo, state.currentPage, state.userCache);
 };
-var $author$project$View$SearchScreen$renderLoadingUsers = $author$project$View$UserListRenderer$renderLoadingUserPage(2);
-var $author$project$View$SearchScreen$renderNoResultPage = $author$project$View$ScreenUtils$emptyScreen('No results');
-var $author$project$View$SearchScreen$renderSingleUser = $author$project$View$UserListRenderer$renderUserId;
-var $author$project$View$SearchScreen$renderUserPage = F2(
-	function (cache, page) {
+var $author$project$View$SearchScreen$renderLoadingUsers = function (ui) {
+	return A2($author$project$View$UserListRenderer$renderLoadingUserPage, ui, 2);
+};
+var $author$project$View$SearchScreen$renderNoResultPage = function (ui) {
+	return A2($author$project$View$ScreenUtils$emptyScreen, ui, 'No results');
+};
+var $author$project$View$SearchScreen$renderSingleUser = function (ui) {
+	return $author$project$View$UserListRenderer$renderUserId(ui);
+};
+var $author$project$View$SearchScreen$renderUserPage = F3(
+	function (ui, cache, page) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -33644,15 +34293,17 @@ var $author$project$View$SearchScreen$renderUserPage = F2(
 				]),
 			A2(
 				$elm$core$List$map,
-				$author$project$View$SearchScreen$renderSingleUser(cache),
+				A2($author$project$View$SearchScreen$renderSingleUser, ui, cache),
 				page.items));
 	});
 var $author$project$View$SearchScreen$renderUserSearchState = function (state) {
 	var _v0 = $author$project$State$SearchState$allUpToCurrentUserPage(state.search);
 	if (_v0.$ === 'Just') {
 		var page = _v0.a;
-		return $author$project$State$GenericPage$isEmpty(page) ? $author$project$View$SearchScreen$renderNoResultPage : A3(
-			$author$project$View$InfiniteScroll$infiniteScroll,
+		return $author$project$State$GenericPage$isEmpty(page) ? $author$project$View$SearchScreen$renderNoResultPage(state.uiStyle) : A5(
+			$author$project$View$InfiniteScroll$infiniteScrollWithMoreButton,
+			state.uiStyle,
+			$author$project$View$UIStyle$isMobile(state.device),
 			'search-users',
 			$author$project$Update$Msg$ChangeSearchPostPage(
 				$author$project$Data$Page$next(state.search.currentPage)),
@@ -33663,9 +34314,9 @@ var $author$project$View$SearchScreen$renderUserSearchState = function (state) {
 						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
 					]),
-				A2($author$project$View$SearchScreen$renderUserPage, state.cache, page)));
+				A3($author$project$View$SearchScreen$renderUserPage, state.uiStyle, state.cache, page)));
 	} else {
-		return $author$project$View$SearchScreen$renderLoadingUsers;
+		return $author$project$View$SearchScreen$renderLoadingUsers(state.uiStyle);
 	}
 };
 var $author$project$View$SearchScreen$renderSearchState = function (state) {
@@ -33684,7 +34335,7 @@ var $author$project$View$SearchScreen$searchScreen = function (state) {
 			]),
 		_List_fromArray(
 			[
-				A2($author$project$View$SearchScreen$renderSearchFilter, state.cache, state.search.filter),
+				A3($author$project$View$SearchScreen$renderSearchFilter, state.uiStyle, state.cache, state.search.filter),
 				$author$project$View$SearchScreen$renderSearchState(state)
 			]));
 };
@@ -33693,11 +34344,6 @@ var $author$project$Update$Msg$ChangeWallPage = function (a) {
 	return {$: 'ChangeWallPage', a: a};
 };
 var $author$project$Data$Rank$emptyBreakdown = {fromEvents: 0, fromFollows: 0, fromLikes: 0, fromPosts: 0};
-var $author$project$View$Icons$extraLarge = _List_fromArray(
-	[
-		$lemol$ant_design_icons_elm_ui$Ant$Icon$width(96),
-		$lemol$ant_design_icons_elm_ui$Ant$Icon$height(96)
-	]);
 var $author$project$Data$Rank$BlackBelt = {$: 'BlackBelt'};
 var $author$project$Data$Rank$Converted = {$: 'Converted'};
 var $author$project$Data$Rank$Evangelist = {$: 'Evangelist'};
@@ -33781,12 +34427,6 @@ var $author$project$State$Cache$isPartner = F2(
 				},
 				$elm$core$Dict$values(cache.partners)));
 	});
-var $author$project$View$Chart$Donut$donut = function (data) {
-	var config = _Utils_update(
-		$author$project$View$Chart$Donut$defaultConfig,
-		{innerRadius: 32.0, outerRadius: 48.0});
-	return A2($author$project$View$Chart$Donut$donutWithConfig, config, data);
-};
 var $author$project$Data$Rank$next = function (rank) {
 	switch (rank.$) {
 		case 'GreenWood':
@@ -33815,290 +34455,490 @@ var $author$project$Data$Rank$next = function (rank) {
 			return $author$project$Data$Rank$Guru;
 	}
 };
-var $author$project$View$Theme$progressColor = $author$project$View$Theme$darkOrange;
-var $author$project$View$Theme$remainingProgressColor = $author$project$View$Theme$lightCharcoal;
 var $author$project$Data$Rank$Score = function (a) {
 	return {$: 'Score', a: a};
 };
 var $author$project$Data$Rank$score = function (breakdown) {
 	return $author$project$Data$Rank$Score(((breakdown.fromLikes + breakdown.fromPosts) + breakdown.fromFollows) + breakdown.fromEvents);
 };
-var $author$project$View$WallScreen$renderChart = function (breakdown) {
-	var score = $author$project$Data$Rank$score(breakdown);
-	var remaining = $author$project$View$Theme$remainingProgressColor;
-	var rank = $author$project$Data$Rank$fromScore(score);
-	var progress = $author$project$View$Theme$progressColor;
-	var nextRankScore = $author$project$Data$Rank$maxScore(
-		$author$project$Data$Rank$next(rank));
-	var fromPosts = breakdown.fromPosts;
-	var fromLikes = breakdown.fromLikes;
-	var fromFollows = breakdown.fromFollows;
-	var fromEvents = breakdown.fromEvents;
-	var remainder = A2($elm$core$Basics$max, 0.0, nextRankScore - (((fromLikes + fromFollows) + fromPosts) + fromEvents));
-	return A2(
-		$mdgriffith$elm_ui$Element$row,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$spacing(10)
-			]),
-		_List_fromArray(
-			[
-				$author$project$View$Chart$Donut$donut(
-				_List_fromArray(
-					[
-						_Utils_Tuple2(((fromLikes + fromFollows) + fromPosts) + fromEvents, progress),
-						_Utils_Tuple2(remainder, remaining)
-					])),
-				A2(
-				$author$project$View$Chart$ChartUtils$legend,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Font$size(10)
-					]),
-				_List_fromArray(
-					[
-						_Utils_Tuple2(
-						'Likes: ' + $elm$core$String$fromFloat(fromLikes),
-						progress),
-						_Utils_Tuple2(
-						'Follow: ' + $elm$core$String$fromFloat(fromFollows),
-						progress),
-						_Utils_Tuple2(
-						'Posts: ' + $elm$core$String$fromFloat(fromPosts),
-						progress),
-						_Utils_Tuple2(
-						'Event: ' + $elm$core$String$fromFloat(fromEvents),
-						progress),
-						_Utils_Tuple2(
-						'Remaining: ' + $elm$core$String$fromFloat(remainder),
-						remaining)
-					]))
-			]));
-};
-var $author$project$View$WallScreen$followButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(11),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$rounded(5)
-			]),
-		{
-			label: $mdgriffith$elm_ui$Element$text('Follow'),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$FollowUser(id))
-		});
-};
-var $author$project$View$WallScreen$unfollowButtonStyle = function (id) {
-	return A2(
-		$mdgriffith$elm_ui$Element$Input$button,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$size(11),
-				A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$rounded(5)
-			]),
-		{
-			label: $mdgriffith$elm_ui$Element$text('Unfollow'),
-			onPress: $elm$core$Maybe$Just(
-				$author$project$Update$Msg$UnfollowUser(id))
-		});
-};
-var $author$project$View$WallScreen$renderFollowingButton = F2(
-	function (cache, maybeUserId) {
+var $author$project$View$WallScreen$renderChart = F2(
+	function (ui, breakdown) {
+		var score = $author$project$Data$Rank$score(breakdown);
+		var remaining = ui.theme.remainingProgressColor;
+		var rank = $author$project$Data$Rank$fromScore(score);
+		var progress = ui.theme.progressColor;
+		var nextRankScore = $author$project$Data$Rank$maxScore(
+			$author$project$Data$Rank$next(rank));
+		var fromPosts = breakdown.fromPosts;
+		var fromLikes = breakdown.fromLikes;
+		var fromFollows = breakdown.fromFollows;
+		var fromEvents = breakdown.fromEvents;
+		var remainder = A2($elm$core$Basics$max, 0.0, nextRankScore - (((fromLikes + fromFollows) + fromPosts) + fromEvents));
+		return A2(
+			$mdgriffith$elm_ui$Element$row,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(10)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$author$project$View$Chart$Donut$smallDonut,
+					ui,
+					_List_fromArray(
+						[
+							_Utils_Tuple2(((fromLikes + fromFollows) + fromPosts) + fromEvents, progress),
+							_Utils_Tuple2(remainder, remaining)
+						])),
+					A3(
+					$author$project$View$Chart$ChartUtils$legend,
+					ui,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, ui, -1)
+						]),
+					_List_fromArray(
+						[
+							_Utils_Tuple2(
+							'Likes: ' + $elm$core$String$fromFloat(fromLikes),
+							progress),
+							_Utils_Tuple2(
+							'Follow: ' + $elm$core$String$fromFloat(fromFollows),
+							progress),
+							_Utils_Tuple2(
+							'Posts: ' + $elm$core$String$fromFloat(fromPosts),
+							progress),
+							_Utils_Tuple2(
+							'Event: ' + $elm$core$String$fromFloat(fromEvents),
+							progress),
+							_Utils_Tuple2(
+							'Remaining: ' + $elm$core$String$fromFloat(remainder),
+							remaining)
+						]))
+				]));
+	});
+var $author$project$View$WallScreen$followButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 1),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+					$mdgriffith$elm_ui$Element$Border$width(1),
+					$mdgriffith$elm_ui$Element$Border$rounded(5)
+				]),
+			{
+				label: $mdgriffith$elm_ui$Element$text('Follow'),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$FollowUser(id))
+			});
+	});
+var $author$project$View$WallScreen$unfollowButtonStyle = F2(
+	function (ui, id) {
+		return A2(
+			$mdgriffith$elm_ui$Element$Input$button,
+			_List_fromArray(
+				[
+					A2($author$project$View$Style$relFontSize, ui, 1),
+					A2($mdgriffith$elm_ui$Element$paddingXY, 2, 2),
+					$mdgriffith$elm_ui$Element$Border$width(1),
+					$mdgriffith$elm_ui$Element$Border$rounded(5)
+				]),
+			{
+				label: $mdgriffith$elm_ui$Element$text('Unfollow'),
+				onPress: $elm$core$Maybe$Just(
+					$author$project$Update$Msg$UnfollowUser(id))
+			});
+	});
+var $author$project$View$WallScreen$renderFollowingButton = F3(
+	function (ui, cache, maybeUserId) {
 		return A2(
 			$elm$core$Maybe$withDefault,
 			$mdgriffith$elm_ui$Element$none,
 			A2(
 				$elm$core$Maybe$map,
 				function (userId) {
-					return A2($author$project$State$Cache$containsFollowingUser, cache, userId) ? $author$project$View$WallScreen$unfollowButtonStyle(userId) : $author$project$View$WallScreen$followButtonStyle(userId);
+					return A2($author$project$State$Cache$containsFollowingUser, cache, userId) ? A2($author$project$View$WallScreen$unfollowButtonStyle, ui, userId) : A2($author$project$View$WallScreen$followButtonStyle, ui, userId);
 				},
 				maybeUserId));
 	});
 var $author$project$Data$Rank$toString = $elm$core$Debug$toString;
-var $author$project$View$WallScreen$renderUserHeader = F2(
-	function (cache, state) {
-		var maybeUser = A2(
+var $author$project$View$WallScreen$renderMobileUserHeader = function (state) {
+	var maybeUser = A2(
+		$elm$core$Maybe$andThen,
+		$author$project$State$Cache$getUser(state.cache),
+		state.wall.user);
+	var pseudo = A2(
+		$elm$core$Maybe$withDefault,
+		A3($author$project$View$Style$loadingFixedTextLine, state.uiStyle, 12, 100),
+		A2(
+			$elm$core$Maybe$map,
+			A2(
+				$elm$core$Basics$composeR,
+				function ($) {
+					return $.pseudo;
+				},
+				A2(
+					$elm$core$Basics$composeR,
+					$mdgriffith$elm_ui$Element$text,
+					$mdgriffith$elm_ui$Element$el(
+						_List_fromArray(
+							[
+								A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
+								$mdgriffith$elm_ui$Element$Font$semiBold
+							])))),
+			maybeUser));
+	var scoreBreakdown = A2(
+		$elm$core$Maybe$withDefault,
+		$author$project$Data$Rank$emptyBreakdown,
+		A2(
 			$elm$core$Maybe$andThen,
-			$author$project$State$Cache$getUser(cache),
-			state.user);
-		var pseudo = A2(
-			$elm$core$Maybe$withDefault,
-			A2($author$project$View$Style$loadingFixedTextLine, 12, 100),
+			$author$project$State$Cache$getScoreBreakdown(state.cache),
+			A2(
+				$elm$core$Maybe$map,
+				function ($) {
+					return $.id;
+				},
+				maybeUser)));
+	var score = $author$project$Data$Rank$score(scoreBreakdown);
+	var rank = A2(
+		$elm$core$Maybe$withDefault,
+		A3($author$project$View$Style$loadingFixedTextLine, state.uiStyle, 12, 50),
+		A2(
+			$elm$core$Maybe$map,
+			function (_v0) {
+				return A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 0),
+							$mdgriffith$elm_ui$Element$Font$italic,
+							$mdgriffith$elm_ui$Element$centerY
+						]),
+					$mdgriffith$elm_ui$Element$text(
+						$author$project$Data$Rank$toString(
+							$author$project$Data$Rank$fromScore(score))));
+			},
+			maybeUser));
+	var since = A2(
+		$elm$core$Maybe$withDefault,
+		A3($author$project$View$Style$loadingFixedTextLine, state.uiStyle, 12, 100),
+		A2(
+			$elm$core$Maybe$map,
+			function (txt) {
+				return A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
+							$mdgriffith$elm_ui$Element$Font$italic,
+							$mdgriffith$elm_ui$Element$centerY
+						]),
+					$mdgriffith$elm_ui$Element$text('Since ' + txt));
+			},
+			A2(
+				$elm$core$Maybe$map,
+				function (x) {
+					return $author$project$Utils$DateUtils$formatDate(x.since);
+				},
+				maybeUser)));
+	var isPartner = A2(
+		$elm$core$Maybe$withDefault,
+		false,
+		A2(
+			$elm$core$Maybe$map,
+			$author$project$State$Cache$isPartner(state.cache),
+			A2(
+				$elm$core$Maybe$map,
+				function ($) {
+					return $.id;
+				},
+				maybeUser)));
+	var introduction = A2(
+		$elm$core$Maybe$withDefault,
+		A3($author$project$View$Style$loadingTextBlock, state.uiStyle, 12, 4),
+		A2(
+			$elm$core$Maybe$map,
+			$mdgriffith$elm_ui$Element$paragraph(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+						A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
+						$mdgriffith$elm_ui$Element$Font$italic
+					])),
 			A2(
 				$elm$core$Maybe$map,
 				A2(
 					$elm$core$Basics$composeR,
 					function ($) {
-						return $.pseudo;
+						return $.introduction;
 					},
 					A2(
 						$elm$core$Basics$composeR,
-						$mdgriffith$elm_ui$Element$text,
-						$mdgriffith$elm_ui$Element$el(
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$Font$size(12),
-									$mdgriffith$elm_ui$Element$Font$semiBold
-								])))),
-				maybeUser));
-		var scoreBreakdown = A2(
-			$elm$core$Maybe$withDefault,
-			$author$project$Data$Rank$emptyBreakdown,
-			A2(
-				$elm$core$Maybe$andThen,
-				$author$project$State$Cache$getScoreBreakdown(cache),
+						$author$project$View$Style$multiLineQuotedText(state.uiStyle),
+						$elm$core$List$singleton)),
+				maybeUser)));
+	return A2(
+		$mdgriffith$elm_ui$Element$column,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$spacing(10)
+			]),
+		_List_fromArray(
+			[
 				A2(
-					$elm$core$Maybe$map,
-					function ($) {
-						return $.id;
-					},
-					maybeUser)));
-		var score = $author$project$Data$Rank$score(scoreBreakdown);
-		var rank = A2(
-			$elm$core$Maybe$withDefault,
-			A2($author$project$View$Style$loadingFixedTextLine, 12, 50),
-			A2(
-				$elm$core$Maybe$map,
-				function (_v0) {
-					return A2(
+				$mdgriffith$elm_ui$Element$row,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+						$mdgriffith$elm_ui$Element$spacing(10)
+					]),
+				_List_fromArray(
+					[
+						A2(
 						$mdgriffith$elm_ui$Element$el,
 						_List_fromArray(
 							[
-								$mdgriffith$elm_ui$Element$Font$size(10),
-								$mdgriffith$elm_ui$Element$Font$italic,
-								$mdgriffith$elm_ui$Element$centerY
+								$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.foreground),
+								$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.background),
+								$mdgriffith$elm_ui$Element$Border$rounded(10)
 							]),
-						$mdgriffith$elm_ui$Element$text(
-							$author$project$Data$Rank$toString(
-								$author$project$Data$Rank$fromScore(score))));
-				},
-				maybeUser));
-		var since = A2(
-			$elm$core$Maybe$withDefault,
-			A2($author$project$View$Style$loadingFixedTextLine, 12, 100),
-			A2(
-				$elm$core$Maybe$map,
-				function (txt) {
-					return A2(
-						$mdgriffith$elm_ui$Element$el,
+						$author$project$View$Icons$user(state.uiStyle.large)),
+						A2(
+						$mdgriffith$elm_ui$Element$column,
 						_List_fromArray(
 							[
-								$mdgriffith$elm_ui$Element$Font$size(12),
-								$mdgriffith$elm_ui$Element$Font$italic,
-								$mdgriffith$elm_ui$Element$centerY
+								$mdgriffith$elm_ui$Element$spacing(10),
+								$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+								$mdgriffith$elm_ui$Element$Border$color(state.uiStyle.theme.background)
 							]),
-						$mdgriffith$elm_ui$Element$text('Since ' + txt));
+						_List_fromArray(
+							[
+								A2(
+								$mdgriffith$elm_ui$Element$row,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$spacing(5),
+										$mdgriffith$elm_ui$Element$centerY
+									]),
+								_List_fromArray(
+									[
+										pseudo,
+										A3($author$project$View$WallScreen$renderFollowingButton, state.uiStyle, state.cache, state.wall.user)
+									])),
+								rank,
+								since,
+								isPartner ? A2(
+								$mdgriffith$elm_ui$Element$el,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$Font$semiBold,
+										$mdgriffith$elm_ui$Element$Font$italic,
+										$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$darkOrange),
+										A2($author$project$View$Style$relFontSize, state.uiStyle, 1)
+									]),
+								$mdgriffith$elm_ui$Element$text('Partnership')) : $mdgriffith$elm_ui$Element$none
+							])),
+						A2($author$project$View$Style$verticalSeparator, 1, state.uiStyle.theme.background),
+						A2($author$project$View$WallScreen$renderChart, state.uiStyle, scoreBreakdown)
+					])),
+				A2($author$project$View$Style$horizontalSeparator, 1, state.uiStyle.theme.background),
+				A2(
+				$mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+					]),
+				introduction),
+				A2($author$project$View$Style$horizontalSeparator, 1, state.uiStyle.theme.background)
+			]));
+};
+var $author$project$View$WallScreen$renderUserHeader = function (state) {
+	var maybeUser = A2(
+		$elm$core$Maybe$andThen,
+		$author$project$State$Cache$getUser(state.cache),
+		state.wall.user);
+	var pseudo = A2(
+		$elm$core$Maybe$withDefault,
+		A3($author$project$View$Style$loadingFixedTextLine, state.uiStyle, 12, 100),
+		A2(
+			$elm$core$Maybe$map,
+			A2(
+				$elm$core$Basics$composeR,
+				function ($) {
+					return $.pseudo;
 				},
 				A2(
-					$elm$core$Maybe$map,
-					function (x) {
-						return $author$project$Utils$DateUtils$formatDate(x.since);
-					},
-					maybeUser)));
-		var isPartner = A2(
-			$elm$core$Maybe$withDefault,
-			false,
+					$elm$core$Basics$composeR,
+					$mdgriffith$elm_ui$Element$text,
+					$mdgriffith$elm_ui$Element$el(
+						_List_fromArray(
+							[
+								A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
+								$mdgriffith$elm_ui$Element$Font$semiBold
+							])))),
+			maybeUser));
+	var scoreBreakdown = A2(
+		$elm$core$Maybe$withDefault,
+		$author$project$Data$Rank$emptyBreakdown,
+		A2(
+			$elm$core$Maybe$andThen,
+			$author$project$State$Cache$getScoreBreakdown(state.cache),
 			A2(
 				$elm$core$Maybe$map,
-				$author$project$State$Cache$isPartner(cache),
-				A2(
-					$elm$core$Maybe$map,
-					function ($) {
-						return $.id;
-					},
-					maybeUser)));
-		var introduction = A2(
-			$elm$core$Maybe$withDefault,
-			A2($author$project$View$Style$loadingTextBlock, 12, 4),
-			A2(
-				$elm$core$Maybe$map,
-				$mdgriffith$elm_ui$Element$paragraph(
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$Font$size(12),
-							$mdgriffith$elm_ui$Element$Font$italic
-						])),
-				A2(
-					$elm$core$Maybe$map,
-					A2(
-						$elm$core$Basics$composeR,
-						function ($) {
-							return $.introduction;
-						},
-						A2($elm$core$Basics$composeR, $author$project$View$Style$multiLineQuotedText, $elm$core$List$singleton)),
-					maybeUser)));
-		return A2(
-			$mdgriffith$elm_ui$Element$row,
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$spacing(10)
-				]),
-			_List_fromArray(
-				[
-					A2(
+				function ($) {
+					return $.id;
+				},
+				maybeUser)));
+	var score = $author$project$Data$Rank$score(scoreBreakdown);
+	var rank = A2(
+		$elm$core$Maybe$withDefault,
+		A3($author$project$View$Style$loadingFixedTextLine, state.uiStyle, 12, 50),
+		A2(
+			$elm$core$Maybe$map,
+			function (_v0) {
+				return A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
-							$mdgriffith$elm_ui$Element$Border$rounded(10)
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 0),
+							$mdgriffith$elm_ui$Element$Font$italic,
+							$mdgriffith$elm_ui$Element$centerY
 						]),
-					$author$project$View$Icons$user($author$project$View$Icons$extraLarge)),
+					$mdgriffith$elm_ui$Element$text(
+						$author$project$Data$Rank$toString(
+							$author$project$Data$Rank$fromScore(score))));
+			},
+			maybeUser));
+	var since = A2(
+		$elm$core$Maybe$withDefault,
+		A3($author$project$View$Style$loadingFixedTextLine, state.uiStyle, 12, 100),
+		A2(
+			$elm$core$Maybe$map,
+			function (txt) {
+				return A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
+							$mdgriffith$elm_ui$Element$Font$italic,
+							$mdgriffith$elm_ui$Element$centerY
+						]),
+					$mdgriffith$elm_ui$Element$text('Since ' + txt));
+			},
+			A2(
+				$elm$core$Maybe$map,
+				function (x) {
+					return $author$project$Utils$DateUtils$formatDate(x.since);
+				},
+				maybeUser)));
+	var isPartner = A2(
+		$elm$core$Maybe$withDefault,
+		false,
+		A2(
+			$elm$core$Maybe$map,
+			$author$project$State$Cache$isPartner(state.cache),
+			A2(
+				$elm$core$Maybe$map,
+				function ($) {
+					return $.id;
+				},
+				maybeUser)));
+	var introduction = A2(
+		$elm$core$Maybe$withDefault,
+		A3($author$project$View$Style$loadingTextBlock, state.uiStyle, 12, 4),
+		A2(
+			$elm$core$Maybe$map,
+			$mdgriffith$elm_ui$Element$paragraph(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+						A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
+						$mdgriffith$elm_ui$Element$Font$italic
+					])),
+			A2(
+				$elm$core$Maybe$map,
+				A2(
+					$elm$core$Basics$composeR,
+					function ($) {
+						return $.introduction;
+					},
 					A2(
-					$mdgriffith$elm_ui$Element$column,
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$spacing(10),
-							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background)
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$mdgriffith$elm_ui$Element$row,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$spacing(5),
-									$mdgriffith$elm_ui$Element$centerY
-								]),
-							_List_fromArray(
-								[
-									pseudo,
-									A2($author$project$View$WallScreen$renderFollowingButton, cache, state.user)
-								])),
-							rank,
-							since,
-							isPartner ? A2(
-							$mdgriffith$elm_ui$Element$el,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$Font$semiBold,
-									$mdgriffith$elm_ui$Element$Font$italic,
-									$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$darkOrange),
-									$mdgriffith$elm_ui$Element$Font$size(11)
-								]),
-							$mdgriffith$elm_ui$Element$text('Partnership')) : $mdgriffith$elm_ui$Element$none
-						])),
-					A2($author$project$View$Style$verticalSeparator, 1, $author$project$View$Theme$background),
-					$author$project$View$WallScreen$renderChart(scoreBreakdown),
-					A2($author$project$View$Style$verticalSeparator, 1, $author$project$View$Theme$background),
-					introduction
-				]));
-	});
+						$elm$core$Basics$composeR,
+						$author$project$View$Style$multiLineQuotedText(state.uiStyle),
+						$elm$core$List$singleton)),
+				maybeUser)));
+	return A2(
+		$mdgriffith$elm_ui$Element$row,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$spacing(10)
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.foreground),
+						$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.background),
+						$mdgriffith$elm_ui$Element$Border$rounded(10)
+					]),
+				$author$project$View$Icons$user(state.uiStyle.extraLarge)),
+				A2(
+				$mdgriffith$elm_ui$Element$column,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$spacing(10),
+						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+						$mdgriffith$elm_ui$Element$Border$color(state.uiStyle.theme.background)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$mdgriffith$elm_ui$Element$row,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$spacing(5),
+								$mdgriffith$elm_ui$Element$centerY
+							]),
+						_List_fromArray(
+							[
+								pseudo,
+								A3($author$project$View$WallScreen$renderFollowingButton, state.uiStyle, state.cache, state.wall.user)
+							])),
+						rank,
+						since,
+						isPartner ? A2(
+						$mdgriffith$elm_ui$Element$el,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$Font$semiBold,
+								$mdgriffith$elm_ui$Element$Font$italic,
+								$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$darkOrange),
+								A2($author$project$View$Style$relFontSize, state.uiStyle, 1)
+							]),
+						$mdgriffith$elm_ui$Element$text('Partnership')) : $mdgriffith$elm_ui$Element$none
+					])),
+				A2($author$project$View$Style$verticalSeparator, 1, state.uiStyle.theme.background),
+				A2($author$project$View$WallScreen$renderChart, state.uiStyle, scoreBreakdown),
+				A2($author$project$View$Style$verticalSeparator, 1, state.uiStyle.theme.background),
+				introduction
+			]));
+};
 var $author$project$State$WallState$allUpToCurrentPage = function (state) {
 	return A2($author$project$State$PostPageCache$getAllUpTo, state.currentPage, state.postCache);
 };
-var $author$project$View$WallScreen$renderLoadingPosts = $author$project$View$PostRenderer$renderLoadingPostPage(2);
-var $author$project$View$WelcomeWallScreen$bullet = F2(
-	function (icon, elt) {
+var $author$project$View$WallScreen$renderLoadingPosts = function (ui) {
+	return A2($author$project$View$PostRenderer$renderLoadingPostPage, ui, 2);
+};
+var $author$project$View$WelcomeWallScreen$bullet = F3(
+	function (ui, icon, elt) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -34113,8 +34953,8 @@ var $author$project$View$WelcomeWallScreen$bullet = F2(
 					_List_fromArray(
 						[
 							$mdgriffith$elm_ui$Element$padding(2),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
 							$mdgriffith$elm_ui$Element$Border$rounded(2),
 							$mdgriffith$elm_ui$Element$alignLeft
 						]),
@@ -34123,7 +34963,7 @@ var $author$project$View$WelcomeWallScreen$bullet = F2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12),
+							A2($author$project$View$Style$relFontSize, ui, 2),
 							$mdgriffith$elm_ui$Element$Font$regular
 						]),
 					elt)
@@ -34141,21 +34981,21 @@ var $author$project$View$Style$leftGap = F2(
 				]),
 			x);
 	});
-var $author$project$View$WelcomeWallScreen$titledMultiText = F2(
-	function (title, content) {
+var $author$project$View$WelcomeWallScreen$titledMultiText = F3(
+	function (ui, title, content) {
 		return A3(
 			$author$project$View$Style$titledParagraphStyle,
+			ui,
 			title,
-			A2($elm$core$List$map, $author$project$Utils$TextUtils$oneline, content),
-			12);
+			A2($elm$core$List$map, $author$project$Utils$TextUtils$oneline, content));
 	});
-var $author$project$View$WelcomeWallScreen$titledText = F2(
-	function (title, content) {
+var $author$project$View$WelcomeWallScreen$titledText = F3(
+	function (ui, title, content) {
 		return A3(
 			$author$project$View$Style$titledTextStyle,
+			ui,
 			title,
-			$author$project$Utils$TextUtils$oneline(content),
-			12);
+			$author$project$Utils$TextUtils$oneline(content));
 	});
 var $author$project$View$Style$topGap = F2(
 	function (sp, x) {
@@ -34182,10 +35022,11 @@ var $author$project$View$WelcomeWallScreen$welcomeWallScreen = function (state) 
 				A2(
 				$author$project$View$Style$topGap,
 				15,
-				A2($author$project$View$Style$horizontalSeparator, 1, $author$project$View$Theme$background)),
-				A2($author$project$View$WelcomeWallScreen$titledText, 'There is no post on your wall ...', 'Not a problem! When you are ready, you can easily create a post, a poll, a challenge or an event using one of below wizard.'),
+				A2($author$project$View$Style$horizontalSeparator, 1, state.uiStyle.theme.background)),
+				A3($author$project$View$WelcomeWallScreen$titledText, state.uiStyle, 'There is no post on your wall ...', 'Not a problem! When you are ready, you can easily create a post, a poll, a challenge or an event using one of below wizard.'),
 				A3(
 				$author$project$View$Style$titledElementStyle,
+				state.uiStyle,
 				'Create your first post',
 				A2(
 					$mdgriffith$elm_ui$Element$column,
@@ -34199,49 +35040,55 @@ var $author$project$View$WelcomeWallScreen$welcomeWallScreen = function (state) 
 							A2(
 							$author$project$View$Style$leftGap,
 							10,
-							A2(
+							A3(
 								$author$project$View$WelcomeWallScreen$bullet,
-								$author$project$View$Icons$tip($author$project$View$Icons$small),
+								state.uiStyle,
+								$author$project$View$Icons$tip(state.uiStyle.small),
 								A2($author$project$View$Style$internalPageLinkStyle, $author$project$State$AppState$WizardNewTipPage, 'Create a new tip for your followers'))),
 							A2(
 							$author$project$View$Style$leftGap,
 							10,
-							A2(
+							A3(
 								$author$project$View$WelcomeWallScreen$bullet,
-								$author$project$View$Icons$post($author$project$View$Icons$small),
+								state.uiStyle,
+								$author$project$View$Icons$post(state.uiStyle.small),
 								A2($author$project$View$Style$internalPageLinkStyle, $author$project$State$AppState$WizardNewFreePostPage, 'Create a blog post'))),
 							A2(
 							$author$project$View$Style$leftGap,
 							10,
-							A2(
+							A3(
 								$author$project$View$WelcomeWallScreen$bullet,
-								$author$project$View$Icons$challenge($author$project$View$Icons$small),
+								state.uiStyle,
+								$author$project$View$Icons$challenge(state.uiStyle.small),
 								A2($author$project$View$Style$internalPageLinkStyle, $author$project$State$AppState$WizardNewChallengePage, 'Challenge yourself or your followers'))),
 							A2(
 							$author$project$View$Style$leftGap,
 							10,
-							A2(
+							A3(
 								$author$project$View$WelcomeWallScreen$bullet,
-								$author$project$View$Icons$poll($author$project$View$Icons$small),
+								state.uiStyle,
+								$author$project$View$Icons$poll(state.uiStyle.small),
 								A2($author$project$View$Style$internalPageLinkStyle, $author$project$State$AppState$WizardNewPollPage, 'Create a new poll'))),
 							A2(
 							$author$project$View$Style$leftGap,
 							10,
-							A2(
+							A3(
 								$author$project$View$WelcomeWallScreen$bullet,
-								$author$project$View$Icons$event($author$project$View$Icons$small),
+								state.uiStyle,
+								$author$project$View$Icons$event(state.uiStyle.small),
 								A2($author$project$View$Style$internalPageLinkStyle, $author$project$State$AppState$WizardNewEventPage, 'Organize a new event'))),
 							A2(
 							$author$project$View$Style$leftGap,
 							10,
-							A2(
+							A3(
 								$author$project$View$WelcomeWallScreen$bullet,
-								$author$project$View$Icons$repost($author$project$View$Icons$small),
+								state.uiStyle,
+								$author$project$View$Icons$repost(state.uiStyle.small),
 								$mdgriffith$elm_ui$Element$text('... or you simply share with your followers something interesting you found')))
-						])),
-				12),
-				A2(
+						]))),
+				A3(
 				$author$project$View$WelcomeWallScreen$titledMultiText,
+				state.uiStyle,
 				'User rank',
 				_List_fromArray(
 					['When a new user is joining GreenGen, it starts at the first rank - GreenWood', 'With time, posts written, challenges taken, followers acquired, events participation or organized, the number of points increases.\r\n                 Your rank will increase, and your actions on GreenGen will have more weight,\r\n                 your posts will become more visible to others and your action cap will go up.\r\n              ', 'Maybe you start being a \'GreenWood\', but with a steady usage of the website\r\n                 you can soon become an \'Influencer\', an \'Evangelist\', or even a \'Sensei\' or a \'Guru\' -\r\n                 and proudly show off the world your dedication to a better future :)']))
@@ -34249,8 +35096,8 @@ var $author$project$View$WelcomeWallScreen$welcomeWallScreen = function (state) 
 };
 var $author$project$View$WallScreen$renderNoPostPage = $author$project$View$WelcomeWallScreen$welcomeWallScreen;
 var $author$project$View$WallScreen$renderSinglePost = $author$project$View$PostRenderer$renderPostId;
-var $author$project$View$WallScreen$renderPostPage = F3(
-	function (tmstp, cache, page) {
+var $author$project$View$WallScreen$renderPostPage = F2(
+	function (state, page) {
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
@@ -34263,21 +35110,23 @@ var $author$project$View$WallScreen$renderPostPage = F3(
 				]),
 			A2(
 				$elm$core$List$map,
-				A2($author$project$View$WallScreen$renderSinglePost, tmstp, cache),
+				A3($author$project$View$WallScreen$renderSinglePost, state.uiStyle, state.timestamp, state.cache),
 				page.items));
 	});
 var $author$project$View$WallScreen$renderWallState = function (state) {
 	var _v0 = $author$project$State$WallState$allUpToCurrentPage(state.wall);
 	if (_v0.$ === 'Just') {
 		var page = _v0.a;
-		return $author$project$State$GenericPage$isEmpty(page) ? $author$project$View$WallScreen$renderNoPostPage(state) : A3($author$project$View$WallScreen$renderPostPage, state.timestamp, state.cache, page);
+		return $author$project$State$GenericPage$isEmpty(page) ? $author$project$View$WallScreen$renderNoPostPage(state) : A2($author$project$View$WallScreen$renderPostPage, state, page);
 	} else {
-		return $author$project$View$WallScreen$renderLoadingPosts;
+		return $author$project$View$WallScreen$renderLoadingPosts(state.uiStyle);
 	}
 };
 var $author$project$View$WallScreen$wallScreen = function (state) {
-	return A3(
-		$author$project$View$InfiniteScroll$infiniteScroll,
+	return A5(
+		$author$project$View$InfiniteScroll$infiniteScrollWithMoreButton,
+		state.uiStyle,
+		$author$project$View$UIStyle$isMobile(state.device),
 		'wall',
 		$author$project$Update$Msg$ChangeWallPage(
 			$author$project$Data$Page$next(state.wall.currentPage)),
@@ -34293,7 +35142,7 @@ var $author$project$View$WallScreen$wallScreen = function (state) {
 				]),
 			_List_fromArray(
 				[
-					A2($author$project$View$WallScreen$renderUserHeader, state.cache, state.wall),
+					($author$project$View$UIStyle$isMobile(state.device) ? $author$project$View$WallScreen$renderMobileUserHeader : $author$project$View$WallScreen$renderUserHeader)(state),
 					$author$project$View$WallScreen$renderWallState(state)
 				])));
 };
@@ -34463,8 +35312,8 @@ var $author$project$Utils$DateUtils$toLocalDate = function (_v0) {
 		year: year
 	};
 };
-var $author$project$View$Style$dateSpinner = F2(
-	function (timestamp, onChange) {
+var $author$project$View$Style$dateSpinner = F3(
+	function (ui, timestamp, onChange) {
 		var spinYear = function (date) {
 			return {day: date.day, month: date.month, year: date.year + 1};
 		};
@@ -34514,7 +35363,7 @@ var $author$project$View$Style$dateSpinner = F2(
 				[
 					$mdgriffith$elm_ui$Element$Border$width(3),
 					$mdgriffith$elm_ui$Element$Border$rounded(3),
-					$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background),
+					$mdgriffith$elm_ui$Element$Border$color(ui.theme.background),
 					$mdgriffith$elm_ui$Element$spacing(5)
 				]),
 			_List_fromArray(
@@ -34523,15 +35372,15 @@ var $author$project$View$Style$dateSpinner = F2(
 					$mdgriffith$elm_ui$Element$Input$button,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.foreground),
 							$mdgriffith$elm_ui$Element$padding(4),
-							$mdgriffith$elm_ui$Element$Font$size(14),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
+							A2($author$project$View$Style$relFontSize, ui, 4),
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(30)),
+							$mdgriffith$elm_ui$Element$px(40)),
 							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Border$color(ui.theme.background),
 							$mdgriffith$elm_ui$Element$Border$widthEach(
 							{bottom: 0, left: 0, right: 1, top: 0})
 						]),
@@ -34550,15 +35399,15 @@ var $author$project$View$Style$dateSpinner = F2(
 					$mdgriffith$elm_ui$Element$Input$button,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.foreground),
 							$mdgriffith$elm_ui$Element$padding(4),
-							$mdgriffith$elm_ui$Element$Font$size(14),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
+							A2($author$project$View$Style$relFontSize, ui, 4),
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(30)),
+							$mdgriffith$elm_ui$Element$px(40)),
 							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Border$color(ui.theme.background),
 							$mdgriffith$elm_ui$Element$Border$widthEach(
 							{bottom: 0, left: 0, right: 1, top: 0})
 						]),
@@ -34577,14 +35426,14 @@ var $author$project$View$Style$dateSpinner = F2(
 					$mdgriffith$elm_ui$Element$Input$button,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$foreground),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.foreground),
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
 							$mdgriffith$elm_ui$Element$padding(4),
-							$mdgriffith$elm_ui$Element$Font$size(14),
+							A2($author$project$View$Style$relFontSize, ui, 4),
 							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(50))
+							$mdgriffith$elm_ui$Element$px(60))
 						]),
 					{
 						label: A2(
@@ -34599,7 +35448,7 @@ var $author$project$View$Style$dateSpinner = F2(
 					})
 				]));
 	});
-var $author$project$View$Icons$followers = $lemol$ant_design_icons_elm_ui$Ant$Icons$usergroupAddOutlined;
+var $author$project$View$Icons$followers = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$usergroupAddOutlined);
 var $author$project$View$WizardNewChallengePage$hasError = function (res) {
 	if (res.$ === 'Err') {
 		return true;
@@ -34607,8 +35456,8 @@ var $author$project$View$WizardNewChallengePage$hasError = function (res) {
 		return false;
 	}
 };
-var $author$project$View$Style$intSpinner = F5(
-	function (mn, mx, step, value, onChange) {
+var $author$project$View$Style$intSpinner = F6(
+	function (ui, mn, mx, step, value, onChange) {
 		var checked = function (v) {
 			return A2(
 				$elm$core$Basics$max,
@@ -34638,7 +35487,7 @@ var $author$project$View$Style$intSpinner = F5(
 								[
 									$mdgriffith$elm_ui$Element$centerX,
 									$mdgriffith$elm_ui$Element$centerY,
-									$mdgriffith$elm_ui$Element$Font$size(10)
+									A2($author$project$View$Style$relFontSize, ui, 0)
 								]),
 							{
 								label: $mdgriffith$elm_ui$Element$text('▲'),
@@ -34651,7 +35500,7 @@ var $author$project$View$Style$intSpinner = F5(
 								[
 									$mdgriffith$elm_ui$Element$centerX,
 									$mdgriffith$elm_ui$Element$centerY,
-									$mdgriffith$elm_ui$Element$Font$size(10)
+									A2($author$project$View$Style$relFontSize, ui, 0)
 								]),
 							{
 								label: $mdgriffith$elm_ui$Element$text('▼'),
@@ -34661,38 +35510,39 @@ var $author$project$View$Style$intSpinner = F5(
 						]))
 				]));
 	});
-var $author$project$View$WizardNewChallengePage$makeHashtagBar = function (state) {
-	return A2(
-		$mdgriffith$elm_ui$Element$paragraph,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$alignLeft,
-				$mdgriffith$elm_ui$Element$spacing(10),
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-				$mdgriffith$elm_ui$Element$Font$italic,
-				$mdgriffith$elm_ui$Element$Font$size(12)
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$mdgriffith$elm_ui$Element$row,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(5)
-					]),
-				A2(
-					$elm$core$List$map,
-					$author$project$View$Style$hashtagStyle,
+var $author$project$View$WizardNewChallengePage$makeHashtagBar = F2(
+	function (ui, state) {
+		return A2(
+			$mdgriffith$elm_ui$Element$paragraph,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$alignLeft,
+					$mdgriffith$elm_ui$Element$spacing(10),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+					$mdgriffith$elm_ui$Element$Font$italic,
+					A2($author$project$View$Style$relFontSize, ui, 2)
+				]),
+			_List_fromArray(
+				[
 					A2(
-						$elm$core$List$sortBy,
-						function (_v0) {
-							var x = _v0.a;
-							return x;
-						},
-						$author$project$Utils$TextUtils$hashtagsFrom(
-							A2($elm$core$Maybe$withDefault, '', state.content)))))
-			]));
-};
+					$mdgriffith$elm_ui$Element$row,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$spacing(5)
+						]),
+					A2(
+						$elm$core$List$map,
+						$author$project$View$Style$hashtagStyle(ui),
+						A2(
+							$elm$core$List$sortBy,
+							function (_v0) {
+								var x = _v0.a;
+								return x;
+							},
+							$author$project$Utils$TextUtils$hashtagsFrom(
+								A2($elm$core$Maybe$withDefault, '', state.content)))))
+				]));
+	});
 var $author$project$State$Cache$getUserByPseudo = F2(
 	function (cache, pseudo) {
 		return A2(
@@ -34723,17 +35573,17 @@ var $author$project$Utils$TextUtils$userPseudosFrom = function (txt) {
 				$author$project$Utils$TextUtils$unsafeRegex(' |\t|,|;|-|\\.|\\[|\\]|\\(|\\)|\\{|\\}'),
 				txt)));
 };
-var $author$project$View$WizardNewChallengePage$makeUserBar = F2(
-	function (cache, state) {
+var $author$project$View$WizardNewChallengePage$makeUserBar = F3(
+	function (ui, cache, state) {
 		return A2(
 			$mdgriffith$elm_ui$Element$paragraph,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$alignLeft,
 					$mdgriffith$elm_ui$Element$spacing(10),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
 					$mdgriffith$elm_ui$Element$Font$italic,
-					$mdgriffith$elm_ui$Element$Font$size(12)
+					A2($author$project$View$Style$relFontSize, ui, 2)
 				]),
 			_List_fromArray(
 				[
@@ -34746,8 +35596,9 @@ var $author$project$View$WizardNewChallengePage$makeUserBar = F2(
 					A2(
 						$elm$core$List$map,
 						function (pseudo) {
-							return A2(
+							return A3(
 								$author$project$View$Style$userStyle,
+								ui,
 								pseudo,
 								A2($author$project$State$Cache$getUserByPseudo, cache, pseudo));
 						},
@@ -34776,8 +35627,8 @@ var $mdgriffith$elm_ui$Element$Border$roundEach = function (_v0) {
 			'border-radius',
 			$elm$core$String$fromInt(topLeft) + ('px ' + ($elm$core$String$fromInt(topRight) + ('px ' + ($elm$core$String$fromInt(bottomRight) + ('px ' + ($elm$core$String$fromInt(bottomLeft) + 'px'))))))));
 };
-var $author$project$View$Style$button = F3(
-	function (position, label, state) {
+var $author$project$View$Style$button = F4(
+	function (ui, position, label, state) {
 		var corners = function () {
 			switch (position.$) {
 				case 'First':
@@ -34806,11 +35657,11 @@ var $author$project$View$Style$button = F3(
 					{bottom: 3, left: 3, right: 3, top: 3}),
 					$mdgriffith$elm_ui$Element$Border$roundEach(corners),
 					$mdgriffith$elm_ui$Element$Border$widthEach(borders),
-					$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background),
+					$mdgriffith$elm_ui$Element$Border$color(ui.theme.background),
 					$mdgriffith$elm_ui$Element$Font$color(
-					_Utils_eq(state, $mdgriffith$elm_ui$Element$Input$Selected) ? $author$project$View$Theme$foreground : $author$project$View$Theme$background),
+					_Utils_eq(state, $mdgriffith$elm_ui$Element$Input$Selected) ? ui.theme.foreground : ui.theme.background),
 					$mdgriffith$elm_ui$Element$Background$color(
-					_Utils_eq(state, $mdgriffith$elm_ui$Element$Input$Selected) ? $author$project$View$Theme$background : $author$project$View$Theme$foreground)
+					_Utils_eq(state, $mdgriffith$elm_ui$Element$Input$Selected) ? ui.theme.background : ui.theme.foreground)
 				]),
 			A2(
 				$mdgriffith$elm_ui$Element$el,
@@ -34818,7 +35669,7 @@ var $author$project$View$Style$button = F3(
 					[
 						$mdgriffith$elm_ui$Element$centerX,
 						$mdgriffith$elm_ui$Element$centerY,
-						$mdgriffith$elm_ui$Element$Font$size(14)
+						A2($author$project$View$Style$relFontSize, ui, 4)
 					]),
 				$mdgriffith$elm_ui$Element$text(label)));
 	});
@@ -34828,8 +35679,8 @@ var $mdgriffith$elm_ui$Element$Input$optionWith = F2(
 	});
 var $mdgriffith$elm_ui$Element$Input$Row = {$: 'Row'};
 var $mdgriffith$elm_ui$Element$Input$radioRow = $mdgriffith$elm_ui$Element$Input$radioHelper($mdgriffith$elm_ui$Element$Input$Row);
-var $author$project$View$Style$options = F3(
-	function (opts, selected, onChange) {
+var $author$project$View$Style$options = F4(
+	function (ui, opts, selected, onChange) {
 		return A2(
 			$mdgriffith$elm_ui$Element$Input$radioRow,
 			_List_fromArray(
@@ -34847,7 +35698,7 @@ var $author$project$View$Style$options = F3(
 						return A2(
 							$mdgriffith$elm_ui$Element$Input$optionWith,
 							opt,
-							A2($author$project$View$Style$button, $author$project$View$Style$Mid, label));
+							A3($author$project$View$Style$button, ui, $author$project$View$Style$Mid, label));
 					},
 					opts),
 				selected: $elm$core$Maybe$Just(selected)
@@ -34858,7 +35709,7 @@ var $author$project$Utils$DateUtils$plusDays = F2(
 		var millis = _v0.a;
 		return $author$project$Data$Schedule$UTC(millis + ((((days * 24) * 60) * 60) * 1000));
 	});
-var $author$project$View$Icons$report = $lemol$ant_design_icons_elm_ui$Ant$Icons$pieChartOutlined;
+var $author$project$View$Icons$report = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$pieChartOutlined);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$SlidersOutlined$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -34883,7 +35734,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$slidersOutlined = $lemol$ant_desig
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$slidersOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$slidersOutlined);
 };
-var $author$project$View$Icons$successMeasure = $lemol$ant_design_icons_elm_ui$Ant$Icons$slidersOutlined;
+var $author$project$View$Icons$successMeasure = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$slidersOutlined);
 var $PanagiotisGeorgiadis$elm_datetime$DateTime$Internal$InternalDateTime = F2(
 	function (date, time) {
 		return {date: date, time: time};
@@ -35481,7 +36332,7 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 		});
 	var isCorrect = !$author$project$View$WizardNewChallengePage$hasError(
 		$author$project$View$WizardNewChallengePage$check(wizardState));
-	var postButtonColor = isCorrect ? $author$project$View$Theme$enabledButton : $author$project$View$Theme$disabledButton;
+	var postButtonColor = isCorrect ? state.uiStyle.theme.enabledButton : state.uiStyle.theme.disabledButton;
 	var posting = wizardState.posting;
 	var reportCount = $author$project$View$WizardNewChallengePage$countReports(wizardState);
 	var successMeasure = wizardState.successMeasure;
@@ -35501,10 +36352,10 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$enabledButton)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.enabledButton)
 						]),
-					$author$project$View$Icons$challenge($author$project$View$Icons$large)),
-					A3($author$project$View$Style$titledTextStyle, 'Create a new Challenge', $author$project$View$WizardNewChallengePage$wizardDescription, 10)
+					$author$project$View$Icons$challenge(state.uiStyle.large)),
+					A3($author$project$View$Style$titledTextStyle, state.uiStyle, 'Create a new Challenge', $author$project$View$WizardNewChallengePage$wizardDescription)
 				])),
 			A2(
 			$mdgriffith$elm_ui$Element$row,
@@ -35518,20 +36369,21 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background)
 						]),
-					$author$project$View$Icons$calendar($author$project$View$Icons$normal)),
+					$author$project$View$Icons$calendar(state.uiStyle.normal)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12),
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(50))
+							$mdgriffith$elm_ui$Element$px(75))
 						]),
 					$mdgriffith$elm_ui$Element$text('Starts on')),
-					A2(
+					A3(
 					$author$project$View$Style$dateSpinner,
+					state.uiStyle,
 					startDate,
 					function (localDate) {
 						return $elm$core$Maybe$Just(
@@ -35555,20 +36407,21 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background)
 						]),
-					$author$project$View$Icons$calendar($author$project$View$Icons$normal)),
+					$author$project$View$Icons$calendar(state.uiStyle.normal)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12),
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(50))
+							$mdgriffith$elm_ui$Element$px(75))
 						]),
 					$mdgriffith$elm_ui$Element$text('Ends on')),
-					A2(
+					A3(
 					$author$project$View$Style$dateSpinner,
+					state.uiStyle,
 					endDate,
 					function (localDate) {
 						return $elm$core$Maybe$Just(
@@ -35592,20 +36445,21 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background)
 						]),
-					$author$project$View$Icons$report($author$project$View$Icons$normal)),
+					$author$project$View$Icons$report(state.uiStyle.normal)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12),
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(50))
+							$mdgriffith$elm_ui$Element$px(75))
 						]),
 					$mdgriffith$elm_ui$Element$text('Report')),
-					A3(
+					A4(
 					$author$project$View$Style$options,
+					state.uiStyle,
 					_List_fromArray(
 						[
 							_Utils_Tuple2('Daily', $author$project$State$FormState$Daily),
@@ -35629,7 +36483,7 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 							$mdgriffith$elm_ui$Element$el(
 								_List_fromArray(
 									[
-										$mdgriffith$elm_ui$Element$Font$size(12)
+										A2($author$project$View$Style$relFontSize, state.uiStyle, 2)
 									]))),
 						A2(
 							$elm$core$Maybe$map,
@@ -35650,20 +36504,21 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background)
 						]),
-					$author$project$View$Icons$followers($author$project$View$Icons$normal)),
+					$author$project$View$Icons$followers(state.uiStyle.normal)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12),
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(50))
+							$mdgriffith$elm_ui$Element$px(75))
 						]),
 					$mdgriffith$elm_ui$Element$text('Audience')),
-					A3(
+					A4(
 					$author$project$View$Style$options,
+					state.uiStyle,
 					_List_fromArray(
 						[
 							_Utils_Tuple2('Followers', $author$project$State$FormState$Followers),
@@ -35680,7 +36535,7 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					})
 				])),
 			A2(
-			$mdgriffith$elm_ui$Element$row,
+			$mdgriffith$elm_ui$Element$wrappedRow,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$spacing(10)
@@ -35691,20 +36546,21 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background)
 						]),
-					$author$project$View$Icons$successMeasure($author$project$View$Icons$normal)),
+					$author$project$View$Icons$successMeasure(state.uiStyle.normal)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12),
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(50))
+							$mdgriffith$elm_ui$Element$px(75))
 						]),
 					$mdgriffith$elm_ui$Element$text('Evaluation')),
-					A5(
+					A6(
 					$author$project$View$Style$intSpinner,
+					state.uiStyle,
 					0,
 					A2($elm$core$Maybe$withDefault, 0, reportCount),
 					1,
@@ -35724,11 +36580,12 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12)
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2)
 						]),
 					$mdgriffith$elm_ui$Element$text('failure(s), ')),
-					A5(
+					A6(
 					$author$project$View$Style$intSpinner,
+					state.uiStyle,
 					0,
 					A2($elm$core$Maybe$withDefault, 0, reportCount),
 					1,
@@ -35748,11 +36605,12 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12)
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2)
 						]),
 					$mdgriffith$elm_ui$Element$text('reports skipping')),
-					A5(
+					A6(
 					$author$project$View$Style$intSpinner,
+					state.uiStyle,
 					0,
 					A2($elm$core$Maybe$withDefault, 0, reportCount),
 					1,
@@ -35772,7 +36630,7 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12)
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2)
 						]),
 					$mdgriffith$elm_ui$Element$text('partial success(es)'))
 				])),
@@ -35789,16 +36647,16 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background)
 						]),
-					$author$project$View$Icons$challenge($author$project$View$Icons$normal)),
+					$author$project$View$Icons$challenge(state.uiStyle.normal)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12),
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(50))
+							$mdgriffith$elm_ui$Element$px(75))
 						]),
 					$mdgriffith$elm_ui$Element$text('Title')),
 					A2(
@@ -35806,13 +36664,13 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 					_List_fromArray(
 						[
 							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+							$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.textFieldBackground)
 						]),
 					{
 						label: $mdgriffith$elm_ui$Element$Input$labelHidden('Challenge title'),
 						onChange: $author$project$View$WizardNewChallengePage$updateTitle(state.forms.newChallengeWizard),
-						placeholder: $author$project$View$Style$placeholderStyle('Challenge title'),
+						placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Challenge title'),
 						text: A2($elm$core$Maybe$withDefault, '', state.forms.newChallengeWizard.title)
 					})
 				])),
@@ -35822,18 +36680,18 @@ var $author$project$View$WizardNewChallengePage$form = function (state) {
 				[
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground),
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground)
+					$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+					$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.textFieldBackground)
 				]),
 			{
 				label: $mdgriffith$elm_ui$Element$Input$labelHidden('Challenge content'),
 				onChange: $author$project$View$WizardNewChallengePage$updateContent(state.forms.newChallengeWizard),
-				placeholder: $author$project$View$Style$placeholderStyle('Enter your Challenge description !'),
+				placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Enter your Challenge description !'),
 				spellcheck: true,
 				text: A2($elm$core$Maybe$withDefault, '', state.forms.newChallengeWizard.content)
 			}),
-			$author$project$View$WizardNewChallengePage$makeHashtagBar(state.forms.newChallengeWizard),
-			A2($author$project$View$WizardNewChallengePage$makeUserBar, state.cache, state.forms.newChallengeWizard),
+			A2($author$project$View$WizardNewChallengePage$makeHashtagBar, state.uiStyle, state.forms.newChallengeWizard),
+			A3($author$project$View$WizardNewChallengePage$makeUserBar, state.uiStyle, state.cache, state.forms.newChallengeWizard),
 			A2(
 			$mdgriffith$elm_ui$Element$Input$button,
 			_List_fromArray(
@@ -35857,11 +36715,9 @@ var $author$project$View$WizardNewChallengePage$newWizardNewChallengeScreen = fu
 		$mdgriffith$elm_ui$Element$column,
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$centerX,
-				$mdgriffith$elm_ui$Element$width(
-				A2($mdgriffith$elm_ui$Element$maximum, 600, $mdgriffith$elm_ui$Element$fill)),
-				$mdgriffith$elm_ui$Element$height(
-				A2($mdgriffith$elm_ui$Element$maximum, 500, $mdgriffith$elm_ui$Element$fill)),
+				$mdgriffith$elm_ui$Element$alignLeft,
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$spacing(10),
 				$mdgriffith$elm_ui$Element$padding(10),
 				$mdgriffith$elm_ui$Element$Border$rounded(20)
@@ -35930,50 +36786,51 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$environmentOutlined = $lemol$ant_d
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$environmentOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$environmentOutlined);
 };
-var $author$project$View$Icons$location = $lemol$ant_design_icons_elm_ui$Ant$Icons$environmentOutlined;
-var $author$project$View$WizardNewEventPage$makeHashtagBar = function (state) {
-	return A2(
-		$mdgriffith$elm_ui$Element$paragraph,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$alignLeft,
-				$mdgriffith$elm_ui$Element$spacing(10),
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-				$mdgriffith$elm_ui$Element$Font$italic,
-				$mdgriffith$elm_ui$Element$Font$size(12)
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$mdgriffith$elm_ui$Element$row,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(5)
-					]),
-				A2(
-					$elm$core$List$map,
-					$author$project$View$Style$hashtagStyle,
-					A2(
-						$elm$core$List$sortBy,
-						function (_v0) {
-							var x = _v0.a;
-							return x;
-						},
-						$author$project$Utils$TextUtils$hashtagsFrom(
-							A2($elm$core$Maybe$withDefault, '', state.description)))))
-			]));
-};
-var $author$project$View$WizardNewEventPage$makeUserBar = F2(
-	function (cache, state) {
+var $author$project$View$Icons$location = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$environmentOutlined);
+var $author$project$View$WizardNewEventPage$makeHashtagBar = F2(
+	function (ui, state) {
 		return A2(
 			$mdgriffith$elm_ui$Element$paragraph,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$alignLeft,
 					$mdgriffith$elm_ui$Element$spacing(10),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
 					$mdgriffith$elm_ui$Element$Font$italic,
-					$mdgriffith$elm_ui$Element$Font$size(12)
+					A2($author$project$View$Style$relFontSize, ui, 2)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$row,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$spacing(5)
+						]),
+					A2(
+						$elm$core$List$map,
+						$author$project$View$Style$hashtagStyle(ui),
+						A2(
+							$elm$core$List$sortBy,
+							function (_v0) {
+								var x = _v0.a;
+								return x;
+							},
+							$author$project$Utils$TextUtils$hashtagsFrom(
+								A2($elm$core$Maybe$withDefault, '', state.description)))))
+				]));
+	});
+var $author$project$View$WizardNewEventPage$makeUserBar = F3(
+	function (ui, cache, state) {
+		return A2(
+			$mdgriffith$elm_ui$Element$paragraph,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$alignLeft,
+					$mdgriffith$elm_ui$Element$spacing(10),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+					$mdgriffith$elm_ui$Element$Font$italic,
+					A2($author$project$View$Style$relFontSize, ui, 2)
 				]),
 			_List_fromArray(
 				[
@@ -35986,8 +36843,9 @@ var $author$project$View$WizardNewEventPage$makeUserBar = F2(
 					A2(
 						$elm$core$List$map,
 						function (pseudo) {
-							return A2(
+							return A3(
 								$author$project$View$Style$userStyle,
+								ui,
 								pseudo,
 								A2($author$project$State$Cache$getUserByPseudo, cache, pseudo));
 						},
@@ -36009,44 +36867,42 @@ var $author$project$View$WizardNewEventPage$updateLocation = F2(
 					location: $elm$core$Maybe$Just(location)
 				}));
 	});
-var $author$project$View$WizardNewEventPage$renderAddressLocationForm = function (state) {
-	var _v0 = function () {
-		var _v1 = state.location;
-		if ((_v1.$ === 'Just') && (_v1.a.$ === 'Address')) {
-			var _v2 = _v1.a;
-			var strt = _v2.a;
-			var zp = _v2.b;
-			var cntry = _v2.c.a;
-			return _Utils_Tuple3(strt, zp, cntry);
-		} else {
-			return _Utils_Tuple3($elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing, 'World');
-		}
-	}();
-	var street = _v0.a;
-	var zip = _v0.b;
-	var country = _v0.c;
-	var zipStr = function () {
-		if (zip.$ === 'Just') {
-			var zp = zip.a.a;
-			return zp;
-		} else {
-			return '';
-		}
-	}();
-	return A2(
-		$mdgriffith$elm_ui$Element$column,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$spacing(3)
-			]),
-		_List_fromArray(
-			[
-				A3($author$project$View$Style$titledTextStyle, 'Event Address', 'Enter the address of your event, with street, zip/post code and country', 10),
-				A2(
-				$author$project$View$Style$size,
-				10,
-				A2(
+var $author$project$View$WizardNewEventPage$renderAddressLocationForm = F2(
+	function (ui, state) {
+		var _v0 = function () {
+			var _v1 = state.location;
+			if ((_v1.$ === 'Just') && (_v1.a.$ === 'Address')) {
+				var _v2 = _v1.a;
+				var strt = _v2.a;
+				var zp = _v2.b;
+				var cntry = _v2.c.a;
+				return _Utils_Tuple3(strt, zp, cntry);
+			} else {
+				return _Utils_Tuple3($elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing, 'World');
+			}
+		}();
+		var street = _v0.a;
+		var zip = _v0.b;
+		var country = _v0.c;
+		var zipStr = function () {
+			if (zip.$ === 'Just') {
+				var zp = zip.a.a;
+				return zp;
+			} else {
+				return '';
+			}
+		}();
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$spacing(3)
+				]),
+			_List_fromArray(
+				[
+					A3($author$project$View$Style$titledTextStyle, ui, 'Event Address', 'Enter the address of your event, with street, zip/post code and country'),
+					A2(
 					$mdgriffith$elm_ui$Element$row,
 					_List_fromArray(
 						[
@@ -36060,17 +36916,18 @@ var $author$project$View$WizardNewEventPage$renderAddressLocationForm = function
 							_List_fromArray(
 								[
 									$mdgriffith$elm_ui$Element$width(
-									$mdgriffith$elm_ui$Element$px(70))
+									$mdgriffith$elm_ui$Element$px(70)),
+									A2($author$project$View$Style$relFontSize, ui, 0)
 								]),
 							$mdgriffith$elm_ui$Element$text('Street')),
 							A2(
 							$mdgriffith$elm_ui$Element$Input$text,
 							_List_fromArray(
 								[
-									$mdgriffith$elm_ui$Element$width(
-									$mdgriffith$elm_ui$Element$px(450)),
-									$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground),
-									$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground)
+									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+									$mdgriffith$elm_ui$Element$Background$color(ui.theme.textFieldBackground),
+									$mdgriffith$elm_ui$Element$Font$color(ui.theme.textFieldForeground),
+									A2($author$project$View$Style$relFontSize, ui, 0)
 								]),
 							{
 								label: $mdgriffith$elm_ui$Element$Input$labelHidden('Event street'),
@@ -36084,188 +36941,200 @@ var $author$project$View$WizardNewEventPage$renderAddressLocationForm = function
 											zip,
 											$author$project$Data$Location$Country(country)));
 								},
-								placeholder: $author$project$View$Style$placeholderStyle('Full street name'),
+								placeholder: A2($author$project$View$Style$placeholderStyle, ui, 'Full street name'),
 								text: A2($elm$core$Maybe$withDefault, '', street)
 							})
-						]))),
-				A2(
-				$author$project$View$Style$size,
-				10,
-				A2(
-					$mdgriffith$elm_ui$Element$row,
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$spacing(5)
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$mdgriffith$elm_ui$Element$el,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width(
-									$mdgriffith$elm_ui$Element$px(70))
-								]),
-							$mdgriffith$elm_ui$Element$text('Zip/Post code')),
-							A2(
-							$mdgriffith$elm_ui$Element$Input$text,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-									$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-									$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground),
-									$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground)
-								]),
-							{
-								label: $mdgriffith$elm_ui$Element$Input$labelHidden('Event zip code'),
-								onChange: function (txt) {
-									return A2(
-										$author$project$View$WizardNewEventPage$updateLocation,
-										state,
-										A3(
-											$author$project$Data$Location$Address,
-											street,
-											A2(
-												$elm$core$Maybe$map,
-												$author$project$Data$Location$ZipCode,
-												$author$project$Utils$MaybeUtils$maybeString(txt)),
-											$author$project$Data$Location$Country(country)));
-								},
-								placeholder: $author$project$View$Style$placeholderStyle('Zip code'),
-								text: zipStr
-							}),
-							$mdgriffith$elm_ui$Element$text('Country'),
-							A2(
-							$mdgriffith$elm_ui$Element$Input$text,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-									$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-									$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground),
-									$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground)
-								]),
-							{
-								label: $mdgriffith$elm_ui$Element$Input$labelHidden('Event street'),
-								onChange: function (txt) {
-									return A2(
-										$author$project$View$WizardNewEventPage$updateLocation,
-										state,
-										A3(
-											$author$project$Data$Location$Address,
-											street,
-											zip,
-											$author$project$Data$Location$Country(txt)));
-								},
-								placeholder: $author$project$View$Style$placeholderStyle('Country'),
-								text: country
-							})
-						])))
-			]));
-};
-var $author$project$View$WizardNewEventPage$renderMapUrlLocationForm = function (state) {
-	var loc = function () {
-		var _v0 = state.location;
-		if ((_v0.$ === 'Just') && (_v0.a.$ === 'MapUrl')) {
-			var url = _v0.a.a.a;
-			return url;
-		} else {
-			return '';
+						])),
+					A3(
+					$author$project$View$Style$relSize,
+					ui,
+					0,
+					A2(
+						$mdgriffith$elm_ui$Element$row,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+								$mdgriffith$elm_ui$Element$spacing(5)
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$mdgriffith$elm_ui$Element$el,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$width(
+										$mdgriffith$elm_ui$Element$px(70))
+									]),
+								$mdgriffith$elm_ui$Element$text('Zip/Post code')),
+								A3(
+								$author$project$View$Style$relSize,
+								ui,
+								0,
+								A2(
+									$mdgriffith$elm_ui$Element$Input$text,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$width(
+											$mdgriffith$elm_ui$Element$px(100)),
+											$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+											$mdgriffith$elm_ui$Element$Background$color(ui.theme.textFieldBackground),
+											$mdgriffith$elm_ui$Element$Font$color(ui.theme.textFieldForeground)
+										]),
+									{
+										label: $mdgriffith$elm_ui$Element$Input$labelHidden('Event zip code'),
+										onChange: function (txt) {
+											return A2(
+												$author$project$View$WizardNewEventPage$updateLocation,
+												state,
+												A3(
+													$author$project$Data$Location$Address,
+													street,
+													A2(
+														$elm$core$Maybe$map,
+														$author$project$Data$Location$ZipCode,
+														$author$project$Utils$MaybeUtils$maybeString(txt)),
+													$author$project$Data$Location$Country(country)));
+										},
+										placeholder: A2($author$project$View$Style$placeholderStyle, ui, 'Zip code'),
+										text: zipStr
+									})),
+								$mdgriffith$elm_ui$Element$text('Country'),
+								A2(
+								$mdgriffith$elm_ui$Element$Input$text,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$width(
+										$mdgriffith$elm_ui$Element$px(100)),
+										$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+										$mdgriffith$elm_ui$Element$Background$color(ui.theme.textFieldBackground),
+										$mdgriffith$elm_ui$Element$Font$color(ui.theme.textFieldForeground)
+									]),
+								{
+									label: $mdgriffith$elm_ui$Element$Input$labelHidden('Event country'),
+									onChange: function (txt) {
+										return A2(
+											$author$project$View$WizardNewEventPage$updateLocation,
+											state,
+											A3(
+												$author$project$Data$Location$Address,
+												street,
+												zip,
+												$author$project$Data$Location$Country(txt)));
+									},
+									placeholder: A2($author$project$View$Style$placeholderStyle, ui, 'Country'),
+									text: country
+								})
+							])))
+				]));
+	});
+var $author$project$View$WizardNewEventPage$renderMapUrlLocationForm = F2(
+	function (ui, state) {
+		var loc = function () {
+			var _v0 = state.location;
+			if ((_v0.$ === 'Just') && (_v0.a.$ === 'MapUrl')) {
+				var url = _v0.a.a.a;
+				return url;
+			} else {
+				return '';
+			}
+		}();
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$spacing(3)
+				]),
+			_List_fromArray(
+				[
+					A3($author$project$View$Style$titledTextStyle, ui, 'Map link', 'Enter the google map or open street map URL '),
+					A3(
+					$author$project$View$Style$relSize,
+					ui,
+					0,
+					A2(
+						$mdgriffith$elm_ui$Element$Input$text,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$width(
+								$mdgriffith$elm_ui$Element$px(450)),
+								$mdgriffith$elm_ui$Element$Background$color(ui.theme.textFieldBackground),
+								$mdgriffith$elm_ui$Element$Font$color(ui.theme.textFieldForeground)
+							]),
+						{
+							label: $mdgriffith$elm_ui$Element$Input$labelHidden('Event map link'),
+							onChange: function (txt) {
+								return A2(
+									$author$project$View$WizardNewEventPage$updateLocation,
+									state,
+									$author$project$Data$Location$Online(
+										$author$project$Data$Url$Url(txt)));
+							},
+							placeholder: A2($author$project$View$Style$placeholderStyle, ui, 'Map Url for the event'),
+							text: loc
+						}))
+				]));
+	});
+var $author$project$View$WizardNewEventPage$renderOnLineLocationForm = F2(
+	function (ui, state) {
+		var loc = function () {
+			var _v0 = state.location;
+			if ((_v0.$ === 'Just') && (_v0.a.$ === 'Online')) {
+				var url = _v0.a.a.a;
+				return url;
+			} else {
+				return '';
+			}
+		}();
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$spacing(3)
+				]),
+			_List_fromArray(
+				[
+					A3($author$project$View$Style$titledTextStyle, ui, 'Event URL', 'Enter the URL for your event'),
+					A3(
+					$author$project$View$Style$relSize,
+					ui,
+					0,
+					A2(
+						$mdgriffith$elm_ui$Element$Input$text,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$width(
+								$mdgriffith$elm_ui$Element$px(450)),
+								$mdgriffith$elm_ui$Element$Background$color(ui.theme.textFieldBackground),
+								$mdgriffith$elm_ui$Element$Font$color(ui.theme.textFieldForeground)
+							]),
+						{
+							label: $mdgriffith$elm_ui$Element$Input$labelHidden('Event online location'),
+							onChange: function (txt) {
+								return A2(
+									$author$project$View$WizardNewEventPage$updateLocation,
+									state,
+									$author$project$Data$Location$Online(
+										$author$project$Data$Url$Url(txt)));
+							},
+							placeholder: A2($author$project$View$Style$placeholderStyle, ui, 'Url for the event'),
+							text: loc
+						}))
+				]));
+	});
+var $author$project$View$WizardNewEventPage$renderLocationForm = F2(
+	function (ui, state) {
+		var _v0 = state.selectedLocationType;
+		switch (_v0.$) {
+			case 'LocatedOnline':
+				return A2($author$project$View$WizardNewEventPage$renderOnLineLocationForm, ui, state);
+			case 'MapLink':
+				return A2($author$project$View$WizardNewEventPage$renderMapUrlLocationForm, ui, state);
+			default:
+				return A2($author$project$View$WizardNewEventPage$renderAddressLocationForm, ui, state);
 		}
-	}();
-	return A2(
-		$mdgriffith$elm_ui$Element$column,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$spacing(3)
-			]),
-		_List_fromArray(
-			[
-				A3($author$project$View$Style$titledTextStyle, 'Map link', 'Enter the google map or open street map URL ', 10),
-				A2(
-				$author$project$View$Style$size,
-				10,
-				A2(
-					$mdgriffith$elm_ui$Element$Input$text,
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(450)),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground)
-						]),
-					{
-						label: $mdgriffith$elm_ui$Element$Input$labelHidden('Event map link'),
-						onChange: function (txt) {
-							return A2(
-								$author$project$View$WizardNewEventPage$updateLocation,
-								state,
-								$author$project$Data$Location$Online(
-									$author$project$Data$Url$Url(txt)));
-						},
-						placeholder: $author$project$View$Style$placeholderStyle('Map Url for the event'),
-						text: loc
-					}))
-			]));
-};
-var $author$project$View$WizardNewEventPage$renderOnLineLocationForm = function (state) {
-	var loc = function () {
-		var _v0 = state.location;
-		if ((_v0.$ === 'Just') && (_v0.a.$ === 'Online')) {
-			var url = _v0.a.a.a;
-			return url;
-		} else {
-			return '';
-		}
-	}();
-	return A2(
-		$mdgriffith$elm_ui$Element$column,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$spacing(3)
-			]),
-		_List_fromArray(
-			[
-				A3($author$project$View$Style$titledTextStyle, 'Event URL', 'Enter the URL for your event', 10),
-				A2(
-				$author$project$View$Style$size,
-				10,
-				A2(
-					$mdgriffith$elm_ui$Element$Input$text,
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(450)),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground)
-						]),
-					{
-						label: $mdgriffith$elm_ui$Element$Input$labelHidden('Event online location'),
-						onChange: function (txt) {
-							return A2(
-								$author$project$View$WizardNewEventPage$updateLocation,
-								state,
-								$author$project$Data$Location$Online(
-									$author$project$Data$Url$Url(txt)));
-						},
-						placeholder: $author$project$View$Style$placeholderStyle('Url for the event'),
-						text: loc
-					}))
-			]));
-};
-var $author$project$View$WizardNewEventPage$renderLocationForm = function (state) {
-	var _v0 = state.selectedLocationType;
-	switch (_v0.$) {
-		case 'LocatedOnline':
-			return $author$project$View$WizardNewEventPage$renderOnLineLocationForm(state);
-		case 'MapLink':
-			return $author$project$View$WizardNewEventPage$renderMapUrlLocationForm(state);
-		default:
-			return $author$project$View$WizardNewEventPage$renderAddressLocationForm(state);
-	}
-};
+	});
 var $author$project$Utils$DateUtils$toLocalTime = function (_v0) {
 	var millis = _v0.a;
 	var posix = $elm$time$Time$millisToPosix(millis);
@@ -36273,8 +37142,8 @@ var $author$project$Utils$DateUtils$toLocalTime = function (_v0) {
 	var hours = A2($elm$time$Time$toHour, $elm$time$Time$utc, posix);
 	return {hour: hours, minute: minutes};
 };
-var $author$project$View$Style$timeSpinner = F2(
-	function (timestamp, onChange) {
+var $author$project$View$Style$timeSpinner = F3(
+	function (ui, timestamp, onChange) {
 		var spinMinute = function (time) {
 			return {
 				hour: time.hour,
@@ -36296,7 +37165,7 @@ var $author$project$View$Style$timeSpinner = F2(
 				[
 					$mdgriffith$elm_ui$Element$Border$width(3),
 					$mdgriffith$elm_ui$Element$Border$rounded(3),
-					$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background),
+					$mdgriffith$elm_ui$Element$Border$color(ui.theme.background),
 					$mdgriffith$elm_ui$Element$spacing(5)
 				]),
 			_List_fromArray(
@@ -36305,15 +37174,15 @@ var $author$project$View$Style$timeSpinner = F2(
 					$mdgriffith$elm_ui$Element$Input$button,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.foreground),
 							$mdgriffith$elm_ui$Element$padding(4),
-							$mdgriffith$elm_ui$Element$Font$size(14),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
+							A2($author$project$View$Style$relFontSize, ui, 4),
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(30)),
+							$mdgriffith$elm_ui$Element$px(40)),
 							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Border$color(ui.theme.background),
 							$mdgriffith$elm_ui$Element$Border$widthEach(
 							{bottom: 0, left: 0, right: 1, top: 0})
 						]),
@@ -36332,15 +37201,15 @@ var $author$project$View$Style$timeSpinner = F2(
 					$mdgriffith$elm_ui$Element$Input$button,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.foreground),
 							$mdgriffith$elm_ui$Element$padding(4),
-							$mdgriffith$elm_ui$Element$Font$size(14),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
+							A2($author$project$View$Style$relFontSize, ui, 4),
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(30)),
+							$mdgriffith$elm_ui$Element$px(40)),
 							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background),
+							$mdgriffith$elm_ui$Element$Border$color(ui.theme.background),
 							$mdgriffith$elm_ui$Element$Border$widthEach(
 							{bottom: 0, left: 0, right: 1, top: 0})
 						]),
@@ -36414,7 +37283,7 @@ var $author$project$View$WizardNewEventPage$form = function (state) {
 		});
 	var isCorrect = !$author$project$View$WizardNewEventPage$hasError(
 		$author$project$View$WizardNewEventPage$check(wizardState));
-	var postButtonColor = isCorrect ? $author$project$View$Theme$enabledButton : $author$project$View$Theme$disabledButton;
+	var postButtonColor = isCorrect ? state.uiStyle.theme.enabledButton : state.uiStyle.theme.disabledButton;
 	var maxParticipants = wizardState.maxParticipants;
 	var posting = wizardState.posting;
 	return _List_fromArray(
@@ -36433,10 +37302,10 @@ var $author$project$View$WizardNewEventPage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$enabledButton)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.enabledButton)
 						]),
-					$author$project$View$Icons$event($author$project$View$Icons$large)),
-					A3($author$project$View$Style$titledTextStyle, 'Create a new Event', $author$project$View$WizardNewEventPage$wizardDescription, 10)
+					$author$project$View$Icons$event(state.uiStyle.large)),
+					A3($author$project$View$Style$titledTextStyle, state.uiStyle, 'Create a new Event', $author$project$View$WizardNewEventPage$wizardDescription)
 				])),
 			A2(
 			$mdgriffith$elm_ui$Element$row,
@@ -36450,20 +37319,21 @@ var $author$project$View$WizardNewEventPage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background)
 						]),
-					$author$project$View$Icons$calendar($author$project$View$Icons$normal)),
+					$author$project$View$Icons$calendar(state.uiStyle.normal)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12),
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(55))
+							$mdgriffith$elm_ui$Element$px(75))
 						]),
 					$mdgriffith$elm_ui$Element$text('Starts on')),
-					A2(
+					A3(
 					$author$project$View$Style$dateSpinner,
+					state.uiStyle,
 					startDate,
 					function (localDate) {
 						return $elm$core$Maybe$Just(
@@ -36481,11 +37351,12 @@ var $author$project$View$WizardNewEventPage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12)
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2)
 						]),
 					$mdgriffith$elm_ui$Element$text('at')),
-					A2(
+					A3(
 					$author$project$View$Style$timeSpinner,
+					state.uiStyle,
 					startDate,
 					function (localTime) {
 						return $elm$core$Maybe$Just(
@@ -36512,20 +37383,21 @@ var $author$project$View$WizardNewEventPage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background)
 						]),
-					$author$project$View$Icons$calendar($author$project$View$Icons$normal)),
+					$author$project$View$Icons$calendar(state.uiStyle.normal)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12),
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(55))
+							$mdgriffith$elm_ui$Element$px(75))
 						]),
 					$mdgriffith$elm_ui$Element$text('Ends on')),
-					A2(
+					A3(
 					$author$project$View$Style$dateSpinner,
+					state.uiStyle,
 					endDate,
 					function (localDate) {
 						return $elm$core$Maybe$Just(
@@ -36543,11 +37415,12 @@ var $author$project$View$WizardNewEventPage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12)
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2)
 						]),
 					$mdgriffith$elm_ui$Element$text('at')),
-					A2(
+					A3(
 					$author$project$View$Style$timeSpinner,
+					state.uiStyle,
 					endDate,
 					function (localTime) {
 						return $elm$core$Maybe$Just(
@@ -36574,20 +37447,21 @@ var $author$project$View$WizardNewEventPage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background)
 						]),
-					$author$project$View$Icons$user($author$project$View$Icons$normal)),
+					$author$project$View$Icons$user(state.uiStyle.normal)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12),
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(55))
+							$mdgriffith$elm_ui$Element$px(75))
 						]),
 					$mdgriffith$elm_ui$Element$text('Participants')),
-					A5(
+					A6(
 					$author$project$View$Style$intSpinner,
+					state.uiStyle,
 					0,
 					100,
 					1,
@@ -36612,20 +37486,21 @@ var $author$project$View$WizardNewEventPage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.background)
 						]),
-					$author$project$View$Icons$location($author$project$View$Icons$normal)),
+					$author$project$View$Icons$location(state.uiStyle.normal)),
 					A2(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$size(12),
+							A2($author$project$View$Style$relFontSize, state.uiStyle, 2),
 							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(55))
+							$mdgriffith$elm_ui$Element$px(75))
 						]),
 					$mdgriffith$elm_ui$Element$text('Location')),
-					A3(
+					A4(
 					$author$project$View$Style$options,
+					state.uiStyle,
 					_List_fromArray(
 						[
 							_Utils_Tuple2('Online', $author$project$State$FormState$LocatedOnline),
@@ -36642,27 +37517,26 @@ var $author$project$View$WizardNewEventPage$form = function (state) {
 				])),
 			A2(
 			$author$project$View$Style$leftGap,
-			55,
-			$author$project$View$WizardNewEventPage$renderLocationForm(wizardState)),
+			115,
+			A2($author$project$View$WizardNewEventPage$renderLocationForm, state.uiStyle, wizardState)),
 			A2(
 			$mdgriffith$elm_ui$Element$Input$multiline,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$height(
-					A2($mdgriffith$elm_ui$Element$maximum, 400, $mdgriffith$elm_ui$Element$fill)),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground),
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground)
+					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+					$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.textFieldBackground)
 				]),
 			{
 				label: $mdgriffith$elm_ui$Element$Input$labelHidden('Event description'),
 				onChange: $author$project$View$WizardNewEventPage$updateDescription(state.forms.newEventWizard),
-				placeholder: $author$project$View$Style$placeholderStyle('Enter your Event description. Be precise and concise !'),
+				placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Enter your Event description. Be precise and concise !'),
 				spellcheck: true,
 				text: A2($elm$core$Maybe$withDefault, '', state.forms.newEventWizard.description)
 			}),
-			$author$project$View$WizardNewEventPage$makeHashtagBar(state.forms.newEventWizard),
-			A2($author$project$View$WizardNewEventPage$makeUserBar, state.cache, state.forms.newEventWizard),
+			A2($author$project$View$WizardNewEventPage$makeHashtagBar, state.uiStyle, state.forms.newEventWizard),
+			A3($author$project$View$WizardNewEventPage$makeUserBar, state.uiStyle, state.cache, state.forms.newEventWizard),
 			A2(
 			$mdgriffith$elm_ui$Element$Input$button,
 			_List_fromArray(
@@ -36686,11 +37560,9 @@ var $author$project$View$WizardNewEventPage$newWizardNewEventScreen = function (
 		$mdgriffith$elm_ui$Element$column,
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$centerX,
-				$mdgriffith$elm_ui$Element$width(
-				A2($mdgriffith$elm_ui$Element$maximum, 600, $mdgriffith$elm_ui$Element$fill)),
-				$mdgriffith$elm_ui$Element$height(
-				A2($mdgriffith$elm_ui$Element$maximum, 700, $mdgriffith$elm_ui$Element$fill)),
+				$mdgriffith$elm_ui$Element$alignLeft,
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$spacing(10),
 				$mdgriffith$elm_ui$Element$padding(10),
 				$mdgriffith$elm_ui$Element$Border$rounded(20)
@@ -36718,49 +37590,50 @@ var $author$project$View$WizardNewFreeTextPage$hasError = function (res) {
 		return false;
 	}
 };
-var $author$project$View$WizardNewFreeTextPage$makeHashtagBar = function (state) {
-	return A2(
-		$mdgriffith$elm_ui$Element$paragraph,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$alignLeft,
-				$mdgriffith$elm_ui$Element$spacing(10),
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-				$mdgriffith$elm_ui$Element$Font$italic,
-				$mdgriffith$elm_ui$Element$Font$size(12)
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$mdgriffith$elm_ui$Element$row,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(5)
-					]),
-				A2(
-					$elm$core$List$map,
-					$author$project$View$Style$hashtagStyle,
-					A2(
-						$elm$core$List$sortBy,
-						function (_v0) {
-							var x = _v0.a;
-							return x;
-						},
-						$author$project$Utils$TextUtils$hashtagsFrom(
-							A2($elm$core$Maybe$withDefault, '', state.content)))))
-			]));
-};
-var $author$project$View$WizardNewFreeTextPage$makeUserBar = F2(
-	function (cache, state) {
+var $author$project$View$WizardNewFreeTextPage$makeHashtagBar = F2(
+	function (ui, state) {
 		return A2(
 			$mdgriffith$elm_ui$Element$paragraph,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$alignLeft,
 					$mdgriffith$elm_ui$Element$spacing(10),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
 					$mdgriffith$elm_ui$Element$Font$italic,
-					$mdgriffith$elm_ui$Element$Font$size(12)
+					A2($author$project$View$Style$relFontSize, ui, 2)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$row,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$spacing(5)
+						]),
+					A2(
+						$elm$core$List$map,
+						$author$project$View$Style$hashtagStyle(ui),
+						A2(
+							$elm$core$List$sortBy,
+							function (_v0) {
+								var x = _v0.a;
+								return x;
+							},
+							$author$project$Utils$TextUtils$hashtagsFrom(
+								A2($elm$core$Maybe$withDefault, '', state.content)))))
+				]));
+	});
+var $author$project$View$WizardNewFreeTextPage$makeUserBar = F3(
+	function (ui, cache, state) {
+		return A2(
+			$mdgriffith$elm_ui$Element$paragraph,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$alignLeft,
+					$mdgriffith$elm_ui$Element$spacing(10),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+					$mdgriffith$elm_ui$Element$Font$italic,
+					A2($author$project$View$Style$relFontSize, ui, 2)
 				]),
 			_List_fromArray(
 				[
@@ -36773,8 +37646,9 @@ var $author$project$View$WizardNewFreeTextPage$makeUserBar = F2(
 					A2(
 						$elm$core$List$map,
 						function (pseudo) {
-							return A2(
+							return A3(
 								$author$project$View$Style$userStyle,
+								ui,
 								pseudo,
 								A2($author$project$State$Cache$getUserByPseudo, cache, pseudo));
 						},
@@ -36799,7 +37673,7 @@ var $author$project$View$WizardNewFreeTextPage$form = function (state) {
 	var posting = state.forms.newTipWizard.posting;
 	var isCorrect = !$author$project$View$WizardNewFreeTextPage$hasError(
 		$author$project$View$WizardNewFreeTextPage$check(state.forms.newFreeTextWizard));
-	var postButtonColor = isCorrect ? $author$project$View$Theme$enabledButton : $author$project$View$Theme$disabledButton;
+	var postButtonColor = isCorrect ? state.uiStyle.theme.enabledButton : state.uiStyle.theme.disabledButton;
 	return _List_fromArray(
 		[
 			A2(
@@ -36816,10 +37690,10 @@ var $author$project$View$WizardNewFreeTextPage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$enabledButton)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.enabledButton)
 						]),
-					$author$project$View$Icons$post($author$project$View$Icons$large)),
-					A3($author$project$View$Style$titledTextStyle, 'Say what you want ...', $author$project$View$WizardNewFreeTextPage$wizardDescription, 10)
+					$author$project$View$Icons$post(state.uiStyle.large)),
+					A3($author$project$View$Style$titledTextStyle, state.uiStyle, 'Say what you want ...', $author$project$View$WizardNewFreeTextPage$wizardDescription)
 				])),
 			A2(
 			$mdgriffith$elm_ui$Element$Input$multiline,
@@ -36827,18 +37701,18 @@ var $author$project$View$WizardNewFreeTextPage$form = function (state) {
 				[
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground),
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground)
+					$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+					$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.textFieldBackground)
 				]),
 			{
 				label: $mdgriffith$elm_ui$Element$Input$labelHidden('FreeText content'),
 				onChange: $author$project$View$WizardNewFreeTextPage$updateContent(state.forms.newFreeTextWizard),
-				placeholder: $author$project$View$Style$placeholderStyle('Unleash here ...'),
+				placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Unleash here ...'),
 				spellcheck: true,
 				text: A2($elm$core$Maybe$withDefault, '', state.forms.newFreeTextWizard.content)
 			}),
-			$author$project$View$WizardNewFreeTextPage$makeHashtagBar(state.forms.newFreeTextWizard),
-			A2($author$project$View$WizardNewFreeTextPage$makeUserBar, state.cache, state.forms.newFreeTextWizard),
+			A2($author$project$View$WizardNewFreeTextPage$makeHashtagBar, state.uiStyle, state.forms.newFreeTextWizard),
+			A3($author$project$View$WizardNewFreeTextPage$makeUserBar, state.uiStyle, state.cache, state.forms.newFreeTextWizard),
 			A2(
 			$mdgriffith$elm_ui$Element$Input$button,
 			_List_fromArray(
@@ -36861,11 +37735,9 @@ var $author$project$View$WizardNewFreeTextPage$newWizardNewFreeTextScreen = func
 		$mdgriffith$elm_ui$Element$column,
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$centerX,
-				$mdgriffith$elm_ui$Element$width(
-				A2($mdgriffith$elm_ui$Element$maximum, 600, $mdgriffith$elm_ui$Element$fill)),
-				$mdgriffith$elm_ui$Element$height(
-				A2($mdgriffith$elm_ui$Element$maximum, 300, $mdgriffith$elm_ui$Element$fill)),
+				$mdgriffith$elm_ui$Element$alignLeft,
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$spacing(10),
 				$mdgriffith$elm_ui$Element$padding(10),
 				$mdgriffith$elm_ui$Element$Border$rounded(20)
@@ -36901,49 +37773,50 @@ var $author$project$View$WizardNewPollPage$hasError = function (res) {
 		return false;
 	}
 };
-var $author$project$View$WizardNewPollPage$makeHashtagBar = function (state) {
-	return A2(
-		$mdgriffith$elm_ui$Element$paragraph,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$alignLeft,
-				$mdgriffith$elm_ui$Element$spacing(10),
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-				$mdgriffith$elm_ui$Element$Font$italic,
-				$mdgriffith$elm_ui$Element$Font$size(12)
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$mdgriffith$elm_ui$Element$row,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(5)
-					]),
-				A2(
-					$elm$core$List$map,
-					$author$project$View$Style$hashtagStyle,
-					A2(
-						$elm$core$List$sortBy,
-						function (_v0) {
-							var x = _v0.a;
-							return x;
-						},
-						$author$project$Utils$TextUtils$hashtagsFrom(
-							A2($elm$core$Maybe$withDefault, '', state.question)))))
-			]));
-};
-var $author$project$View$WizardNewPollPage$makeUserBar = F2(
-	function (cache, state) {
+var $author$project$View$WizardNewPollPage$makeHashtagBar = F2(
+	function (ui, state) {
 		return A2(
 			$mdgriffith$elm_ui$Element$paragraph,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$alignLeft,
 					$mdgriffith$elm_ui$Element$spacing(10),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
 					$mdgriffith$elm_ui$Element$Font$italic,
-					$mdgriffith$elm_ui$Element$Font$size(12)
+					A2($author$project$View$Style$relFontSize, ui, 2)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$row,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$spacing(5)
+						]),
+					A2(
+						$elm$core$List$map,
+						$author$project$View$Style$hashtagStyle(ui),
+						A2(
+							$elm$core$List$sortBy,
+							function (_v0) {
+								var x = _v0.a;
+								return x;
+							},
+							$author$project$Utils$TextUtils$hashtagsFrom(
+								A2($elm$core$Maybe$withDefault, '', state.question)))))
+				]));
+	});
+var $author$project$View$WizardNewPollPage$makeUserBar = F3(
+	function (ui, cache, state) {
+		return A2(
+			$mdgriffith$elm_ui$Element$paragraph,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$alignLeft,
+					$mdgriffith$elm_ui$Element$spacing(10),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+					$mdgriffith$elm_ui$Element$Font$italic,
+					A2($author$project$View$Style$relFontSize, ui, 2)
 				]),
 			_List_fromArray(
 				[
@@ -36956,8 +37829,9 @@ var $author$project$View$WizardNewPollPage$makeUserBar = F2(
 					A2(
 						$elm$core$List$map,
 						function (pseudo) {
-							return A2(
+							return A3(
 								$author$project$View$Style$userStyle,
+								ui,
 								pseudo,
 								A2($author$project$State$Cache$getUserByPseudo, cache, pseudo));
 						},
@@ -37010,7 +37884,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$minusCircleFilled = $lemol$ant_des
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$minusCircleFilled = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$minusCircleFilled);
 };
-var $author$project$View$Icons$minus = $lemol$ant_design_icons_elm_ui$Ant$Icons$minusCircleFilled;
+var $author$project$View$Icons$minus = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$minusCircleFilled);
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$PlusCircleFilled$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -37035,7 +37909,7 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$plusCircleFilled = $lemol$ant_desi
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$plusCircleFilled = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$plusCircleFilled);
 };
-var $author$project$View$Icons$plus = $lemol$ant_design_icons_elm_ui$Ant$Icons$plusCircleFilled;
+var $author$project$View$Icons$plus = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$plusCircleFilled);
 var $author$project$Utils$ListUtils$delete = F2(
 	function (index, xs) {
 		return _Utils_ap(
@@ -37083,8 +37957,8 @@ var $author$project$View$WizardNewPollPage$updatePollOption = F3(
 					options: $elm$core$Maybe$Just(updated)
 				}));
 	});
-var $author$project$View$WizardNewPollPage$renderPollOptionRow = F3(
-	function (state, index, _v0) {
+var $author$project$View$WizardNewPollPage$renderPollOptionRow = F4(
+	function (ui, state, index, _v0) {
 		var opt = _v0.a;
 		var lastIndex = A2(
 			$elm$core$Maybe$withDefault,
@@ -37105,13 +37979,15 @@ var $author$project$View$WizardNewPollPage$renderPollOptionRow = F3(
 					_List_fromArray(
 						[
 							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground),
-							$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground)
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.textFieldForeground),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.textFieldBackground)
 						]),
 					{
 						label: $mdgriffith$elm_ui$Element$Input$labelHidden('hidden option'),
 						onChange: A2($author$project$View$WizardNewPollPage$updatePollOption, state, index),
-						placeholder: $author$project$View$Style$placeholderStyle(
+						placeholder: A2(
+							$author$project$View$Style$placeholderStyle,
+							ui,
 							$elm$core$String$fromInt(index + 1) + '- Enter another option'),
 						text: opt
 					}),
@@ -37123,10 +37999,10 @@ var $author$project$View$WizardNewPollPage$renderPollOptionRow = F3(
 							$mdgriffith$elm_ui$Element$Border$width(2),
 							$mdgriffith$elm_ui$Element$Border$rounded(5),
 							$mdgriffith$elm_ui$Element$padding(5),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.background)
 						]),
 					{
-						label: $author$project$View$Icons$plus($author$project$View$Icons$normal),
+						label: $author$project$View$Icons$plus(ui.normal),
 						onPress: $elm$core$Maybe$Just(
 							$author$project$View$WizardNewPollPage$addNewPollOption(state))
 					}) : A2(
@@ -37137,10 +38013,10 @@ var $author$project$View$WizardNewPollPage$renderPollOptionRow = F3(
 							$mdgriffith$elm_ui$Element$Border$width(2),
 							$mdgriffith$elm_ui$Element$Border$rounded(5),
 							$mdgriffith$elm_ui$Element$padding(5),
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$background)
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.background)
 						]),
 					{
-						label: $author$project$View$Icons$minus($author$project$View$Icons$normal),
+						label: $author$project$View$Icons$minus(ui.normal),
 						onPress: $elm$core$Maybe$Just(
 							A2($author$project$View$WizardNewPollPage$removePollOption, state, index))
 					})
@@ -37161,7 +38037,7 @@ var $author$project$View$WizardNewPollPage$form = function (state) {
 	var posting = pollState.posting;
 	var isCorrect = !$author$project$View$WizardNewPollPage$hasError(
 		$author$project$View$WizardNewPollPage$check(pollState));
-	var postButtonColor = isCorrect ? $author$project$View$Theme$enabledButton : $author$project$View$Theme$disabledButton;
+	var postButtonColor = isCorrect ? state.uiStyle.theme.enabledButton : state.uiStyle.theme.disabledButton;
 	return _Utils_ap(
 		_List_fromArray(
 			[
@@ -37179,10 +38055,10 @@ var $author$project$View$WizardNewPollPage$form = function (state) {
 						$mdgriffith$elm_ui$Element$el,
 						_List_fromArray(
 							[
-								$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$enabledButton)
+								$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.enabledButton)
 							]),
-						$author$project$View$Icons$poll($author$project$View$Icons$large)),
-						A3($author$project$View$Style$titledTextStyle, 'Create a new Poll', $author$project$View$WizardNewPollPage$wizardDescription, 10)
+						$author$project$View$Icons$poll(state.uiStyle.large)),
+						A3($author$project$View$Style$titledTextStyle, state.uiStyle, 'Create a new Poll', $author$project$View$WizardNewPollPage$wizardDescription)
 					])),
 				A2(
 				$mdgriffith$elm_ui$Element$Input$multiline,
@@ -37191,25 +38067,25 @@ var $author$project$View$WizardNewPollPage$form = function (state) {
 						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 						$mdgriffith$elm_ui$Element$height(
 						A2($mdgriffith$elm_ui$Element$maximum, 100, $mdgriffith$elm_ui$Element$fill)),
-						$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground),
-						$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground)
+						$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+						$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.textFieldBackground)
 					]),
 				{
 					label: $mdgriffith$elm_ui$Element$Input$labelHidden('Question'),
 					onChange: $author$project$View$WizardNewPollPage$updateQuestion(state.forms.newPollWizard),
-					placeholder: $author$project$View$Style$placeholderStyle('Enter your Poll question !'),
+					placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Enter your Poll question !'),
 					spellcheck: true,
 					text: A2($elm$core$Maybe$withDefault, '', state.forms.newPollWizard.question)
 				}),
-				$author$project$View$WizardNewPollPage$makeHashtagBar(pollState),
-				A2($author$project$View$WizardNewPollPage$makeUserBar, state.cache, pollState)
+				A2($author$project$View$WizardNewPollPage$makeHashtagBar, state.uiStyle, pollState),
+				A3($author$project$View$WizardNewPollPage$makeUserBar, state.uiStyle, state.cache, pollState)
 			]),
 		_Utils_ap(
 			A2(
 				$elm$core$List$indexedMap,
 				F2(
 					function (index, opt) {
-						return A3($author$project$View$WizardNewPollPage$renderPollOptionRow, pollState, index, opt);
+						return A4($author$project$View$WizardNewPollPage$renderPollOptionRow, state.uiStyle, pollState, index, opt);
 					}),
 				A2(
 					$elm$core$Maybe$withDefault,
@@ -37243,11 +38119,9 @@ var $author$project$View$WizardNewPollPage$newWizardNewPollScreen = function (st
 		$mdgriffith$elm_ui$Element$column,
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$centerX,
-				$mdgriffith$elm_ui$Element$width(
-				A2($mdgriffith$elm_ui$Element$maximum, 600, $mdgriffith$elm_ui$Element$fill)),
-				$mdgriffith$elm_ui$Element$height(
-				A2($mdgriffith$elm_ui$Element$maximum, 500, $mdgriffith$elm_ui$Element$fill)),
+				$mdgriffith$elm_ui$Element$alignLeft,
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$spacing(10),
 				$mdgriffith$elm_ui$Element$padding(10),
 				$mdgriffith$elm_ui$Element$Border$rounded(20)
@@ -37272,7 +38146,7 @@ var $author$project$View$WizardRepostPage$form = function (state) {
 	var postId = state.forms.newRepostWizard.repost;
 	var isCorrect = !$author$project$View$WizardRepostPage$hasError(
 		$author$project$View$WizardRepostPage$check(state.forms.newRepostWizard));
-	var postButtonColor = isCorrect ? $author$project$View$Theme$enabledButton : $author$project$View$Theme$disabledButton;
+	var postButtonColor = isCorrect ? state.uiStyle.theme.enabledButton : state.uiStyle.theme.disabledButton;
 	return _List_fromArray(
 		[
 			A2(
@@ -37289,17 +38163,17 @@ var $author$project$View$WizardRepostPage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$enabledButton)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.enabledButton)
 						]),
-					$author$project$View$Icons$repost($author$project$View$Icons$large)),
-					A3($author$project$View$Style$titledTextStyle, 'Repost', $author$project$View$WizardRepostPage$wizardDescription, 10)
+					$author$project$View$Icons$repost(state.uiStyle.large)),
+					A3($author$project$View$Style$titledTextStyle, state.uiStyle, 'Repost', $author$project$View$WizardRepostPage$wizardDescription)
 				])),
 			A2(
 			$elm$core$Maybe$withDefault,
 			$mdgriffith$elm_ui$Element$none,
 			A2(
 				$elm$core$Maybe$map,
-				A2($author$project$View$PostRenderer$renderPostId, state.timestamp, state.cache),
+				A3($author$project$View$PostRenderer$renderPostId, state.uiStyle, state.timestamp, state.cache),
 				postId)),
 			A2(
 			$mdgriffith$elm_ui$Element$Input$button,
@@ -37323,11 +38197,9 @@ var $author$project$View$WizardRepostPage$newWizardRepostScreen = function (stat
 		$mdgriffith$elm_ui$Element$column,
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$centerX,
-				$mdgriffith$elm_ui$Element$width(
-				A2($mdgriffith$elm_ui$Element$maximum, 600, $mdgriffith$elm_ui$Element$fill)),
-				$mdgriffith$elm_ui$Element$height(
-				A2($mdgriffith$elm_ui$Element$maximum, 300, $mdgriffith$elm_ui$Element$fill)),
+				$mdgriffith$elm_ui$Element$alignLeft,
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$spacing(10),
 				$mdgriffith$elm_ui$Element$padding(10),
 				$mdgriffith$elm_ui$Element$Border$rounded(20)
@@ -37355,49 +38227,50 @@ var $author$project$View$WizardNewTipPage$hasError = function (res) {
 		return false;
 	}
 };
-var $author$project$View$WizardNewTipPage$makeHashtagBar = function (state) {
-	return A2(
-		$mdgriffith$elm_ui$Element$paragraph,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$alignLeft,
-				$mdgriffith$elm_ui$Element$spacing(10),
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
-				$mdgriffith$elm_ui$Element$Font$italic,
-				$mdgriffith$elm_ui$Element$Font$size(12)
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$mdgriffith$elm_ui$Element$row,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(5)
-					]),
-				A2(
-					$elm$core$List$map,
-					$author$project$View$Style$hashtagStyle,
-					A2(
-						$elm$core$List$sortBy,
-						function (_v0) {
-							var x = _v0.a;
-							return x;
-						},
-						$author$project$Utils$TextUtils$hashtagsFrom(
-							A2($elm$core$Maybe$withDefault, '', state.content)))))
-			]));
-};
-var $author$project$View$WizardNewTipPage$makeUserBar = F2(
-	function (cache, state) {
+var $author$project$View$WizardNewTipPage$makeHashtagBar = F2(
+	function (ui, state) {
 		return A2(
 			$mdgriffith$elm_ui$Element$paragraph,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$alignLeft,
 					$mdgriffith$elm_ui$Element$spacing(10),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
 					$mdgriffith$elm_ui$Element$Font$italic,
-					$mdgriffith$elm_ui$Element$Font$size(12)
+					A2($author$project$View$Style$relFontSize, ui, 2)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$row,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$spacing(5)
+						]),
+					A2(
+						$elm$core$List$map,
+						$author$project$View$Style$hashtagStyle(ui),
+						A2(
+							$elm$core$List$sortBy,
+							function (_v0) {
+								var x = _v0.a;
+								return x;
+							},
+							$author$project$Utils$TextUtils$hashtagsFrom(
+								A2($elm$core$Maybe$withDefault, '', state.content)))))
+				]));
+	});
+var $author$project$View$WizardNewTipPage$makeUserBar = F3(
+	function (ui, cache, state) {
+		return A2(
+			$mdgriffith$elm_ui$Element$paragraph,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$alignLeft,
+					$mdgriffith$elm_ui$Element$spacing(10),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
+					$mdgriffith$elm_ui$Element$Font$italic,
+					A2($author$project$View$Style$relFontSize, ui, 2)
 				]),
 			_List_fromArray(
 				[
@@ -37410,8 +38283,9 @@ var $author$project$View$WizardNewTipPage$makeUserBar = F2(
 					A2(
 						$elm$core$List$map,
 						function (pseudo) {
-							return A2(
+							return A3(
 								$author$project$View$Style$userStyle,
+								ui,
 								pseudo,
 								A2($author$project$State$Cache$getUserByPseudo, cache, pseudo));
 						},
@@ -37436,7 +38310,7 @@ var $author$project$View$WizardNewTipPage$form = function (state) {
 	var posting = state.forms.newTipWizard.posting;
 	var isCorrect = !$author$project$View$WizardNewTipPage$hasError(
 		$author$project$View$WizardNewTipPage$check(state.forms.newTipWizard));
-	var postButtonColor = isCorrect ? $author$project$View$Theme$enabledButton : $author$project$View$Theme$disabledButton;
+	var postButtonColor = isCorrect ? state.uiStyle.theme.enabledButton : state.uiStyle.theme.disabledButton;
 	return _List_fromArray(
 		[
 			A2(
@@ -37453,10 +38327,10 @@ var $author$project$View$WizardNewTipPage$form = function (state) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$enabledButton)
+							$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.enabledButton)
 						]),
-					$author$project$View$Icons$tip($author$project$View$Icons$large)),
-					A3($author$project$View$Style$titledTextStyle, 'Enter your tip', $author$project$View$WizardNewTipPage$wizardDescription, 10)
+					$author$project$View$Icons$tip(state.uiStyle.large)),
+					A3($author$project$View$Style$titledTextStyle, state.uiStyle, 'Enter your tip', $author$project$View$WizardNewTipPage$wizardDescription)
 				])),
 			A2(
 			$mdgriffith$elm_ui$Element$Input$multiline,
@@ -37464,18 +38338,18 @@ var $author$project$View$WizardNewTipPage$form = function (state) {
 				[
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground),
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground)
+					$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
+					$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.textFieldBackground)
 				]),
 			{
 				label: $mdgriffith$elm_ui$Element$Input$labelHidden('Tip content'),
 				onChange: $author$project$View$WizardNewTipPage$updateContent(state.forms.newTipWizard),
-				placeholder: $author$project$View$Style$placeholderStyle('Enter your Tip !'),
+				placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Enter your Tip !'),
 				spellcheck: true,
 				text: A2($elm$core$Maybe$withDefault, '', state.forms.newTipWizard.content)
 			}),
-			$author$project$View$WizardNewTipPage$makeHashtagBar(state.forms.newTipWizard),
-			A2($author$project$View$WizardNewTipPage$makeUserBar, state.cache, state.forms.newTipWizard),
+			A2($author$project$View$WizardNewTipPage$makeHashtagBar, state.uiStyle, state.forms.newTipWizard),
+			A3($author$project$View$WizardNewTipPage$makeUserBar, state.uiStyle, state.cache, state.forms.newTipWizard),
 			A2(
 			$mdgriffith$elm_ui$Element$Input$button,
 			_List_fromArray(
@@ -37498,11 +38372,9 @@ var $author$project$View$WizardNewTipPage$newWizardNewTipScreen = function (stat
 		$mdgriffith$elm_ui$Element$column,
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$centerX,
-				$mdgriffith$elm_ui$Element$width(
-				A2($mdgriffith$elm_ui$Element$maximum, 600, $mdgriffith$elm_ui$Element$fill)),
-				$mdgriffith$elm_ui$Element$height(
-				A2($mdgriffith$elm_ui$Element$maximum, 300, $mdgriffith$elm_ui$Element$fill)),
+				$mdgriffith$elm_ui$Element$alignLeft,
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$spacing(10),
 				$mdgriffith$elm_ui$Element$padding(10),
 				$mdgriffith$elm_ui$Element$Border$rounded(20)
@@ -37817,7 +38689,7 @@ var $mdgriffith$elm_ui$Element$layoutWith = F3(
 	});
 var $mdgriffith$elm_ui$Element$layout = $mdgriffith$elm_ui$Element$layoutWith(
 	{options: _List_Nil});
-var $author$project$View$Theme$appTitleForeground = $author$project$View$Theme$darkOrange;
+var $author$project$State$AppState$BlockedPage = {$: 'BlockedPage'};
 var $mdgriffith$elm_ui$Element$Font$family = function (families) {
 	return A2(
 		$mdgriffith$elm_ui$Internal$Model$StyleClass,
@@ -37829,48 +38701,55 @@ var $mdgriffith$elm_ui$Element$Font$family = function (families) {
 };
 var $mdgriffith$elm_ui$Element$Font$sansSerif = $mdgriffith$elm_ui$Internal$Model$SansSerif;
 var $mdgriffith$elm_ui$Element$Font$typeface = $mdgriffith$elm_ui$Internal$Model$Typeface;
-var $author$project$View$AppView$appTitle = A2(
-	$mdgriffith$elm_ui$Element$row,
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background)
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$mdgriffith$elm_ui$Element$el,
+var $author$project$View$AppView$appTitle = function (state) {
+	if ($author$project$View$UIStyle$isMobile(state.device)) {
+		return $mdgriffith$elm_ui$Element$none;
+	} else {
+		var ui = state.uiStyle;
+		return A2(
+			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$width(
-					$mdgriffith$elm_ui$Element$px(20))
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$Background$color(ui.theme.background)
 				]),
-			A2($author$project$View$Style$horizontalSeparator, 1, $author$project$View$Theme$foreground)),
-			A2(
-			$mdgriffith$elm_ui$Element$el,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Border$width(1),
-					$mdgriffith$elm_ui$Element$Border$rounded(5),
-					$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$appBackground),
-					$mdgriffith$elm_ui$Element$padding(5),
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$appBackground),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$appTitleForeground),
-					$mdgriffith$elm_ui$Element$Font$italic,
-					$mdgriffith$elm_ui$Element$Font$family(
+					A2(
+					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
-							$mdgriffith$elm_ui$Element$Font$typeface('Open Sans'),
-							$mdgriffith$elm_ui$Element$Font$sansSerif
-						]))
-				]),
-			A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$alignLeft]),
-				$mdgriffith$elm_ui$Element$text('GreenGen >>'))),
-			A2($author$project$View$Style$horizontalSeparator, 1, $author$project$View$Theme$foreground)
-		]));
+							$mdgriffith$elm_ui$Element$width(
+							$mdgriffith$elm_ui$Element$px(20))
+						]),
+					A2($author$project$View$Style$horizontalSeparator, 1, ui.theme.foreground)),
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$Border$width(1),
+							$mdgriffith$elm_ui$Element$Border$rounded(5),
+							$mdgriffith$elm_ui$Element$Border$color(ui.theme.appBackground),
+							$mdgriffith$elm_ui$Element$padding(5),
+							$mdgriffith$elm_ui$Element$Background$color(ui.theme.appBackground),
+							$mdgriffith$elm_ui$Element$Font$color(ui.theme.appTitleForeground),
+							$mdgriffith$elm_ui$Element$Font$italic,
+							$mdgriffith$elm_ui$Element$Font$family(
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$Font$typeface('Open Sans'),
+									$mdgriffith$elm_ui$Element$Font$sansSerif
+								]))
+						]),
+					A2(
+						$mdgriffith$elm_ui$Element$el,
+						_List_fromArray(
+							[$mdgriffith$elm_ui$Element$alignLeft]),
+						$mdgriffith$elm_ui$Element$text('GreenGen >>'))),
+					A2($author$project$View$Style$horizontalSeparator, 1, ui.theme.foreground)
+				]));
+	}
+};
 var $lemol$ant_design_icons_elm$Ant$Icons$Svg$ArrowLeftOutlined$viewWithAttributes = function (attributes) {
 	return A2(
 		$elm$svg$Svg$svg,
@@ -37895,15 +38774,15 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$arrowLeftOutlined = $lemol$ant_des
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$arrowLeftOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$arrowLeftOutlined);
 };
-var $author$project$View$Icons$back = $lemol$ant_design_icons_elm_ui$Ant$Icons$arrowLeftOutlined;
-var $author$project$View$Style$tabIconButton = F2(
-	function (icon, msg) {
+var $author$project$View$Icons$back = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$arrowLeftOutlined);
+var $author$project$View$Style$tabIconButton = F3(
+	function (ui, icon, msg) {
 		return A2(
 			$mdgriffith$elm_ui$Element$Input$button,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$foreground),
+					$mdgriffith$elm_ui$Element$Background$color(ui.theme.background),
+					$mdgriffith$elm_ui$Element$Font$color(ui.theme.foreground),
 					$mdgriffith$elm_ui$Element$Border$rounded(5),
 					$mdgriffith$elm_ui$Element$padding(5)
 				]),
@@ -37912,10 +38791,11 @@ var $author$project$View$Style$tabIconButton = F2(
 				onPress: $elm$core$Maybe$Just(msg)
 			});
 	});
-var $author$project$View$AppView$backButton = function (_v0) {
-	return A2(
+var $author$project$View$AppView$backButton = function (state) {
+	return A3(
 		$author$project$View$Style$tabIconButton,
-		$author$project$View$Icons$back($author$project$View$Icons$normal),
+		state.uiStyle,
+		$author$project$View$Icons$back(state.uiStyle.normal),
 		$author$project$Update$Msg$Back);
 };
 var $author$project$State$AppState$ChallengePage = {$: 'ChallengePage'};
@@ -37926,9 +38806,9 @@ var $author$project$View$Style$screenTabIcon = F4(
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$Background$color(
-					_Utils_eq(state.display, display) ? $author$project$View$Theme$foreground : $author$project$View$Theme$background),
+					_Utils_eq(state.display, display) ? state.uiStyle.theme.foreground : state.uiStyle.theme.background),
 					$mdgriffith$elm_ui$Element$Font$color(
-					_Utils_eq(state.display, display) ? $author$project$View$Theme$background : $author$project$View$Theme$foreground),
+					_Utils_eq(state.display, display) ? state.uiStyle.theme.background : state.uiStyle.theme.foreground),
 					$mdgriffith$elm_ui$Element$Border$rounded(5),
 					$mdgriffith$elm_ui$Element$padding(5)
 				]),
@@ -37942,7 +38822,7 @@ var $author$project$View$AppView$challengeTab = function (state) {
 		$author$project$View$Style$screenTabIcon,
 		state,
 		$author$project$State$AppState$ChallengePage,
-		$author$project$View$Icons$challenge($author$project$View$Icons$normal),
+		$author$project$View$Icons$challenge(state.uiStyle.normal),
 		$author$project$Update$Msg$DisplayPage($author$project$State$AppState$ChallengePage));
 };
 var $author$project$State$AppState$EventPage = {$: 'EventPage'};
@@ -37951,21 +38831,20 @@ var $author$project$View$AppView$eventTab = function (state) {
 		$author$project$View$Style$screenTabIcon,
 		state,
 		$author$project$State$AppState$EventPage,
-		$author$project$View$Icons$event($author$project$View$Icons$normal),
+		$author$project$View$Icons$event(state.uiStyle.normal),
 		$author$project$Update$Msg$DisplayPage($author$project$State$AppState$EventPage));
 };
-var $author$project$View$Theme$alertColor = $author$project$View$Theme$darkOrange;
 var $author$project$View$Style$screenTabIconWithRefresh = F5(
 	function (state, display, needsRefresh, icon, msg) {
-		var refreshColor = needsRefresh ? $author$project$View$Theme$alertColor : $author$project$View$Theme$background;
+		var refreshColor = needsRefresh ? state.uiStyle.theme.alertColor : state.uiStyle.theme.background;
 		return A2(
 			$mdgriffith$elm_ui$Element$Input$button,
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$Background$color(
-					_Utils_eq(state.display, display) ? $author$project$View$Theme$foreground : refreshColor),
+					_Utils_eq(state.display, display) ? state.uiStyle.theme.foreground : refreshColor),
 					$mdgriffith$elm_ui$Element$Font$color(
-					_Utils_eq(state.display, display) ? refreshColor : $author$project$View$Theme$foreground),
+					_Utils_eq(state.display, display) ? refreshColor : state.uiStyle.theme.foreground),
 					$mdgriffith$elm_ui$Element$Border$rounded(5),
 					$mdgriffith$elm_ui$Element$padding(5)
 				]),
@@ -37980,7 +38859,7 @@ var $author$project$View$AppView$feedTab = function (state) {
 		state,
 		$author$project$State$AppState$FeedPage,
 		state.feed.newPostsAvailable,
-		$author$project$View$Icons$feed($author$project$View$Icons$normal),
+		$author$project$View$Icons$feed(state.uiStyle.normal),
 		$author$project$Update$Msg$RefreshFeed);
 };
 var $author$project$View$Style$screenTabButton = F4(
@@ -37990,9 +38869,9 @@ var $author$project$View$Style$screenTabButton = F4(
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$Background$color(
-					_Utils_eq(state.display, display) ? $author$project$View$Theme$foreground : $author$project$View$Theme$background),
+					_Utils_eq(state.display, display) ? state.uiStyle.theme.foreground : state.uiStyle.theme.background),
 					$mdgriffith$elm_ui$Element$Font$color(
-					_Utils_eq(state.display, display) ? $author$project$View$Theme$background : $author$project$View$Theme$foreground),
+					_Utils_eq(state.display, display) ? state.uiStyle.theme.background : state.uiStyle.theme.foreground),
 					$mdgriffith$elm_ui$Element$Border$rounded(5),
 					$mdgriffith$elm_ui$Element$padding(5)
 				]),
@@ -38016,7 +38895,7 @@ var $author$project$View$AppView$notificationTab = function (state) {
 		state,
 		$author$project$State$AppState$NotificationPage,
 		state.notifications.unread,
-		$author$project$View$Icons$notifications($author$project$View$Icons$normal),
+		$author$project$View$Icons$notifications(state.uiStyle.normal),
 		$author$project$Update$Msg$RefreshNotifications);
 };
 var $author$project$Update$Msg$RefreshPinnedPosts = {$: 'RefreshPinnedPosts'};
@@ -38025,7 +38904,7 @@ var $author$project$View$AppView$pinnedTab = function (state) {
 		$author$project$View$Style$screenTabIcon,
 		state,
 		$author$project$State$AppState$PinnedPostPage,
-		$author$project$View$Icons$pinned($author$project$View$Icons$normal),
+		$author$project$View$Icons$pinned(state.uiStyle.normal),
 		$author$project$Update$Msg$RefreshPinnedPosts);
 };
 var $author$project$Update$Msg$EnteringSearch = function (a) {
@@ -38055,10 +38934,10 @@ var $author$project$View$Style$searchField = function (state) {
 		$mdgriffith$elm_ui$Element$Input$search,
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$Font$size(11),
-				$mdgriffith$elm_ui$Element$Border$color($author$project$View$Theme$background),
-				$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$textFieldBackground),
-				$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$textFieldForeground),
+				A2($author$project$View$Style$relFontSize, state.uiStyle, 1),
+				$mdgriffith$elm_ui$Element$Border$color(state.uiStyle.theme.background),
+				$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.textFieldBackground),
+				$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.textFieldForeground),
 				$mdgriffith$elm_ui$Element$Border$rounded(5),
 				onEnter($author$project$Update$Msg$PerformSearchFromField)
 			]),
@@ -38067,7 +38946,7 @@ var $author$project$View$Style$searchField = function (state) {
 			onChange: function (txt) {
 				return $author$project$Update$Msg$EnteringSearch(txt);
 			},
-			placeholder: $author$project$View$Style$placeholderStyle('Search...'),
+			placeholder: A2($author$project$View$Style$placeholderStyle, state.uiStyle, 'Search...'),
 			text: state.search.field
 		});
 };
@@ -38077,7 +38956,7 @@ var $author$project$View$Style$searchBar = function (state) {
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$foreground),
+				$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.foreground),
 				$mdgriffith$elm_ui$Element$Border$rounded(5),
 				$mdgriffith$elm_ui$Element$Border$width(0),
 				$mdgriffith$elm_ui$Element$spacing(10)
@@ -38111,13 +38990,13 @@ var $lemol$ant_design_icons_elm$Ant$Icons$Svg$searchOutlined = $lemol$ant_design
 var $lemol$ant_design_icons_elm_ui$Ant$Icons$searchOutlined = function (attrs) {
 	return A2($lemol$ant_design_icons_elm_ui$Ant$Icon$icon, attrs, $lemol$ant_design_icons_elm$Ant$Icons$Svg$searchOutlined);
 };
-var $author$project$View$Icons$search = $lemol$ant_design_icons_elm_ui$Ant$Icons$searchOutlined;
+var $author$project$View$Icons$search = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$searchOutlined);
 var $author$project$View$AppView$searchTab = function (state) {
 	return A4(
 		$author$project$View$Style$screenTabIcon,
 		state,
 		$author$project$State$AppState$SearchPage,
-		$author$project$View$Icons$search($author$project$View$Icons$normal),
+		$author$project$View$Icons$search(state.uiStyle.normal),
 		$author$project$Update$Msg$DisplayPage($author$project$State$AppState$SearchPage));
 };
 var $author$project$Update$Msg$RefreshWall = {$: 'RefreshWall'};
@@ -38126,18 +39005,37 @@ var $author$project$View$AppView$wallTab = function (state) {
 		$author$project$View$Style$screenTabIcon,
 		state,
 		$author$project$State$AppState$WallPage,
-		$author$project$View$Icons$wall($author$project$View$Icons$normal),
+		$author$project$View$Icons$wall(state.uiStyle.normal),
 		$author$project$Update$Msg$RefreshWall);
 };
 var $author$project$View$AppView$menuBar = function (state) {
-	return A2(
+	var isUnloggedScreen = A2(
+		$elm$core$List$member,
+		state.display,
+		_List_fromArray(
+			[$author$project$State$AppState$LoginPage, $author$project$State$AppState$RegistrationPage, $author$project$State$AppState$LoggedOffPage, $author$project$State$AppState$BlockedPage]));
+	var isSearch = _Utils_eq(state.display, $author$project$State$AppState$SearchPage);
+	var isMobile = $author$project$View$UIStyle$isMobile(state.device);
+	var show = function (el) {
+		return (isSearch && isMobile) ? $mdgriffith$elm_ui$Element$none : el;
+	};
+	return isUnloggedScreen ? A2(
+		$mdgriffith$elm_ui$Element$el,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$padding(10),
+				$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.background),
+				$mdgriffith$elm_ui$Element$Border$rounded(20)
+			]),
+		$author$project$View$AppView$appTitle(state)) : A2(
 		$mdgriffith$elm_ui$Element$row,
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$padding(10),
 				$mdgriffith$elm_ui$Element$spacing(5),
-				$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$background),
+				$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.background),
 				$mdgriffith$elm_ui$Element$Border$rounded(20)
 			]),
 		_List_fromArray(
@@ -38153,47 +39051,54 @@ var $author$project$View$AppView$menuBar = function (state) {
 					[
 						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
 					]),
-				_Utils_eq(state.display, $author$project$State$AppState$SearchPage) ? $author$project$View$Style$searchBar(state) : $author$project$View$AppView$appTitle),
+				isSearch ? $author$project$View$Style$searchBar(state) : $author$project$View$AppView$appTitle(state)),
+				show(
 				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$alignRight]),
-				$author$project$View$AppView$wallTab(state)),
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$alignRight]),
+					$author$project$View$AppView$wallTab(state))),
 				A2(
 				$mdgriffith$elm_ui$Element$el,
 				_List_fromArray(
 					[$mdgriffith$elm_ui$Element$alignRight]),
 				$author$project$View$AppView$feedTab(state)),
+				show(
 				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$alignRight]),
-				$author$project$View$AppView$challengeTab(state)),
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$alignRight]),
+					$author$project$View$AppView$challengeTab(state))),
+				show(
 				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$alignRight]),
-				$author$project$View$AppView$eventTab(state)),
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$alignRight]),
+					$author$project$View$AppView$eventTab(state))),
+				show(
 				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$alignRight]),
-				$author$project$View$AppView$pinnedTab(state)),
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$alignRight]),
+					$author$project$View$AppView$pinnedTab(state))),
+				show(
 				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$alignRight]),
-				$author$project$View$AppView$searchTab(state)),
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$alignRight]),
+					$author$project$View$AppView$searchTab(state))),
+				show(
 				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$alignRight]),
-				$author$project$View$AppView$notificationTab(state)),
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$alignRight]),
+					$author$project$View$AppView$notificationTab(state))),
+				show(
 				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$alignRight]),
-				$author$project$View$AppView$newTab(state))
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$alignRight]),
+					$author$project$View$AppView$newTab(state)))
 			]));
 };
 var $author$project$View$AppView$viewApp = function (state) {
@@ -38211,8 +39116,8 @@ var $author$project$View$AppView$viewApp = function (state) {
 					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$padding(5),
 					$mdgriffith$elm_ui$Element$spacing(10),
-					$mdgriffith$elm_ui$Element$Font$color($author$project$View$Theme$appForeground),
-					$mdgriffith$elm_ui$Element$Background$color($author$project$View$Theme$appBackground)
+					$mdgriffith$elm_ui$Element$Font$color(state.uiStyle.theme.appForeground),
+					$mdgriffith$elm_ui$Element$Background$color(state.uiStyle.theme.appBackground)
 				]),
 			_List_fromArray(
 				[

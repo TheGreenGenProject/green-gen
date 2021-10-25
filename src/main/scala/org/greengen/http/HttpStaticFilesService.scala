@@ -18,6 +18,12 @@ object HttpStaticFilesService {
 
   def nonAuthRoutes(implicit cs: ContextShift[IO]) = HttpRoutes.of[IO] {
     // GET
+    case req @ GET -> Root =>
+      StaticFile
+        .fromResource(s"static/index.html", BlockingContext, Some(req))
+        .map(_.putHeaders())
+        .map(_.putHeaders(`Cache-Control`(NonEmptyList.of(`no-cache`()))))
+        .getOrElseF(NotFound())
     case req @ GET -> Root / filename =>
       StaticFile
         .fromResource(s"static/${filename}", BlockingContext, Some(req))
