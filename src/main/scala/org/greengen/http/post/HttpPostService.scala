@@ -17,7 +17,7 @@ import scala.util.Try
 
 object HttpPostService {
 
-  val PageSize = 10
+  val PageSize = 30
 
   def routes(clock: Clock, service: PostService[IO]) = AuthedRoutes.of[UserId, IO] {
     // GET

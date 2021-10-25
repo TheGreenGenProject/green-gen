@@ -15,7 +15,7 @@ import org.http4s.dsl.io._
 
 object HttpEventService {
 
-  val PageSize = 10
+  val PageSize = 30
 
   def routes(clock: Clock, service: EventService[IO]) = AuthedRoutes.of[UserId, IO] {
     // GET

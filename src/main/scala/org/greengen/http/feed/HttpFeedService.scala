@@ -14,7 +14,7 @@ import org.greengen.http.HttpQueryParameters._
 
 object HttpFeedService {
 
-  val PageSize = 10
+  val PageSize = 30
 
   def routes(service: FeedService[IO]) = AuthedRoutes.of[UserId, IO] {
     // GET

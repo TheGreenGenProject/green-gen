@@ -16,7 +16,7 @@ import org.greengen.http.HttpQueryParameters._
 
 object HttpConversationService {
 
-  val PageSize = 10
+  val PageSize = 30
 
   def routes(clock: Clock, service: ConversationService[IO]) = AuthedRoutes.of[UserId, IO] {
     // GET

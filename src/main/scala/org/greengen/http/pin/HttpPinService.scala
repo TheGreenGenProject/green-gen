@@ -14,7 +14,7 @@ import org.http4s.dsl.io._
 
 object HttpPinService {
 
-  val PageSize = 10
+  val PageSize = 30
 
   def routes(service: PinService[IO]): AuthedRoutes[UserId, IO] = AuthedRoutes.of[UserId, IO] {
     // GET
