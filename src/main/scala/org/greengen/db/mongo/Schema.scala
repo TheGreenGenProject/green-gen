@@ -428,6 +428,10 @@ object Schema {
         Document("type" -> "EventModifiedNotification", "event_id" -> eventId.value.uuid)
       case EventCancelledNotification(eventId: EventId) =>
         Document("type" -> "EventCancelledNotification", "event_id" -> eventId.value.uuid)
+      case EventParticipationRequestAcceptedNotification(eventId: EventId) =>
+        Document("type" -> "EventParticipationRequestAcceptedNotification", "event_id" -> eventId.value.uuid)
+      case EventParticipationRequestRejectedNotification(eventId: EventId) =>
+        Document("type" -> "EventParticipationRequestRejectedNotification", "event_id" -> eventId.value.uuid)
       case NewFollowerNotification(follower: UserId) =>
         Document("type" -> "NewFollowerNotification", "follower_id" -> follower.value.uuid)
       case PostLikedNotification(postId: PostId, likedBy: UserId) =>
@@ -557,15 +561,17 @@ object Schema {
   // Dirty job of identifying the notification content from a doc
   private[mongo] def readNotificationContent(doc: Document): Either[String, NotificationContent] = {
     doc.getString("type") match {
-      case "PlatformMessageNotification"       => readPlatformNotificationContent(doc)
-      case "EventModifiedNotification"         => readEventModifiedNotificationContent(doc)
-      case "EventCancelledNotification"        => readEventCancelledNotificationContent(doc)
-      case "NewFollowerNotification"           => readNewFollowerNotificationContent(doc)
-      case "PostLikedNotification"             => readPostLikedNotificationContent(doc)
-      case "YouHaveBeenChallengedNotification" => readYouHaveBeenChallengedNotificationContent(doc)
-      case "ChallengeAcceptedNotification"     => readChallengeAcceptedNotificationContent(doc)
-      case "ChallengeRejectedNotification"     => readChallengeRejectedNotificationContent(doc)
-      case "PollAnsweredNotification"          => readPollAnsweredNotificationContent(doc)
+      case "PlatformMessageNotification"                   => readPlatformNotificationContent(doc)
+      case "EventModifiedNotification"                     => readEventModifiedNotificationContent(doc)
+      case "EventCancelledNotification"                    => readEventCancelledNotificationContent(doc)
+      case "EventParticipationRequestAcceptedNotification" => readEventParticipationRequestAcceptedNotification(doc)
+      case "EventParticipationRequestRejectedNotification" => readEventParticipationRequestRejectedNotification(doc)
+      case "NewFollowerNotification"                       => readNewFollowerNotificationContent(doc)
+      case "PostLikedNotification"                         => readPostLikedNotificationContent(doc)
+      case "YouHaveBeenChallengedNotification"             => readYouHaveBeenChallengedNotificationContent(doc)
+      case "ChallengeAcceptedNotification"                 => readChallengeAcceptedNotificationContent(doc)
+      case "ChallengeRejectedNotification"                 => readChallengeRejectedNotificationContent(doc)
+      case "PollAnsweredNotification"                      => readPollAnsweredNotificationContent(doc)
       case _ => Left(s"Couldn't recognize notification type in $doc")
     }
   }
@@ -638,6 +644,20 @@ object Schema {
       .map(EventId(_))
       .map(EventCancelledNotification(_))
       .toRight(s"No field 'event_id' for EventCancelledNotification in $doc")
+
+  private[mongo] def readEventParticipationRequestAcceptedNotification(doc: Document) =
+    Option(doc.getString("event_id"))
+      .flatMap(UUID.from)
+      .map(EventId(_))
+      .map(EventParticipationRequestAcceptedNotification(_))
+      .toRight(s"No field 'event_id' for EventParticipationRequestAcceptedNotification in $doc")
+
+  private[mongo] def readEventParticipationRequestRejectedNotification(doc: Document) =
+    Option(doc.getString("event_id"))
+      .flatMap(UUID.from)
+      .map(EventId(_))
+      .map(EventParticipationRequestRejectedNotification(_))
+      .toRight(s"No field 'event_id' for EventParticipationRequestRejectedNotification in $doc")
 
   private[mongo] def readEventModifiedNotificationContent(doc: Document) =
     Option(doc.getString("event_id"))

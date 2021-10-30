@@ -6,7 +6,7 @@ import org.greengen.core.{IOUtils, Page, PagedResult}
 import org.greengen.core.event.EventService
 import org.greengen.core.follower.FollowerService
 import org.greengen.core.like.LikeService
-import org.greengen.core.post.{AllPosts, PostService}
+import org.greengen.core.post.{AllPosts, PostId, PostService}
 import org.greengen.core.ranking.{Rank, RankingService, ScoreBreakdown}
 import org.greengen.core.user.{UserId, UserService}
 
@@ -26,10 +26,11 @@ class RankingServiceImpl(userService: UserService[IO],
   override def score(userId: UserId): IO[ScoreBreakdown] = for {
     maybeUser       <- userService.profile(userId)
     profile         <- IOUtils.from(maybeUser, s"Unknown user id $userId")
-    likesReceived   <- countLikesReceived(userId)
+    postIds         <- postService.byAuthor(userId, AllPosts, Page.All)
+    likesReceived   <- countLikesReceived(postIds)
     followingCount  <- followerService.countFollowing(userId)
     followerCount   <- followerService.countFollowers(userId)
-    postCount       <- postService.byAuthor(userId, AllPosts, Page.All).map(_.size)
+    postCount       <- IO(postIds.size)
     eventsOrganized <- eventService.byOwnership(userId, Page.All).map(_.size)
     eventsAttended  <- eventService.byParticipation(userId, Page.All).map(_.size)
   } yield ScoreBreakdown.compute(profile, likesReceived, followingCount,
@@ -38,8 +39,7 @@ class RankingServiceImpl(userService: UserService[IO],
 
   // Helpers
 
-  private[this] def countLikesReceived(userId: UserId): IO[Long] = for {
-    posts        <- postService.byAuthor(userId, AllPosts, Page.All)
+  private[this] def countLikesReceived(posts: List[PostId]): IO[Long] = for {
     likesPerPost <- posts.map(likeService.countLikes(_)).sequence
     totalLikes   <- IO(likesPerPost.map(_.value).sum)
   } yield totalLikes

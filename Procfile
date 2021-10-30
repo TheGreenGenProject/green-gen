@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/in-memory-green-gen-server
+web: target/universal/stage/bin/green-gen-server

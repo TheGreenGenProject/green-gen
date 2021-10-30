@@ -72,10 +72,12 @@ object GreenGenServer extends IOApp {
 
   def run(args: List[String]): IO[ExitCode] = {
 
-    val db = mongo.Database.connection(
-      "mongodb://localhost:27017/",
-      "greengen",
-      "gogogo")
+    val dbUrl = Option(System.getenv("MONGODB_URI")) match {
+      case Some(url) => url
+      case None      => throw new RuntimeException("Environment variable MONGODB_URI is not defined")
+    }
+
+    val db = mongo.Database.connection(dbUrl)
 
     // Services
     val clock = Clock()
@@ -98,15 +100,6 @@ object GreenGenServer extends IOApp {
     val conversationService = new ConversationServiceImpl(new MongoConversationStore(db, clock))(clock, userService, notificationService)
     val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
     val partnershipService = new PartnershipServiceImpl(new InMemoryPartnershipStore)(clock, userService)
-
-    // FIXME Populating data for testing purpose
-    TestData
-      .init(clock, authService,
-        userService, followerService,
-        tipService, challengeService, pollService,
-        postService, eventService,
-        notificationService, partnershipService)
-      .unsafeRunSync()
 
     // Token based authentication middleware
     val authMiddleware = TokenAuthMiddleware.authMiddleware(authService)
