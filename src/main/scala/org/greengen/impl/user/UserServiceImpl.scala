@@ -48,6 +48,9 @@ class UserServiceImpl(userStore: UserStore[IO])(clock: Clock) extends UserServic
   override def byId(id: UserId): IO[Option[(User, Profile)]] =
     userStore.getByUserId(id)
 
+  override def byIds(ids: List[UserId]): IO[List[(User, Profile)]] =
+    userStore.getByUserIds(ids)
+
   override def byPseudo(pseudo: Pseudo): IO[Option[UserId]] =
     userStore.getByPseudo(pseudo)
 

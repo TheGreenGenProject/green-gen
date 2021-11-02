@@ -17,6 +17,7 @@ trait UserStore[F[_]] extends Store[F] {
   def updateProfile(userId: UserId, profile: Profile): F[Unit]
   def setUserEnabled(userId: UserId, enabled: Boolean): F[Unit]
   def getByUserId(userId: UserId): F[Option[(User, Profile)]]
+  def getByUserIds(userIds: List[UserId]): F[List[(User, Profile)]]
 
   def emailExists(emailHash: Hash): F[Boolean]
   def getByHashes(hashes: (Hash, Hash)): F[Option[UserId]]

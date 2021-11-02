@@ -16,6 +16,8 @@ trait PostStore[F[_]] extends Store[F] {
 
   def getPostById(postId: PostId): F[Option[Post]]
 
+  def getPostByIds(postIds: List[PostId]): F[List[Post]]
+
   def getByAuthor(author: UserId, postType: SearchPostType, page: Page): F[List[PostId]]
 
   def getByChallengeId(challengeId: ChallengeId): F[Option[PostId]]

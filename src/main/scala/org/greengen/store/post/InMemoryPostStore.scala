@@ -34,6 +34,9 @@ class InMemoryPostStore extends PostStore[IO] {
   override def getPostById(postId: PostId): IO[Option[Post]] =
     IO(posts.get(postId))
 
+  override def getPostByIds(postIds: List[PostId]): IO[List[Post]] =
+    IO(postIds.flatMap(posts.get(_)))
+
   override def getByAuthor(author: UserId, postType: SearchPostType, page: Page): IO[List[PostId]] =
     for {
       all <- IO(authors.getOrElse(author, Set()))

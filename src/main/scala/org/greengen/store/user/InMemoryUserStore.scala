@@ -44,6 +44,9 @@ class InMemoryUserStore extends UserStore[IO] {
   override def getByUserId(userId: UserId): IO[Option[(User, Profile)]] =
     IO(allUsers.get(userId))
 
+  override def getByUserIds(userIds: List[UserId]): IO[List[(User, Profile)]] =
+    IO(userIds.flatMap(allUsers.get(_)))
+
   override def emailExists(emailHash: Hash): IO[Boolean] =
     IO(emailHashes.contains(emailHash))
 

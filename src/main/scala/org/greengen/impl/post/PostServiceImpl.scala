@@ -52,6 +52,9 @@ class PostServiceImpl(postStore: PostStore[IO])
   override def byId(post: PostId): IO[Option[Post]] =
     postStore.getPostById(post)
 
+  override def byIds(posts: List[PostId]): IO[List[Post]] =
+    postStore.getPostByIds(posts)
+
   override def byContent(challenge: ChallengeId): IO[Option[PostId]] =
     postStore.getByChallengeId(challenge)
 

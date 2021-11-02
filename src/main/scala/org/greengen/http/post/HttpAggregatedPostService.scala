@@ -66,11 +66,17 @@ object HttpAggregatedPostService {
       followerService,
       partnershipService,
       conversationService) _
+    // Brings posts and users into memory cache in 2 queries - to avoid multiple db queries
+    val bringToCache = (postIds: List[PostId]) => for {
+      posts <- postService.byIds(postIds)
+      _     <- userService.byIds(posts.map(_.author))
+    } yield IO.unit
 
     AuthedRoutes.of[UserId, IO] {
       // GET
       case GET -> Root / "post" / "by-ids" :? PostIdsQueryParamMatcher(postIds) as userId =>
         val all = for {
+          _       <- bringToCache(postIds)
           posts   <- postIds.map(info(_, userId))
             .sequence.map(_.flatten)
           // Extracting post info from reposts

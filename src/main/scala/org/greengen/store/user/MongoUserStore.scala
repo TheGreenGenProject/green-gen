@@ -1,7 +1,7 @@
 package org.greengen.store.user
 
 import cats.effect.{ContextShift, IO}
-import com.mongodb.client.model.Filters.{and, regex, eq => eql}
+import com.mongodb.client.model.Filters.{and, regex, eq => eql, in}
 import com.mongodb.client.model.Updates.set
 import org.greengen.core.user.{Profile, Pseudo, User, UserId}
 import org.greengen.core.{Hash, Page, UUID}
@@ -46,6 +46,13 @@ class MongoUserStore(db: MongoDatabase)
         .map(docToUserProfile)
         .map(_.toOption)
   }
+
+  override def getByUserIds(userIds: List[UserId]): IO[List[(User, Profile)]] = toListIO {
+    usersCollection
+        .find(in("user_id", userIds.map(_.value.uuid):_*))
+        .map(docToUserProfile)
+        .map(_.toOption)
+  }.map(_.flatten)
 
   override def emailExists(emailHash: Hash): IO[Boolean] =  firstOptionIO {
     usersCollection

@@ -36,7 +36,7 @@ import org.greengen.impl.partnership.PartnershipServiceImpl
 import org.greengen.impl.pin.PinServiceImpl
 import org.greengen.impl.poll.PollServiceImpl
 import org.greengen.impl.post.PostServiceImpl
-import org.greengen.impl.ranking.RankingServiceImpl
+import org.greengen.impl.ranking.{CachedRankingService, RankingServiceImpl}
 import org.greengen.impl.registration.RegistrationServiceImpl
 import org.greengen.impl.reminder.ReminderServiceImpl
 import org.greengen.impl.tip.TipServiceImpl
@@ -48,23 +48,24 @@ import org.greengen.store.challenge.MongoChallengeStore
 import org.greengen.store.conversation.MongoConversationStore
 import org.greengen.store.event.InMemoryEventStore
 import org.greengen.store.feed.MongoFeedStore
-import org.greengen.store.follower.MongoFollowerStore
+import org.greengen.store.follower.{CachedFollowerStore, MongoFollowerStore}
 import org.greengen.store.hashtag.MongoHashtagStore
 import org.greengen.store.like.MongoLikeStore
 import org.greengen.store.notification.MongoNotificationStore
 import org.greengen.store.partnership.InMemoryPartnershipStore
 import org.greengen.store.pin.MongoPinStore
 import org.greengen.store.poll.MongoPollStore
-import org.greengen.store.post.MongoPostStore
+import org.greengen.store.post.{CachedPostStore, InMemoryPostStore, MongoPostStore}
 import org.greengen.store.registration.InMemoryRegistrationStore
 import org.greengen.store.tip.MongoTipStore
-import org.greengen.store.user.MongoUserStore
+import org.greengen.store.user.{CachedUserStore, MongoUserStore}
 import org.greengen.store.wall.MongoWallStore
 import org.http4s.implicits._
 import org.http4s.server.Router
 import org.http4s.server.blaze._
 import org.http4s.server.middleware.CORS
 
+import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
@@ -81,24 +82,36 @@ object GreenGenServer extends IOApp {
 
     // Services
     val clock = Clock()
-    val userService = new UserServiceImpl(new MongoUserStore(db))(clock)
+    val userService = {
+      val cachedStore = CachedUserStore.withCache(new MongoUserStore(db))
+      new UserServiceImpl(cachedStore)(clock)
+    }
     val authService = new AuthServiceImpl(new InMemoryAuthStore)(clock, userService)
     val registrationService = new RegistrationServiceImpl(new InMemoryRegistrationStore(clock))(clock, userService)
     val notificationService = new NotificationServiceImpl(new MongoNotificationStore(db, clock))(clock, userService)
-    val followerService = new FollowerServiceImpl(new MongoFollowerStore(db, clock))(clock, userService, notificationService)
+    val followerService = {
+      val cachedStore = CachedFollowerStore.withCache(new MongoFollowerStore(db, clock))
+      new FollowerServiceImpl(cachedStore)(clock, userService, notificationService)
+    }
     val tipService = new TipServiceImpl(new MongoTipStore(db))(clock, userService)
     val challengeService = new ChallengeServiceImpl(new MongoChallengeStore(db, clock))(clock, userService, followerService, notificationService)
     val pollService = new PollServiceImpl(new MongoPollStore(db, clock))(clock, userService)
     val hashtagService = new HashtagServiceImpl(new MongoHashtagStore(db, clock))(userService)
     val feedService = new FeedServiceImpl(new MongoFeedStore(db, clock))(userService, followerService, hashtagService)
     val wallService = new WallServiceImpl(new MongoWallStore(db, clock))(userService)
-    val postService = new PostServiceImpl(new MongoPostStore(db))(clock, userService, wallService, feedService)
+    val postService = {
+      val cachedStore = CachedPostStore.withCache(new MongoPostStore(db))
+      new PostServiceImpl(cachedStore)(clock, userService, wallService, feedService)
+    }
     val likeService = new LikeServiceImpl(new MongoLikeStore(db, clock))(clock, userService, notificationService, postService)
     val pinService = new PinServiceImpl(new MongoPinStore(db))(clock, userService, postService)
     val eventService = new EventServiceImpl(new InMemoryEventStore(clock))(clock, userService, notificationService)
     val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
     val conversationService = new ConversationServiceImpl(new MongoConversationStore(db, clock))(clock, userService, notificationService)
-    val rankingService = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
+    val rankingService = {
+      val service = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
+      CachedRankingService.withCache(clock, retention = 15.minutes)(service)
+    }
     val partnershipService = new PartnershipServiceImpl(new InMemoryPartnershipStore)(clock, userService)
 
     // Token based authentication middleware

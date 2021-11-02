@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicReference
 import cats.Monad
 import cats.effect.{ContextShift, IO}
 import com.mongodb.client.model.Aggregates.{limit, sortByCount, unwind}
-import com.mongodb.client.model.Filters.{all, and, eq => eql, exists => exst}
+import com.mongodb.client.model.Filters.{all, and, eq => eql, exists => exst, in}
 import com.mongodb.client.model.Sorts.descending
 import org.greengen.core.challenge.ChallengeId
 import org.greengen.core.event.EventId
@@ -51,6 +51,13 @@ class MongoPostStore(db: MongoDatabase)
       .map(docToPost)
       .map(_.toOption)
   }
+
+  override def getPostByIds(postIds: List[PostId]): IO[List[Post]] = toListIO {
+    postsCollection
+      .find(in("post_id", postIds.map(_.value.uuid):_*))
+      .map(docToPost)
+      .map(_.toOption)
+  }.map(_.flatten)
 
   override def getByAuthor(author: UserId, postType: SearchPostType, page: Page): IO[List[PostId]] = toListIO {
     postsCollection

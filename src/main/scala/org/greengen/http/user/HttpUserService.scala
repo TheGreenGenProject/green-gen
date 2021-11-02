@@ -12,7 +12,7 @@ import org.http4s.dsl.io._
 
 object HttpUserService {
 
-  val PageSize = 50
+  val PageSize = 30
 
   def routes(service: UserService[IO]) = AuthedRoutes.of[UserId, IO] {
     // GET

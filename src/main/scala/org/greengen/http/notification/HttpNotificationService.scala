@@ -14,7 +14,7 @@ import org.greengen.http.HttpQueryParameters._
 
 object HttpNotificationService {
 
-  val PageSize = 50
+  val PageSize = 30
 
   def routes(clock: Clock, service: NotificationService[IO]) = AuthedRoutes.of[UserId, IO] {
     // GET

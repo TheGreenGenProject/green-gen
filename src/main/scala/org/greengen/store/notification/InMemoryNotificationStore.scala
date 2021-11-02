@@ -38,7 +38,7 @@ class InMemoryNotificationStore(clock: Clock) extends NotificationStore[IO] {
     })
 
   override def removeFromUserQueue(userId: UserId, notificationId: NotificationId): IO[Unit] =
-    IO(dispatchQueues.updateWith(userId)(q => q.map(_.filterNot(_==notificationId))))
+    IO(dispatchQueues.updateWith(userId)(q => q.map(_.filterNot(_._1==notificationId))))
 
   override def markAsRead(userId: UserId, notificationId: NotificationId): IO[Unit] =
     IO(dispatchQueues.updateWith(userId) { q =>

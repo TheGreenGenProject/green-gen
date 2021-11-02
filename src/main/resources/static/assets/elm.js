@@ -31761,15 +31761,12 @@ var $author$project$View$WelcomeScreen$bullet = F3(
 						]),
 					icon),
 					A2(
-					$mdgriffith$elm_ui$Element$paragraph,
+					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[
 							A2($author$project$View$Style$relFontSize, ui, 0)
 						]),
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$text(txt)
-						]))
+					$mdgriffith$elm_ui$Element$text(txt))
 				]));
 	});
 var $author$project$View$Icons$calendar = A2($elm$core$Basics$composeR, $author$project$View$Icons$toWidthHeight, $lemol$ant_design_icons_elm_ui$Ant$Icons$calendarOutlined);

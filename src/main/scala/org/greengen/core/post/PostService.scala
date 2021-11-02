@@ -21,6 +21,8 @@ trait PostService[F[_]] {
 
   def byId(post: PostId): F[Option[Post]]
 
+  def byIds(posts: List[PostId]): F[List[Post]]
+
   def byContent(challenge: ChallengeId): F[Option[PostId]]
 
   def byContent(event: EventId): F[Option[PostId]]

@@ -1,7 +1,6 @@
 package org.greengen.store.follower
 
 import cats.effect.IO
-import org.greengen.core.{Clock, UTCTimestamp}
 import org.greengen.core.user.UserId
 
 import scala.collection.concurrent.TrieMap

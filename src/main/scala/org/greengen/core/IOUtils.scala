@@ -24,4 +24,10 @@ object IOUtils {
   def defined[T](maybe: IO[Option[T]], err: String): IO[T] =
     maybe.flatMap(_.fold(IO.raiseError[T](new RuntimeException(err)))(IO.pure))
 
+  def orElse[T](maybe: IO[Option[T]], fallback: IO[Option[T]]): IO[Option[T]] =
+    for {
+      opt <- maybe
+      res <- opt.fold(fallback)(r => IO(Some(r)))
+    } yield res
+
 }

@@ -20,6 +20,8 @@ trait UserService[F[_]] {
 
   def byId(id: UserId): F[Option[(User, Profile)]]
 
+  def byIds(ids: List[UserId]): F[List[(User, Profile)]]
+
   def byPseudo(pseudo: Pseudo): F[Option[UserId]]
 
   def byPseudoPrefix(prefix: String, page: Page): F[List[UserId]]

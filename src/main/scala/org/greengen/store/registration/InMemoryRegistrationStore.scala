@@ -26,7 +26,7 @@ class InMemoryRegistrationStore(clock: Clock) extends RegistrationStore[IO] {
     for {
       code   <- IOUtils.from(emails.get(email), "Np validation code is available for this email")
       params <- IOUtils.from(parameters.get(email), "This email doesn't match a registered email")
-    } yield Option.when(code==validationCode || validationCode == ValidationCode(0,0,0))(params)
+    } yield Option.when(code._1==validationCode || validationCode == ValidationCode(0,0,0))(params)
 
   override def remap(email: Hash, newCode: ValidationCode, expiry: UTCTimestamp): IO[Unit] =
     IO(emails.put(email, (newCode, expiry)))
