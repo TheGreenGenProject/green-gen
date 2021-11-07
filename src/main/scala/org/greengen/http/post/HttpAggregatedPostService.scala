@@ -66,7 +66,7 @@ object HttpAggregatedPostService {
       followerService,
       partnershipService,
       conversationService) _
-    // Brings posts and users into memory cache in 2 queries - to avoid multiple db queries
+    // Hack to brings posts and users into memory cache in 2 queries - to avoid multiple db queries
     val bringToCache = (postIds: List[PostId]) => for {
       posts <- postService.byIds(postIds)
       _     <- userService.byIds(posts.map(_.author))
@@ -103,6 +103,7 @@ object HttpAggregatedPostService {
     event: Option[EventInfo],
     poll: Option[PollInfo],
     repost: Option[RepostInfo],
+    liked: Boolean,
     likes: Like,
     messageCount: Long)
 
@@ -149,6 +150,7 @@ object HttpAggregatedPostService {
       partner       <- partnerId.fold(IO[Option[Partner]](None))(partnershipService.partnerById(_))
       profile = user._2
       isPinned      <- pinService.isPinned(userId, postId)
+      liked         <- likeService.isLiked(userId, postId)
       likes         <- likeService.countLikes(postId)
       eventInfo     <- getEventInfo(eventService)(post, userId)
       challengeInfo <- getChallengeInfo(challengeService)(post, userId)
@@ -169,6 +171,7 @@ object HttpAggregatedPostService {
       event = eventInfo,
       poll = pollInfo,
       repost = repostInfo,
+      liked = liked,
       likes = likes,
       messageCount = messageCount))
     res
@@ -217,7 +220,7 @@ object HttpAggregatedPostService {
       pollPost   <- OptionT.fromOption[IO](Post.asPoll(post))
       poll       <- OptionT(pollService.byId(pollPost.poll))
       answered   <- OptionT(pollService.hasResponded(poll.id, userId).map(Option(_)))
-      statistics <-OptionT(pollService.statisics(poll.id).map(Option(_)))
+      statistics <- OptionT(pollService.statisics(poll.id).map(Option(_)))
     } yield PollInfo(
       poll = poll,
       answered = answered,

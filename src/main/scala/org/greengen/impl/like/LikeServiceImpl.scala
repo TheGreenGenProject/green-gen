@@ -31,9 +31,8 @@ class LikeServiceImpl(likeStore: LikeStore[IO])
   } yield ()
 
   override def isLiked(userId: UserId, postId: PostId): IO[Boolean] = for {
-    _      <- checkUser(userId)
-    likers <- likeStore.getByPostId(postId)
-    liked  <- IO(likers.contains(userId))
+    _    <- checkUser(userId)
+    liked <- likeStore.hasUserLikedPost(userId, postId)
   } yield liked
 
   override def countLikes(postId: PostId): IO[Like] =

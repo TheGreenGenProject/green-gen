@@ -24,6 +24,15 @@ class MongoLikeStore(db: MongoDatabase, clock: Clock)(implicit cs: ContextShift[
       .map(asUserId(_))
   }
 
+  def hasUserLikedPost(userId: UserId, postId: PostId): IO[Boolean] = firstOptionIO {
+    likeCollection
+      .find(and(
+        eql("post_id", postId.value.uuid),
+        eql("user_id", userId.value.uuid)
+      ))
+      .first()
+  }.map(_.isDefined)
+
   override def countLikes(id: PostId): IO[Long] = firstIO {
     likeCollection
       .countDocuments(eql("post_id", id.value.uuid))

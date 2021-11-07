@@ -9292,45 +9292,46 @@ var $author$project$Query$AggregatedCacheQueryUtils$cacheAggregatedPosts = F2(
 	function (cache, post) {
 		var c1 = A3($author$project$State$Cache$addPost, cache, post.postId, post.post);
 		var c2 = A3($author$project$State$Cache$addUser, c1, post.user.id, post.user);
-		var c3 = A3($author$project$State$Cache$setLikeCount, c2, post.postId, post.likes);
-		var c4 = A3($author$project$State$Cache$addConversationSize, c3, post.postId, post.messageCount);
-		var c5 = post.pinned ? A2($author$project$State$Cache$addPinned, c4, post.postId) : c4;
-		var c6 = A2(
-			$elm$core$Maybe$withDefault,
-			c5,
-			A2(
-				$elm$core$Maybe$map,
-				A2($author$project$Query$AggregatedCacheQueryUtils$partnership, c5, post.postId),
-				post.partner));
+		var c3 = post.liked ? A2($author$project$State$Cache$addLike, c2, post.postId) : c2;
+		var c4 = A3($author$project$State$Cache$setLikeCount, c3, post.postId, post.likes);
+		var c5 = A3($author$project$State$Cache$addConversationSize, c4, post.postId, post.messageCount);
+		var c6 = post.pinned ? A2($author$project$State$Cache$addPinned, c5, post.postId) : c5;
 		var c7 = A2(
 			$elm$core$Maybe$withDefault,
 			c6,
 			A2(
 				$elm$core$Maybe$map,
-				A2($author$project$Query$AggregatedCacheQueryUtils$cacheEventInfo, c6, post.postId),
-				post.event));
+				A2($author$project$Query$AggregatedCacheQueryUtils$partnership, c6, post.postId),
+				post.partner));
 		var c8 = A2(
 			$elm$core$Maybe$withDefault,
 			c7,
 			A2(
 				$elm$core$Maybe$map,
-				A2($author$project$Query$AggregatedCacheQueryUtils$cacheChallengeInfo, c7, post.postId),
-				post.challenge));
+				A2($author$project$Query$AggregatedCacheQueryUtils$cacheEventInfo, c7, post.postId),
+				post.event));
 		var c9 = A2(
 			$elm$core$Maybe$withDefault,
 			c8,
 			A2(
 				$elm$core$Maybe$map,
-				A2($author$project$Query$AggregatedCacheQueryUtils$cachePollInfo, c8, post.postId),
-				post.poll));
+				A2($author$project$Query$AggregatedCacheQueryUtils$cacheChallengeInfo, c8, post.postId),
+				post.challenge));
 		var c10 = A2(
 			$elm$core$Maybe$withDefault,
 			c9,
 			A2(
 				$elm$core$Maybe$map,
-				$author$project$Query$AggregatedCacheQueryUtils$cacheTipInfo(c9),
+				A2($author$project$Query$AggregatedCacheQueryUtils$cachePollInfo, c9, post.postId),
+				post.poll));
+		var c11 = A2(
+			$elm$core$Maybe$withDefault,
+			c10,
+			A2(
+				$elm$core$Maybe$map,
+				$author$project$Query$AggregatedCacheQueryUtils$cacheTipInfo(c10),
 				post.tip));
-		return c10;
+		return c11;
 	});
 var $author$project$Query$Json$AggregatedPostDecoder$AggregatedPost = function (postId) {
 	return function (post) {
@@ -9343,9 +9344,11 @@ var $author$project$Query$Json$AggregatedPostDecoder$AggregatedPost = function (
 								return function (event) {
 									return function (poll) {
 										return function (repost) {
-											return function (likes) {
-												return function (messageCount) {
-													return {challenge: challenge, event: event, freeText: freeText, likes: likes, messageCount: messageCount, partner: partner, pinned: pinned, poll: poll, post: post, postId: postId, repost: repost, tip: tip, user: user};
+											return function (liked) {
+												return function (likes) {
+													return function (messageCount) {
+														return {challenge: challenge, event: event, freeText: freeText, liked: liked, likes: likes, messageCount: messageCount, partner: partner, pinned: pinned, poll: poll, post: post, postId: postId, repost: repost, tip: tip, user: user};
+													};
 												};
 											};
 										};
@@ -9864,49 +9867,53 @@ var $author$project$Query$Json$AggregatedPostDecoder$decodeAggregatedPost = func
 			$author$project$Query$Json$DecoderUtils$decodeIntWithDefault(0),
 			A3(
 				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-				'repost',
-				$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodeRepostInfo),
+				'liked',
+				$elm$json$Json$Decode$bool,
 				A3(
 					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-					'poll',
-					$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodePollInfo),
+					'repost',
+					$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodeRepostInfo),
 					A3(
 						$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-						'event',
-						$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodeEventInfo),
+						'poll',
+						$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodePollInfo),
 						A3(
 							$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-							'challenge',
-							$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodeChallengeInfo),
+							'event',
+							$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodeEventInfo),
 							A3(
 								$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-								'freeText',
-								$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodeFreeTextInfo),
+								'challenge',
+								$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodeChallengeInfo),
 								A3(
 									$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-									'tip',
-									$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodeTipInfo),
+									'freeText',
+									$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodeFreeTextInfo),
 									A3(
 										$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-										'partner',
-										$elm$json$Json$Decode$maybe($author$project$Query$Json$PartnerDecoder$decodePartner),
+										'tip',
+										$elm$json$Json$Decode$maybe($author$project$Query$Json$AggregatedPostDecoder$decodeTipInfo),
 										A3(
 											$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-											'pinned',
-											$elm$json$Json$Decode$bool,
+											'partner',
+											$elm$json$Json$Decode$maybe($author$project$Query$Json$PartnerDecoder$decodePartner),
 											A3(
 												$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-												'user',
-												$author$project$Query$Json$UserDecoder$decodeUserProfile(token),
+												'pinned',
+												$elm$json$Json$Decode$bool,
 												A3(
 													$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-													'post',
-													$author$project$Query$Json$PostDecoder$decodePost,
+													'user',
+													$author$project$Query$Json$UserDecoder$decodeUserProfile(token),
 													A3(
 														$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-														'postId',
-														$author$project$Query$Json$PostDecoder$decodePostId,
-														$elm$json$Json$Decode$succeed($author$project$Query$Json$AggregatedPostDecoder$AggregatedPost))))))))))))));
+														'post',
+														$author$project$Query$Json$PostDecoder$decodePost,
+														A3(
+															$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+															'postId',
+															$author$project$Query$Json$PostDecoder$decodePostId,
+															$elm$json$Json$Decode$succeed($author$project$Query$Json$AggregatedPostDecoder$AggregatedPost)))))))))))))));
 };
 var $author$project$Query$Json$AggregatedPostDecoder$decodeAggregatedPosts = function (token) {
 	return $elm$json$Json$Decode$list(

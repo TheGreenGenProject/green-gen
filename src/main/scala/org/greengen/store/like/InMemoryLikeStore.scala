@@ -13,6 +13,9 @@ class InMemoryLikeStore extends LikeStore[IO] {
   override def getByPostId(id: PostId): IO[Set[UserId]] =
     IO(postLikes.getOrElse(id, Set()))
 
+  override def hasUserLikedPost(userId: UserId, postId: PostId): IO[Boolean] =
+    getByPostId(postId).map(_.contains(userId))
+
   override def countLikes(id: PostId): IO[Long] =
     getByPostId(id).map(_.size)
 
