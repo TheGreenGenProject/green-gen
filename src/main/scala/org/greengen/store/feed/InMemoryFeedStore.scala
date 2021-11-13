@@ -24,7 +24,7 @@ class InMemoryFeedStore extends FeedStore[IO] {
   override def addPost(userId: UserId, postId: PostId): IO[Unit] =  IO {
     feeds.updateWith(userId) {
       case Some(posts) => Some(postId +: posts)
-      case None => Some(List(postId))
+      case None        => Some(List(postId))
     }
   }
 

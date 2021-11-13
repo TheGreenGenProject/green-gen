@@ -45,15 +45,15 @@ import org.greengen.impl.wall.WallServiceImpl
 import org.greengen.main.InMemoryGreenGenServer.contextShift
 import org.greengen.store.auth.InMemoryAuthStore
 import org.greengen.store.challenge.MongoChallengeStore
-import org.greengen.store.conversation.MongoConversationStore
+import org.greengen.store.conversation.{CachedConversationStore, MongoConversationStore}
 import org.greengen.store.event.InMemoryEventStore
 import org.greengen.store.feed.MongoFeedStore
 import org.greengen.store.follower.{CachedFollowerStore, MongoFollowerStore}
 import org.greengen.store.hashtag.MongoHashtagStore
-import org.greengen.store.like.MongoLikeStore
+import org.greengen.store.like.{CachedLikeStore, MongoLikeStore}
 import org.greengen.store.notification.MongoNotificationStore
 import org.greengen.store.partnership.InMemoryPartnershipStore
-import org.greengen.store.pin.MongoPinStore
+import org.greengen.store.pin.{CachedPinStore, MongoPinStore}
 import org.greengen.store.poll.MongoPollStore
 import org.greengen.store.post.{CachedPostStore, InMemoryPostStore, MongoPostStore}
 import org.greengen.store.registration.InMemoryRegistrationStore
@@ -103,11 +103,20 @@ object GreenGenServer extends IOApp {
       val cachedStore = CachedPostStore.withCache(new MongoPostStore(db))
       new PostServiceImpl(cachedStore)(clock, userService, wallService, feedService)
     }
-    val likeService = new LikeServiceImpl(new MongoLikeStore(db, clock))(clock, userService, notificationService, postService)
-    val pinService = new PinServiceImpl(new MongoPinStore(db))(clock, userService, postService)
+    val likeService = {
+      val cachedStore = CachedLikeStore.withCache(new MongoLikeStore(db, clock))
+      new LikeServiceImpl(cachedStore)(clock, userService, notificationService, postService)
+    }
+    val pinService = {
+      val cachedStore = CachedPinStore.withCache(new MongoPinStore(db))
+      new PinServiceImpl(cachedStore)(clock, userService, postService)
+    }
     val eventService = new EventServiceImpl(new InMemoryEventStore(clock))(clock, userService, notificationService)
     val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
-    val conversationService = new ConversationServiceImpl(new MongoConversationStore(db, clock))(clock, userService, notificationService)
+    val conversationService = {
+      val cachedStore = CachedConversationStore.withCache(new MongoConversationStore(db, clock))
+      new ConversationServiceImpl(cachedStore)(clock, userService, notificationService)
+    }
     val rankingService = {
       val service = new RankingServiceImpl(userService, likeService, followerService, postService, eventService)
       CachedRankingService.withCache(clock, retention = 15.minutes)(service)

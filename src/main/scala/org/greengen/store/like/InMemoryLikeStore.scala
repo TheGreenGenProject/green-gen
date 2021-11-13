@@ -10,9 +10,6 @@ class InMemoryLikeStore extends LikeStore[IO] {
 
   private[this] val postLikes = new TrieMap[PostId, Set[UserId]]()
 
-  override def getByPostId(id: PostId): IO[Set[UserId]] =
-    IO(postLikes.getOrElse(id, Set()))
-
   override def hasUserLikedPost(userId: UserId, postId: PostId): IO[Boolean] =
     getByPostId(postId).map(_.contains(userId))
 
@@ -22,14 +19,19 @@ class InMemoryLikeStore extends LikeStore[IO] {
   override def addLike(userId: UserId, postId: PostId): IO[Unit] = IO {
     postLikes.updateWith(postId) {
       case Some(users) => Some(users + userId)
-      case None => Some(Set(userId))
+      case None        => Some(Set(userId))
     }
   }
 
   override def removeLike(userId: UserId, postId: PostId): IO[Unit] = IO {
     postLikes.updateWith(postId) {
       case Some(users) => Some(users - userId)
-      case None => Some(Set(userId))
+      case None        => Some(Set(userId))
     }
   }
+
+  // Helpers
+
+  private[this] def getByPostId(id: PostId): IO[Set[UserId]] =
+    IO(postLikes.getOrElse(id, Set()))
 }

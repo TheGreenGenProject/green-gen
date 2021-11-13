@@ -8,7 +8,7 @@ import org.greengen.store.Store
 
 trait PinStore[F[_]] extends Store[F] {
 
- def addPin(userId: UserId, pinnedPost: PinnedPost): F[Unit]
+  def addPin(userId: UserId, pinnedPost: PinnedPost): F[Unit]
 
   def removePin(userId: UserId, postId: PostId): F[Unit]
 

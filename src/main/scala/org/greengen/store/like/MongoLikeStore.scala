@@ -18,12 +18,6 @@ class MongoLikeStore(db: MongoDatabase, clock: Clock)(implicit cs: ContextShift[
   val LikeCollection = "posts.likes"
   val likeCollection = db.getCollection(LikeCollection)
 
-  override def getByPostId(id: PostId): IO[Set[UserId]] = toSetIO {
-    likeCollection
-      .find(eql("post_id", id.value.uuid))
-      .map(asUserId(_))
-  }
-
   def hasUserLikedPost(userId: UserId, postId: PostId): IO[Boolean] = firstOptionIO {
     likeCollection
       .find(and(
