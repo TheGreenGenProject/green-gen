@@ -15,7 +15,7 @@ import org.http4s.dsl.io._
 
 object HttpPollService {
 
-  val PageSize = 30
+  val PageSize = 10
 
   def routes(clock: Clock, service: PollService[IO]) = AuthedRoutes.of[UserId, IO] {
     // GET
