@@ -37071,7 +37071,7 @@ var $author$project$View$WizardNewEventPage$renderMapUrlLocationForm = F2(
 								return A2(
 									$author$project$View$WizardNewEventPage$updateLocation,
 									state,
-									$author$project$Data$Location$Online(
+									$author$project$Data$Location$MapUrl(
 										$author$project$Data$Url$Url(txt)));
 							},
 							placeholder: A2($author$project$View$Style$placeholderStyle, ui, 'Map Url for the event'),
