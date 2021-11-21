@@ -7,7 +7,7 @@ import org.greengen.store.Store
 
 trait EventStore[F[_]] extends Store[F] {
 
-  def registerEvent(owner: UserId, eventId: EventId, event: Event): F[Unit]
+  def registerEvent(event: Event): F[Unit]
 
   def cancelEvent(eventId: EventId): F[Unit]
 

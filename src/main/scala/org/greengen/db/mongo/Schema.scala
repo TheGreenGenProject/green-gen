@@ -1,15 +1,16 @@
 package org.greengen.db.mongo
 
+import org.greengen.core.Coordinate.{LatLong, Latitude, Longitude}
+import org.greengen.core._
 import org.greengen.core.challenge._
-import org.greengen.core.event.EventId
+import org.greengen.core.conversation.{Message, MessageId}
+import org.greengen.core.event.{Event, EventId}
 import org.greengen.core.notification._
 import org.greengen.core.pin.PinnedPost
 import org.greengen.core.poll.{Poll, PollAnswer, PollId, PollOption}
 import org.greengen.core.post._
 import org.greengen.core.tip.{Tip, TipId}
 import org.greengen.core.user.{Profile, Pseudo, User, UserId}
-import org.greengen.core._
-import org.greengen.core.conversation.{Conversation, ConversationId, Message, MessageId}
 import org.greengen.db.mongo.Conversions.hexToBytes
 import org.mongodb.scala.bson.collection.Document
 import org.mongodb.scala.bson.{BsonArray, BsonDocument, BsonInt64, BsonString}
@@ -174,13 +175,31 @@ object Schema {
       "measure" -> successMeasureToDoc(challenge.measure)
     )
 
+  def scheduleToDoc(schedule: Schedule): Document =
+    schedule match {
+      case Recurring(start, duration, every, end) => Document(
+        "start" -> start.value,
+        "duration" -> duration.millis,
+        "every" -> every.millis,
+        "end" -> end.value
+      )
+      case OneOff(start, end) => Document(
+        "start" -> start.value,
+        "end" -> end.value
+      )
+    }
+
   //    "schedule": {
   //        "start": 1621364129863,
   //        "duration": 4129863,
   //        "every": 4129863,
   //        "end": 1621364129863
   //    },
-  def docToSchedule(doc: Document): Either[String, Schedule] = for {
+  def docToSchedule(doc: Document): Either[String, Schedule] =
+    if(doc.contains("every")) readRecurringSchedule(doc)
+    else readOneOffSchedule(doc)
+
+  private[mongo] def readRecurringSchedule(doc: Document): Either[String, Schedule] = for {
     start <- Option(doc.getLong("start"))
       .map(UTCTimestamp(_))
       .toRight(s"No field 'start' found in $doc")
@@ -195,19 +214,15 @@ object Schema {
       .toRight(s"No field 'end' found in $doc")
   } yield Recurring(start, duration, every, end)
 
-  def scheduleToDoc(schedule: Schedule): Document =
-    schedule match {
-      case Recurring(start, duration, every, end) => Document(
-        "start" -> start.value,
-        "duration" -> duration.millis,
-        "every" -> every.millis,
-        "end" -> end.value
-      )
-      case OneOff(start, end) => Document(
-        "start" -> start.value,
-        "end" -> end.value
-      )
-    }
+  private[mongo] def readOneOffSchedule(doc: Document): Either[String, Schedule] = for {
+    start <- Option(doc.getLong("start"))
+      .map(UTCTimestamp(_))
+      .toRight(s"No field 'start' found in $doc")
+    end <- Option(doc.getLong("end"))
+      .map(UTCTimestamp(_))
+      .toRight(s"No field 'end' found in $doc")
+  } yield OneOff(start, end)
+
 
   //    "measure": {
   //        "max_failure": 1,
@@ -374,6 +389,97 @@ object Schema {
       "option" -> answer.answer.value,
       "timestamp" -> answer.timestamp.value
     )
+
+  def eventToDoc(event: Event): Document =
+    Document(
+      "event_id"         -> event.id.value.uuid,
+      "owner"            -> event.owner.value.uuid,
+      "description"      -> event.description,
+      "max_participants" -> event.maxParticipants,
+      "schedule"         -> scheduleToDoc(event.schedule),
+      "location"         -> locationToDoc(event.location)
+    )
+
+  def docToEvent(doc: Document): Either[String, Event] = for {
+    uuid <- Option(doc.getString("event_id"))
+      .flatMap(UUID.from)
+      .map(EventId(_))
+      .toRight(s"No field 'event_id' or invalid UUID found in $doc")
+    owner <- Option(doc.getString("owner"))
+      .flatMap(UUID.from)
+      .map(UserId(_))
+      .toRight(s"No field 'owner' or invalid UUID found in $doc")
+    maxParticipants <- Option(doc.getInteger("max_participants"))
+      .toRight(s"No field 'max_participant' in $doc")
+    description <- Option(doc.getString("description"))
+      .toRight(s"No field 'owner' or invalid UUID found in $doc")
+    location <- doc.get("location")
+      .map(_.asDocument)
+      .toRight(s"No field 'location' found in $doc")
+      .flatMap(docToLocation(_))
+    schedule <- doc.get("schedule")
+      .map(_.asDocument)
+      .toRight(s"No field 'schedule' found in $doc")
+      .flatMap(docToSchedule(_))
+  } yield Event(uuid, owner, maxParticipants, description, location, schedule)
+
+  def locationToDoc(location: Location): Document =
+    location match {
+      case Online(Url(url)) =>
+        Document("type" -> "Online", "url" -> url)
+      case MapUrl(Url(url)) =>
+        Document("type" -> "Map", "url" -> url)
+      case GeoLocation(LatLong(Latitude(lat), Longitude(lng))) =>
+        Document("type" -> "Geo", "latitude" -> lat, "longitude" -> lng)
+      case Address(address, zipCode, Country(country)) =>
+        Document(
+          "type" -> "Address",
+          "address" -> address.orNull,
+          "zip_code" -> zipCode.orNull,
+          "country" -> country
+        )
+    }
+
+  def docToLocation(doc: Document): Either[String, Location] = {
+    doc.getString("type") match {
+      case "Online"  => readOnlineLocation(doc)
+      case "Map"     => readMapUrlLocation(doc)
+      case "Geo"     => readGeoLocation(doc)
+      case "Address" => readAddressLocation(doc)
+      case _ => Left(s"Couldn't recognize location type in $doc")
+    }
+  }
+
+  private[mongo] def readOnlineLocation(doc: Document): Either[String, Online] = for {
+    url <- Option(doc.getString("url"))
+      .map(Url(_))
+      .toRight(s"No field 'url' found in $doc")
+  } yield Online(url)
+
+  private[mongo] def readMapUrlLocation(doc: Document): Either[String, MapUrl] = for {
+    url <- Option(doc.getString("url"))
+      .map(Url(_))
+      .toRight(s"No field 'url' found in $doc")
+  } yield MapUrl(url)
+
+  private[mongo] def readGeoLocation(doc: Document): Either[String, GeoLocation] = for {
+    lat <- Option(doc.getDouble("latitude"))
+      .map(Latitude(_))
+      .toRight(s"No field 'latitude' found in $doc")
+    lng <- Option(doc.getDouble("longitude"))
+      .map(Longitude(_))
+      .toRight(s"No field 'longitude' found in $doc")
+  } yield GeoLocation(LatLong(lat, lng))
+
+  private[mongo] def readAddressLocation(doc: Document): Either[String, Address] = for {
+    address <- Right(Option(doc.getString("address")))
+    zipCode <- Right(Option(doc.getString("zip_code")))
+    country <- Option(doc.getString("country"))
+      .map(Country(_))
+      .toRight(s"No field 'country' found in $doc")
+  } yield Address(address, zipCode, country)
+
+  // Pinned
 
   def pinnedPostToDoc(pp: PinnedPost): Document =
     Document(

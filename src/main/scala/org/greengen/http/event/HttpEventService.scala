@@ -28,7 +28,11 @@ object HttpEventService {
       service.byUser(UserId(UUID.from(id)), Page(page, by=PageSize), cancelledFilter)
         .flatMap(r => Ok(r.asJson))
     case GET -> Root / "event" / "by-user" / "incoming" / UUIDVar(id) / IntVar(page) as _ =>
-      service.byUser(UserId(UUID.from(id)), Page(page, by=PageSize), IncomingFilter(clock, _))
+      val incoming = (e: Event) => (for {
+        notCancelled  <- service.isCancelled(e.id).map(! _)
+        notStartedYet <- IO(IncomingFilter(clock, e))
+      } yield notCancelled && notStartedYet).unsafeRunSync()
+      service.byUser(UserId(UUID.from(id)), Page(page, by=PageSize), incoming)
         .flatMap(r => Ok(r.asJson))
     case GET -> Root / "event" / "by-user" / "accepted" / UUIDVar(id) / IntVar(page) as _ =>
       val userId = UserId(UUID.from(id))

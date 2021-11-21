@@ -20,11 +20,11 @@ class InMemoryEventStore(clock: Clock) extends EventStore[IO] {
   private[this] val participationRequestsByEvent = new TrieMap[EventId, Set[UserId]]()
 
 
-  override def registerEvent(owner: UserId, eventId: EventId, event: Event): IO[Unit] = IO {
-    events.put(eventId, event)
-    eventsByOwner.updateWith(owner) {
-      case Some(events) => Some(eventId :: events)
-      case None => Some(List(eventId))
+  override def registerEvent(event: Event): IO[Unit] = IO {
+    events.put(event.id, event)
+    eventsByOwner.updateWith(event.owner) {
+      case Some(events) => Some(event.id :: events)
+      case None => Some(List(event.id))
     }
   }
 

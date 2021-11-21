@@ -24,7 +24,7 @@ class EventServiceImpl(eventStore: EventStore[IO])
     _ <- checkMaxParticipants(maxParticipants)
     _ <- checkSchedule(clock, schedule)
     event = Event(EventId.newId(), owner, maxParticipants, description, location, schedule)
-    _ <- eventStore.registerEvent(owner, event.id, event)
+    _ <- eventStore.registerEvent(event)
   } yield event
 
   override def cancel(owner: UserId, id: EventId): IO[Unit] = for {

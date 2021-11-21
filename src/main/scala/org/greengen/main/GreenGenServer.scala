@@ -46,7 +46,7 @@ import org.greengen.main.InMemoryGreenGenServer.contextShift
 import org.greengen.store.auth.InMemoryAuthStore
 import org.greengen.store.challenge.MongoChallengeStore
 import org.greengen.store.conversation.{CachedConversationStore, MongoConversationStore}
-import org.greengen.store.event.InMemoryEventStore
+import org.greengen.store.event.{InMemoryEventStore, MongoEventStore}
 import org.greengen.store.feed.MongoFeedStore
 import org.greengen.store.follower.{CachedFollowerStore, MongoFollowerStore}
 import org.greengen.store.hashtag.MongoHashtagStore
@@ -111,7 +111,7 @@ object GreenGenServer extends IOApp {
       val cachedStore = CachedPinStore.withCache(new MongoPinStore(db))
       new PinServiceImpl(cachedStore)(clock, userService, postService)
     }
-    val eventService = new EventServiceImpl(new InMemoryEventStore(clock))(clock, userService, notificationService)
+    val eventService = new EventServiceImpl(new MongoEventStore(db, clock))(clock, userService, notificationService)
     val reminderService = new ReminderServiceImpl(clock, eventService, notificationService)
     val conversationService = {
       val cachedStore = CachedConversationStore.withCache(new MongoConversationStore(db, clock))
